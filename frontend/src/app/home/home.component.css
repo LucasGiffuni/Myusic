@@ -1,0 +1,54 @@
+#home-component {
+  position: relative;
+
+  width: 100%;
+  height: 100%;
+}
+
+
+#home-component-footer {
+  border-top: 1px solid black;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 5%;
+  background-color: #2a2438;
+}
+
+#home-component-sidebar {
+  float: left;
+
+  width: 20%;
+  height: 93%;
+  background: #484e51;
+  margin-top: 0.5%;
+  margin-left: 0.5%;
+  border-radius: 20px;
+}
+
+#home-component-library {
+  float: right;
+
+  width: 79%;
+  height:93%;
+  margin-top: 0.5%;
+  margin-left: 0.5%;
+  background-image: linear-gradient(
+    to top,
+    #484e51,
+    #484e51,
+    #484e51,
+    #484e51,
+    #484e51,
+    #484e51,
+    #484e51,
+    #4a5458,
+    #4c595e,
+    #4e5f65,
+    #526c74,
+    #547983,
+    #578792,
+    #5895a0
+  );
+  border-radius: 20px;
+}
