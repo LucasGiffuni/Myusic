@@ -3,7 +3,11 @@ import controller from '../controller/userController'
 
 const router = express.Router();
 
-router.post('/create/book', controller.createBook);
-router.get('/getUsers', controller.getAllBooks);
+router.get('/getUsers', (req, res) => {
+    controller.getUser(req, res)
+});
+router.get('/getUserPlaylists', (req, res) => {
+    controller.getUserPlaylists(req, res)
+});
 
 export default router;

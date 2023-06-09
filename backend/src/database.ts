@@ -38,6 +38,25 @@ export default class Database {
         return result.rowsAffected[0];
     }
 
+
+    async getUserPlaylists(id: string | number) {
+        await this.connect();
+
+        const request = this.poolconnection.request();
+        const result = await request
+            .input('id', sql.Int, +id)
+            .query(`
+            Select Usuario.username, Album.titulo, Cancion.titulo, Cancion.autor, Cancion.genero from Cancion 
+            JOIN CancionAlbum on (CancionAlbum.idCancion = Cancion.idCancion) 
+            JOIN Album on (Album.idAlbum = CancionAlbum.idAlbum)
+            join Usuario on (Album.idUsuario = Usuario.idUsuario)
+            where Usuario.idUsuario = 1
+            order by Usuario.idUsuario;
+            `);
+
+        return result.recordset;
+    }
+
     async create(data: { firstName: any; lastName: any; }) {
         await this.connect();
         const request = this.poolconnection.request();

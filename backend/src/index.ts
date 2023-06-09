@@ -6,9 +6,7 @@ import config from '../config';
 import userRoutes from "./routes/userRoutes";
 
 
-const port = 3000;
 const app = express();
-const NAMESPACE = 'Server';
 
 
 // Configuring body parser middleware
@@ -42,5 +40,4 @@ app.use((req, res, next) => {
 
 
 const httpServer = http.createServer(app);
-
 httpServer.listen(config.server.port);
