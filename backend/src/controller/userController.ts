@@ -1,43 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
-import { Connect, Query } from '../database';
 import Database from '../database';
 
 const database = new Database();
-
-const createBook = async (req: Request, res: Response, next: NextFunction) => {
-
-    const { author, title } = req.body;
-
-    const query = `select * from User`;
-
-    Connect()
-        .then((connection) => {
-            Query(connection, query)
-                .then((result) => {
-
-                    return res.status(200).json({
-                        result
-                    });
-                })
-                .catch((error) => {
-
-                    return res.status(200).json({
-                        message: error.message,
-                        error
-                    });
-                })
-                .finally(() => {
-                    connection.end();
-                });
-        })
-        .catch((error) => {
-
-            return res.status(200).json({
-                message: error.message,
-                error
-            });
-        });
-};
 
 const getAllBooks = async (req: Request, res: Response, next: NextFunction) => {
 
@@ -57,4 +21,4 @@ const getAllBooks = async (req: Request, res: Response, next: NextFunction) => {
     }
 };
 
-export default { createBook, getAllBooks };
+export default { getAllBooks };

@@ -4,7 +4,6 @@ import bodyParser from 'body-parser';
 
 import config from '../config';
 import userRoutes from "./routes/userRoutes";
-import { Connect, Query } from './database';
 
 
 const port = 3000;
