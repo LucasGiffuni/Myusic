@@ -50,7 +50,7 @@ export default class Database {
             JOIN CancionAlbum on (CancionAlbum.idCancion = Cancion.idCancion) 
             JOIN Album on (Album.idAlbum = CancionAlbum.idAlbum)
             join Usuario on (Album.idUsuario = Usuario.idUsuario)
-            where Usuario.idUsuario = 1
+            where Usuario.idUsuario = @id
             order by Usuario.idUsuario;
             `);
 
@@ -69,6 +69,43 @@ export default class Database {
 
         return result.rowsAffected[0];
     }
+
+    async addSongToAlbum(data: { songID: any; albumID: any; }) {
+        await this.connect();
+        const request = this.poolconnection.request();
+
+        let date_ob = new Date();
+        let date = ("0" + date_ob.getDate()).slice(-2);
+        let month = ("0" + (date_ob.getMonth() + 1)).slice(-2);
+        let year = date_ob.getFullYear();
+        let hours = date_ob.getHours();
+
+
+        request.input('idCancion', sql.Int, data.songID);
+        request.input('idAlbum', sql.Int, data.albumID);
+        request.input('fechaAgregado', sql.Date, year + "-" + month + "-" + date);
+        request.input('vecesReproducido', sql.Int, 0);
+
+        const result = await request.query(
+            `insert into CancionAlbum (
+                idAlbum,
+                idCancion,
+                fechaAgregado,
+                vecesReproducido
+                ) 
+                values(
+                @idAlbum,
+                @idCancion,
+                @fechaAgregado,
+                @vecesReproducido
+            )`
+        );
+
+        return result.rowsAffected[0];
+    }
+
+
+
 
     async create(data: { firstName: any; lastName: any; }) {
         await this.connect();
