@@ -20,5 +20,5 @@
     },
     "include": [
         "src/**/*"
-, "config2.ts"    ]
+, "src/config/config.ts"    ]
 }

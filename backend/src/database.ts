@@ -1,4 +1,4 @@
-import { config } from '../config2';
+import { config } from './config/config';
 import sql from 'mssql';
 
 export default class Database {
@@ -55,6 +55,19 @@ export default class Database {
             `);
 
         return result.recordset;
+    }
+
+    async createUser(data: { username: any; password: any; }) {
+        await this.connect();
+        const request = this.poolconnection.request();
+        request.input('username', sql.NVarChar(255), data.username);
+        request.input('password', sql.NVarChar(255), data.password);
+
+        const result = await request.query(
+            `INSERT INTO Usuario (username, password) VALUES (@username, @password)`
+        );
+
+        return result.rowsAffected[0];
     }
 
     async create(data: { firstName: any; lastName: any; }) {

@@ -6,14 +6,16 @@ const database = process.env.AZURE_SQL_DATABASE;
 const port = parseInt(process.env.AZURE_SQL_PORT);
 const user = process.env.AZURE_SQL_USER;
 const password = process.env.AZURE_SQL_PASSWORD;
-
+const encryptSecret = process.env.ENCRYPT_SECRET;
 export const config = {
     server,
     port,
     database,
     user,
     password,
+    encryptSecret,
+
     options: {
         encrypt: true
-    }
+    },
 };

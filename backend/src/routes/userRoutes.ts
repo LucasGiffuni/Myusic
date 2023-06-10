@@ -9,5 +9,8 @@ router.get('/getUsers', (req, res) => {
 router.get('/getUserPlaylists', (req, res) => {
     controller.getUserPlaylists(req, res)
 });
+router.post('/createUser', (req, res) => {
+    controller.createUser(req, res)
+});
 
 export default router;

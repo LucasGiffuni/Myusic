@@ -1,8 +1,10 @@
 import { NextFunction, Request, Response } from 'express';
 import Database from '../database';
 
-const database = new Database();
+import passEcrypt from '../config/passEncrypt';
 
+const database = new Database();
+const encrypt = new passEcrypt()
 
 
 const getUser = async (req: Request, res: Response) => {
@@ -23,6 +25,41 @@ const getUser = async (req: Request, res: Response) => {
     }
 };
 
+
+const createUser = async (req: Request, res: Response) => {
+
+    // Get the person with the specified ID
+    const username = req.body.username;
+    const password = req.body.password;
+    if (username && password) {
+
+        encrypt.encrypt(password).then((p) => {
+            console.log("Encrypted: " + p)
+            try {
+
+                const data = {
+                    username: username,
+                    password: p
+                }
+                console.log(`User Data: ${JSON.stringify(data)}`);
+                const result = database.createUser(data);
+                console.log(`Result: ${JSON.stringify(result)}`);
+                res.status(200).json("User " + data.username + " created!");
+
+            } catch (err) {
+                res.status(500).json({ error: err?.message });
+
+            }
+        });
+    } else {
+        res.status(404).json({ error:  "User or Password could not be null"});
+    }
+
+
+
+
+};
+
 const getUserPlaylists = async (req: Request, res: Response) => {
     try {
         // Get the person with the specified ID
@@ -41,4 +78,4 @@ const getUserPlaylists = async (req: Request, res: Response) => {
     }
 };
 
-export default { getUser, getUserPlaylists };
+export default { getUser, getUserPlaylists, createUser };

@@ -2,7 +2,6 @@ import express, { Express } from "express";
 import http from 'http';
 import bodyParser from 'body-parser';
 
-import config from '../config';
 import userRoutes from "./routes/userRoutes";
 
 
@@ -40,4 +39,4 @@ app.use((req, res, next) => {
 
 
 const httpServer = http.createServer(app);
-httpServer.listen(config.server.port);
+httpServer.listen(3000);
