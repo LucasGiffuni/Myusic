@@ -168,4 +168,60 @@ export default class Database {
 
         return result.rowsAffected[0];
     }
+
+    //function to create a new album in de Data Base
+    async createAlbum(data: { userId: any; albumTitle: any; description:any }) {
+        await this.connect();
+        let dateAlbum=new Date("now");
+        const request = this.poolconnection.request();
+        request.input('userId', sql.Int, data.userId);
+        request.input('albumTitle', sql.NVarChar(255), data.albumTitle);
+        request.input('description', sql.NVarChar(255), data.description);
+        request.input('creationDate',sql.date,dateAlbum);
+
+        const result = await request.query(
+            `INSERT INTO Albums(
+                userId,
+                albumTitle,
+                description,
+                creationDate
+                ) 
+                values(
+                @userId,
+                @albumTitle,
+                @description,
+                @creationDate
+                )
+            )`
+        );
+        return result.rowsAffected[0];   
+    }
+// Function to delete an entire album from the Data Base 
+async deleteAlbum(id:any){
+    await this.connect();
+    const request = this.poolconnection.request();
+    const albumId=Number(id);
+    request.input('albumId',sql.Int,albumId);
+    const result = await request.query(
+        `DELETE FROM Albums WHERE albumId = @albumId`
+        );
+    return result.rowsAffected[0];
+    }
+// Function to modify an album whit matching albumId
+async modifyAlbum (albumId:any, data: { userId: any; albumTitle: any; description:any }) {
+    await this.connect();
+    const request = this.poolconnection.request();
+    const albumIdAsNumber=Number(albumId);
+    request.input('albumId',sql.Int,albumIdAsNumber);
+    request.input('userId', sql.Int, data.userId);
+    request.input('albumTitle', sql.NVarChar(255), data.albumTitle);
+    request.input('description', sql.NVarChar(255), data.description);
+    const result = await request.query(     
+        ` 
+        UPDATE table_name
+        SET userId=@userId, albumTitle=@albumTitle, description=@description
+        WHERE albumId=@albumId   
+        `);
+    return result.rowsAffected[0];
+    }   
 }
