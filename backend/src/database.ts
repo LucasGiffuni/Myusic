@@ -104,31 +104,6 @@ export default class Database {
         return result.rowsAffected[0];
     }
 
-
-
-
-    async create(data: { firstName: any; lastName: any; }) {
-        await this.connect();
-        const request = this.poolconnection.request();
-
-        request.input('firstName', sql.NVarChar(255), data.firstName);
-        request.input('lastName', sql.NVarChar(255), data.lastName);
-
-        const result = await request.query(
-            `INSERT INTO Person (firstName, lastName) VALUES (@firstName, @lastName)`
-        );
-
-        return result.rowsAffected[0];
-    }
-
-    async readAll() {
-        await this.connect();
-        const request = this.poolconnection.request();
-        const result = await request.query(`SELECT * FROM Person`);
-        const response = result.recordsets;
-        return response;
-    }
-
     async read(id: string | number) {
         await this.connect();
 
@@ -140,32 +115,19 @@ export default class Database {
         return result.recordset[0];
     }
 
-    async update(id: string | number, data: { firstName: any; lastName: any; }) {
+    async obtenerUsuariosPorUsername(data: { username: any; password: any; }) {
         await this.connect();
 
         const request = this.poolconnection.request();
 
-        request.input('id', sql.Int, +id);
-        request.input('firstName', sql.NVarChar(255), data.firstName);
-        request.input('lastName', sql.NVarChar(255), data.lastName);
+        
+        request.input('username', sql.NVarChar(255), data.username);
+        request.input('password', sql.NVarChar(255), data.password);
 
-        const result = await request.query(
-            `UPDATE Person SET firstName=@firstName, lastName=@lastName WHERE id = @id`
-        );
+        const result = await request.query(`SELECT * FROM Usuario WHERE username = @username AND password = @password`);
 
-        return result.rowsAffected[0];
+        return result.recordset[0];
     }
 
-    async delete(id: any) {
-        await this.connect();
 
-        const idAsNumber = Number(id);
-
-        const request = this.poolconnection.request();
-        const result = await request
-            .input('id', sql.Int, idAsNumber)
-            .query(`DELETE FROM Person WHERE id = @id`);
-
-        return result.rowsAffected[0];
-    }
 }
