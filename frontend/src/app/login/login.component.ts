@@ -48,6 +48,8 @@ export class LoginComponent {
   }
 
   login() {
-    this.userService.login(this.username, this.password);
+    this.userService.login(this.username, this.password).then((response) =>{
+      console.log(response)
+    });
   }
 }
