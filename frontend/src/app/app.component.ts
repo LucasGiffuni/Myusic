@@ -7,7 +7,7 @@ import { HomeComponent } from "./home/home.component";
   selector: 'app-root',
   standalone: true,
   template: `
-  
+
     <app-home id="home-component"/>
   `,
   styleUrls: ['./app.component.css'],
