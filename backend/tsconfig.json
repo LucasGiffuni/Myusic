@@ -1,0 +1,24 @@
+{
+    "ts-node": {
+        "esm": true,
+        "experimentalSpecifierResolution": "node"
+      },
+    "compilerOptions": {
+        "module": "ESNext",
+        "esModuleInterop": true,
+        "target": "es6",
+        "noImplicitAny": true,
+        "moduleResolution": "node",
+        "sourceMap": true,
+        "outDir": "dist",
+        "baseUrl": ".",
+        "paths": {
+            "*": [
+                "node_modules/*"
+            ]
+        }
+    },
+    "include": [
+        "src/**/*"
+, "src/config/config.ts"    ]
+}
