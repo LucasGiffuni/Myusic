@@ -1,6 +1,8 @@
-import { Component, inject } from '@angular/core';
+import { Component, ViewContainerRef, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Services } from '../services/services.service';
+import { HomeComponent } from '../home/home.component';
+import { AlertInterface } from '../interfaces/IAlert';
 
 @Component({
   selector: 'app-login',
@@ -19,14 +21,15 @@ import { Services } from '../services/services.service';
       </div>
 
       <div id="login-component-formButtonBody">
-        <input type="Button" id="login-component-formButton" value="Login" (click)="login()" >
+        <input type="Button" id="login-component-formButton" value="Sign In" (click)="login()" >
       </div>
 
 
-      <div id="login-component-signUpBody">
-        <p> Not a User? <a href="">Sign Up</a> </p>
-      </div>
+        <div id="login-component-signUpBody">
+          <p> Not a User? <a href="">Sign Up</a> </p>
+        </div>
     </form>
+
     </div>
   `,
   styleUrls: ['./login.component.css']
@@ -36,9 +39,16 @@ export class LoginComponent {
   username: string = "";
   password: string = "";
 
+  alert: AlertInterface
+  _injector = this.viewContainerRef.parentInjector;
+  _parent: HomeComponent = this._injector.get<HomeComponent>(HomeComponent);
 
   userService: Services = inject(Services);
 
+  constructor(private viewContainerRef: ViewContainerRef) {
+    this.alert = {} as AlertInterface;
+
+  }
 
   onFocusOutUsername(event: any) {
     this.username = event.target.value
@@ -48,8 +58,28 @@ export class LoginComponent {
   }
 
   login() {
-    this.userService.login(this.username, this.password).then((response) =>{
+    this.userService.login(this.username, this.password).then((response) => {
       console.log(response)
+
+      if (response.resultado.statusCode == "404") {
+        this.alert.id = 0;
+        this.alert.text = response.resultado.statusText;
+        this.alert.type = "success";
+        this.alert.style = '#af233a';
+
+
+        this._parent.addAlert(this.alert);
+      } else if (response.resultado.statusCode == "200") {
+        this.alert.id = 0;
+        this.alert.text = "Bienvenido " + response.user.username;
+        this.alert.type = "success";
+        this.alert.style = '#0d6832';
+
+
+        this._parent.addAlert(this.alert);
+      }
     });
   }
+
+
 }

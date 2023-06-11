@@ -5,7 +5,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-
 }
 
 #home-component-footer {
@@ -55,8 +54,15 @@
   border-radius: 20px;
 }
 
-#login-component {
-
-  width: 25%;
-  height: 50%;
+@media (width >1000px) {
+  #login-component {
+    width: 25%;
+    height: 50%;
+  }
+}
+@media (width < 1000px) {
+  #login-component {
+    width: 55%;
+    height: 50%;
+  }
 }
