@@ -3,10 +3,9 @@ import http from 'http';
 import bodyParser from 'body-parser';
 
 import userRoutes from "./routes/userRoutes";
-
+import songRoutes from "./routes/songRoutes";
 
 const app = express();
-
 
 // Configuring body parser middleware
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -26,6 +25,7 @@ app.use((req, res, next) => {
 
 /** Routes go here */
 app.use('/user', userRoutes);
+app.use('/song',songRoutes);
 
 /** Error handling */
 app.use((req, res, next) => {
@@ -35,7 +35,6 @@ app.use((req, res, next) => {
 		message: error.message
 	});
 });
-
 
 
 const httpServer = http.createServer(app);

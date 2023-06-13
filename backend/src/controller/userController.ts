@@ -34,8 +34,8 @@ const createUser = async (req: Request, res: Response) => {
             console.log("Encrypted: " + encryptedPassword)
             try {
                 const data = {
-                    username: username,
-                    password: password
+                    username,
+                    password
                 }
                 console.log(`User Data: ${JSON.stringify(data)}`);
                 const result = database.createUser(data);
@@ -56,12 +56,10 @@ const validateUser = async (req: Request, res: Response) => {
     const password = req.body.password;
 
     if (username && password) {
-
-
         try {
             const data = {
-                username: username,
-                password: password
+                username,
+                password
             }
             console.log(`User Data: ${JSON.stringify(data)}`);
             const result = await database.obtenerUsuariosPorUsername(data);
@@ -102,8 +100,8 @@ const addSongToAlbum = async (req: Request, res: Response) => {
         const albumID = req.body.idAlbum;
         if (songID && albumID) {
             const data = {
-                songID: songID,
-                albumID: albumID
+                songID,
+                albumID
             }
             const result = await database.addSongToAlbum(data);
             res.status(200).json("La cancion " + data.songID + " fue agregada correctamente al album " + data.albumID);
@@ -118,4 +116,6 @@ const addSongToAlbum = async (req: Request, res: Response) => {
 
 
 
-export default { getUser, getUserPlaylists, createUser, addSongToAlbum, validateUser };
+
+
+export default { getUser, getUserPlaylists, createUser, addSongToAlbum, validateUser};

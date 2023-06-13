@@ -46,8 +46,8 @@ export default class Database {
         const result = await request
             .input('id', sql.Int, +id)
             .query(`
-            Select Usuario.username, Album.titulo, Cancion.titulo, Cancion.autor, Cancion.genero from Cancion 
-            JOIN CancionAlbum on (CancionAlbum.idCancion = Cancion.idCancion) 
+            Select Usuario.username, Album.titulo, Cancion.titulo, Cancion.autor, Cancion.genero from Cancion
+            JOIN CancionAlbum on (CancionAlbum.idCancion = Cancion.idCancion)
             JOIN Album on (Album.idAlbum = CancionAlbum.idAlbum)
             join Usuario on (Album.idUsuario = Usuario.idUsuario)
             where Usuario.idUsuario = @id
@@ -74,11 +74,11 @@ export default class Database {
         await this.connect();
         const request = this.poolconnection.request();
 
-        let date_ob = new Date();
-        let date = ("0" + date_ob.getDate()).slice(-2);
-        let month = ("0" + (date_ob.getMonth() + 1)).slice(-2);
-        let year = date_ob.getFullYear();
-        let hours = date_ob.getHours();
+        const date_ob = new Date();
+        const date = ("0" + date_ob.getDate()).slice(-2);
+        const month = ("0" + (date_ob.getMonth() + 1)).slice(-2);
+        const year = date_ob.getFullYear();
+        const hours = date_ob.getHours();
 
 
         request.input('idCancion', sql.Int, data.songID);
@@ -92,7 +92,7 @@ export default class Database {
                 idCancion,
                 fechaAgregado,
                 vecesReproducido
-                ) 
+                )
                 values(
                 @idAlbum,
                 @idCancion,
@@ -120,7 +120,7 @@ export default class Database {
 
         const request = this.poolconnection.request();
 
-        
+
         request.input('username', sql.NVarChar(255), data.username);
         request.input('password', sql.NVarChar(255), data.password);
 
@@ -129,5 +129,14 @@ export default class Database {
         return result.recordset[0];
     }
 
+    async getAllSongs(){
+        await this.connect();
+
+        const request = this.poolconnection.request();
+
+        const result = await request.query(`SELECT * FROM Cancion`)
+
+        return result.recordset;
+    }
 
 }

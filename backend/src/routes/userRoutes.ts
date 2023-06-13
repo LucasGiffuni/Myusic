@@ -21,4 +21,6 @@ router.post('/createUser', (req, res) => {
 router.get('/validateUser', (req, res) => {
     controller.validateUser(req, res)
 });
+
+
 export default router;
