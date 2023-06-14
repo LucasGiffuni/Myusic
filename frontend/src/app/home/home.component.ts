@@ -1,8 +1,10 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterOutlet } from '@angular/router';
+
 import { LibraryComponent } from "./library/library.component";
 import { SidebarComponent } from "./sidebar/sidebar.component";
-import { LoginComponent } from "../login/login.component";
+import { LoginComponent } from "./login/login.component";
 import { AlertComponent } from "../alert/alert.component";
 import { AlertInterface } from '../interfaces/IAlert';
 
@@ -11,12 +13,13 @@ import { AlertInterface } from '../interfaces/IAlert';
   standalone: true,
   template: `
    <div id="home-component">
-      <app-login id="login-component"/>
+      <router-outlet></router-outlet>
+
       <app-alert  [alert]="alert" />
    </div>
   `,
   styleUrls: ['./home.component.css'],
-  imports: [CommonModule, LibraryComponent, SidebarComponent, LoginComponent, AlertComponent]
+  imports: [CommonModule, RouterOutlet, LibraryComponent, SidebarComponent, LoginComponent, AlertComponent]
 })
 export class HomeComponent {
 

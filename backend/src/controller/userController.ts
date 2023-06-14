@@ -70,12 +70,7 @@ const validateUser = async (req: Request, res: Response) => {
         }
     }
     if (username && password) {
-
-
         try {
-
-
-
             console.log(`User Data: ${JSON.stringify(data)}`);
             const result = await database.obtenerUsuariosPorUsername(data);
             console.log(`Result: ${JSON.stringify(result)}`);
@@ -86,19 +81,18 @@ const validateUser = async (req: Request, res: Response) => {
                 response.user.idUsuario = result.idUsuario;
                 response.user.username = result.username
                 res.status(200).json(response);
-
             } else {
                 response.resultado.statusCode = "200";
                 response.resultado.statusText = "OK";
 
                 response.user.idUsuario = result.idUsuario;
                 response.user.username = result.username
-                res.status(200).json(response);            }
-
+                res.status(200).json(response);
+            }
+       
         } catch (err) {
             res.status(500).json({ error: err?.message });
         }
-
     } else {
         response.resultado.statusCode = "404";
         response.resultado.statusText = "User Not Found";
