@@ -1,6 +1,7 @@
 export interface Album {
-    userID:number,
-    albumTitle:string,
-    description:string,
-    creationDate:Date
+    idAlbum:number,
+    idUsuario:number,
+    titulo:string,
+    descripcion:string,
+    fechaCreacion:Date
 }

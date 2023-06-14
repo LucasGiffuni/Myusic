@@ -174,23 +174,23 @@ export default class Database {
         await this.connect();
         let dateAlbum=new Date("now");
         const request = this.poolconnection.request();
-        request.input('userId', sql.Int, data.userId);
-        request.input('albumTitle', sql.NVarChar(255), data.albumTitle);
-        request.input('description', sql.NVarChar(255), data.description);
-        request.input('creationDate',sql.date,dateAlbum);
+        request.input('idUsuario', sql.Int, data.userId);
+        request.input('titulo', sql.NVarChar(255), data.albumTitle);
+        request.input('descripcion', sql.NVarChar(255), data.description);
+        request.input('fechaCreacion',sql.date,dateAlbum);
 
         const result = await request.query(
             `INSERT INTO Albums(
-                userId,
-                albumTitle,
-                description,
-                creationDate
+                idUsuario,
+                titulo,
+                descripcion,
+                fechaCreacion
                 ) 
                 values(
-                @userId,
-                @albumTitle,
-                @description,
-                @creationDate
+                @idUsuario,
+                @titulo,
+                @descripcion,
+                @fechaCreacion
                 )
             )`
         );
@@ -201,9 +201,9 @@ async deleteAlbum(id:any){
     await this.connect();
     const request = this.poolconnection.request();
     const albumId=Number(id);
-    request.input('albumId',sql.Int,albumId);
+    request.input('idAlbum',sql.Int,albumId);
     const result = await request.query(
-        `DELETE FROM Albums WHERE albumId = @albumId`
+        `DELETE FROM Albums WHERE idAlbum = @idAlbum`
         );
     return result.rowsAffected[0];
     }
@@ -212,15 +212,15 @@ async modifyAlbum (albumId:any, data: { userId: any; albumTitle: any; descriptio
     await this.connect();
     const request = this.poolconnection.request();
     const albumIdAsNumber=Number(albumId);
-    request.input('albumId',sql.Int,albumIdAsNumber);
-    request.input('userId', sql.Int, data.userId);
-    request.input('albumTitle', sql.NVarChar(255), data.albumTitle);
-    request.input('description', sql.NVarChar(255), data.description);
+    request.input('idAlbum',sql.Int,albumIdAsNumber);
+    request.input('idUsuario', sql.Int, data.userId);
+    request.input('titulo', sql.NVarChar(255), data.albumTitle);
+    request.input('descripcion', sql.NVarChar(255), data.description);
     const result = await request.query(     
         ` 
-        UPDATE table_name
-        SET userId=@userId, albumTitle=@albumTitle, description=@description
-        WHERE albumId=@albumId   
+        UPDATE Albums
+        SET idUsuario=@idUsuario, titulo=@titulo, descripcion=@descripcion
+        WHERE idAlbum=@idAlbum   
         `);
     return result.rowsAffected[0];
     }   
