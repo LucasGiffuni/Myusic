@@ -27,6 +27,22 @@ export class Services {
     })).json());
   }
 
+  async updateUser(userId: number, username: string, password: string) {
+    const body = {
+	  userId: userId,
+      username: username,
+      password: password
+    }
+    return (await (await fetch(`${this.url}/user/updateUser`, {
+      method: 'PUT',
+      body: JSON.stringify(body),
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      }
+    })).json());
+  }
+
 
 
   async login(username: string, password: string) {
