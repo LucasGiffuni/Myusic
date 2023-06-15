@@ -23,6 +23,4 @@ router.put('/updateUser', (req, res) => {
 
 
 
-
-
 export default router;

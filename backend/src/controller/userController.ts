@@ -32,8 +32,9 @@ const getUser = async (req: Request, res: Response) => {
 
 
 const createUser = async (req: Request, res: Response) => {
-	const username = req.body.username;
-	const password = req.body.password;
+  
+const username = req.body.username;
+const password = req.body.password;
 
 	const data = {
 		username: username,
@@ -71,9 +72,8 @@ const createUser = async (req: Request, res: Response) => {
 
 		res.status(404).json(response);
 	}
+
 };
-
-
 
 const validateUser = async (req: Request, res: Response) => {
 	const username = req.body.username;
@@ -144,6 +144,7 @@ const generateJWT = (userId: string) => {
 		subject: userId
 	})
 
+
 	return jwtBearerToken;
 }
 
@@ -168,6 +169,7 @@ const getUserPlaylists = async (req: Request, res: Response) => {
 
 
 const addSongToAlbum = async (req: Request, res: Response) => {
+
 	try {
 		const songID = req.body.idCancion;
 		const albumID = req.body.idAlbum;
@@ -184,6 +186,7 @@ const addSongToAlbum = async (req: Request, res: Response) => {
 	} catch (err) {
 		res.status(500).json({ error: err?.message });
 	}
+
 };
 
 const updateUser = async (req: Request, res: Response) => {
@@ -211,4 +214,6 @@ const updateUser = async (req: Request, res: Response) => {
 	}
 };
 
+
 export default { getUser, getUserPlaylists, createUser, addSongToAlbum, validateUser, updateUser };
+

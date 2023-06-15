@@ -89,11 +89,11 @@ export default class Database {
         await this.connect();
         const request = this.poolconnection.request();
 
-        let date_ob = new Date();
-        let date = ("0" + date_ob.getDate()).slice(-2);
-        let month = ("0" + (date_ob.getMonth() + 1)).slice(-2);
-        let year = date_ob.getFullYear();
-        let hours = date_ob.getHours();
+        const date_ob = new Date();
+        const date = ("0" + date_ob.getDate()).slice(-2);
+        const month = ("0" + (date_ob.getMonth() + 1)).slice(-2);
+        const year = date_ob.getFullYear();
+        const hours = date_ob.getHours();
 
 
         request.input('idCancion', sql.Int, data.songID);
@@ -144,5 +144,41 @@ export default class Database {
         return result.recordset;
     }
 
+    async getAllSongs(){
+        await this.connect();
+
+        const request = this.poolconnection.request();
+
+        const result = await request.query(`SELECT * FROM Cancion`);
+        return result.recordset;
+    }
+
+    async getSongReproductions(){
+        await this.connect();
+
+        const request = this.poolconnection.request();
+
+        const result = await request.query(`SELECT * FROM Cancion ORDER BY vecesReproducidas DESC`);
+
+        return result.recordset;
+    }
+
+    async editSong(data:{songId:number,title:string, gender:string, date:Date, author:string, referenceLink:string}){
+        await this.connect();
+
+        const request = this.poolconnection.request();
+
+        request.input('songId', sql.Int(), data.songId);
+        request.input('title', sql.NVarChar(255), data.title);
+        request.input('gender', sql.NVarChar(255), data.gender);
+        request.input('date', sql.Date(), data.date);
+        request.input('author', sql.NVarChar(255), data.author);
+        request.input('referenceLink', sql.NVarChar(255), data.referenceLink);
+
+        const result = await request.query(`UPDATE Cancion SET Titulo = @title, Genero = @gender, 
+        FechaLanzamiento = @Date, LinkReferencia = @referenceLink WHERE idCancion = @songId`);
+
+        return result.recordset;
+    }    
 
 }

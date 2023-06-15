@@ -5,13 +5,15 @@ import jwt from 'jsonwebtoken';
 import fs from "fs";
 import cors from 'cors';
 import userRoutes from "./routes/userRoutes";
+
+import songRoutes from "./routes/songRoutes";
+
 import loginRoutes from './routes/loginRoutes'
 import albumRoutes from "./routes/albumRoutes";
 
 
 const app = express();
 const RSA_PRIVATE_KEY = fs.readFileSync('private.key');
-
 
 // Configuring body parser middleware
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -56,6 +58,10 @@ app.use((req, res, next) => {
 
 /** Routes go here */
 
+app.use('/user', userRoutes);
+app.use('/song',songRoutes);
+
+
 /** Error handling */
 app.use((req, res, next) => {
 	const error = new Error('Not found');
@@ -64,7 +70,6 @@ app.use((req, res, next) => {
 		message: error.message
 	});
 });
-
 
 
 const httpServer = http.createServer(app);
