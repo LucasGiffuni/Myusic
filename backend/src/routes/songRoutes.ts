@@ -15,4 +15,8 @@ router.put('/editSong',(req,res)=>{
     controller.editSong(req,res);
 })
 
+router.delete('/deleteSong',(req,res)=>{
+    controller.deleteSong(req,res);
+})
+
 export default router;

@@ -9,7 +9,7 @@ const encrypt = new passEcrypt()
 
 
 const getAllSongs = async (req: Request, res: Response) => {
-     
+
     try {
         const result = await database.getAllSongs();
         const response:IResponse<any[]> = {
@@ -104,5 +104,32 @@ const editSong = async (req:Request, res: Response) => {
     }
 }
 
+const deleteSong = async (req: Request, res: Response) => {
+    try {
+		const songId: number = parseInt(req.body.songId)
+        const result = await database.deleteSong(songId);
+        const response:IResponse<any[]> = {
+            Result:{
+                statuscode:"",
+                statustext:""
+            },
+            data:result
+        }
+        if (result.length > 0){
+            response.Result.statuscode = "200";
+            response.Result.statustext = "OK";
+            res.json(response);
+            res.status(200);
+        }else{
+            response.Result.statuscode = "404";
+            response.Result.statustext = "Not found";
+            res.json(response);
+            res.status(404);
+        }
+    } catch (err) {
+        res.status(500).json({ error: err?.message });
+    }
+}
 
-export default {getAllSongs, getSongReproductions, editSong};
+
+export default { getAllSongs, getSongReproductions, editSong, deleteSong };

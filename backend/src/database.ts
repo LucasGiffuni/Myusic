@@ -175,10 +175,22 @@ export default class Database {
         request.input('author', sql.NVarChar(255), data.author);
         request.input('referenceLink', sql.NVarChar(255), data.referenceLink);
 
-        const result = await request.query(`UPDATE Cancion SET Titulo = @title, Genero = @gender, 
+        const result = await request.query(`UPDATE Cancion SET Titulo = @title, Genero = @gender,
         FechaLanzamiento = @Date, LinkReferencia = @referenceLink WHERE idCancion = @songId`);
 
         return result.recordset;
-    }    
+    }
+
+	async deleteSong(songId: number) {
+		await this.connect();
+
+        const request = this.poolconnection.request();
+
+        request.input('songId', sql.Int(), songId);
+
+        const result = await request.query(`DELETE FROM Cancion WHERE idCancion = @songId`);
+
+        return result.recordset;
+	}
 
 }
