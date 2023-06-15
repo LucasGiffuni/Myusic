@@ -3,6 +3,8 @@ import http from 'http';
 import bodyParser from 'body-parser';
 
 import userRoutes from "./routes/userRoutes";
+import albumsRoutes from "./routes/albumsRoutes";
+
 
 
 const app = express();
@@ -26,6 +28,10 @@ app.use((req, res, next) => {
 
 /** Routes go here */
 app.use('/user', userRoutes);
+
+app.use ('/albums',albumsRoutes);
+
+app.use ('/song',albumsRoutes);
 
 /** Error handling */
 app.use((req, res, next) => {

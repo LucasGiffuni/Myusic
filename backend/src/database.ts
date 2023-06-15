@@ -140,6 +140,19 @@ export default class Database {
         return result.recordset[0];
     }
 
+    async readAlbums(id: string | number) {
+        console.log(id);
+        await this.connect();
+
+        const request = this.poolconnection.request();
+        const result = await request
+            .input('id', sql.Int, +id)
+            .query(`SELECT * FROM Album WHERE idUsuario = @id`);
+
+        return result.recordset;
+    }
+
+
     async update(id: string | number, data: { firstName: any; lastName: any; }) {
         await this.connect();
 
@@ -177,7 +190,7 @@ export default class Database {
         request.input('idUsuario', sql.Int, data.userId);
         request.input('titulo', sql.NVarChar(255), data.albumTitle);
         request.input('descripcion', sql.NVarChar(255), data.description);
-        request.input('fechaCreacion',sql.date,dateAlbum);
+        request.input('fechaCreacion',sql.Date,dateAlbum);
 
         const result = await request.query(
             `INSERT INTO Albums(
