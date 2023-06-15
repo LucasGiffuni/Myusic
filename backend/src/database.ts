@@ -141,7 +141,7 @@ export default class Database {
 
         const result = await request.query(`SELECT * FROM Usuario WHERE username = @username AND password = @password`);
 
-        return result.recordset[0];
+        return result.recordset;
     }
 
 

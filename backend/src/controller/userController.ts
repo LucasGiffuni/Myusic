@@ -27,25 +27,44 @@ const getUser = async (req: Request, res: Response) => {
 
 
 const createUser = async (req: Request, res: Response) => {
-    const username = req.body.username;
-    const password = req.body.password;
-    if (username && password) {
-        encrypt.encrypt(password).then((encryptedPassword) => {
-            console.log("Encrypted: " + encryptedPassword)
-            try {
-                const data = {
-                    username: username,
-                    password: password
-                }
-                const result = database.createUser(data);
-                res.status(200).json("User " + data.username + " created!");
+	const username = req.body.username;
+	const password = req.body.password;
 
-			} catch (err) {
-				res.status(500).json({ error: err?.message });
-			}
-		});
+	const data = {
+		username: username,
+		password: password
+	}
+	const response = {
+		resultado: {
+			statusCode: "",
+			statusText: ""
+		},
+		user: {
+			idUsuario: "",
+			username: ""
+		}
+	}
+	if (username && password) {
+		try {	
+			const result = database.createUser(data);
+
+			response.resultado.statusCode = "200";
+			response.resultado.statusText = "OK";
+
+			response.user.username = data.username
+			res.status(200).json(response);
+		} catch (err) {
+			response.resultado.statusCode = "500";
+			response.resultado.statusText = "Internal Server Error";
+
+
+		}
 	} else {
-		res.status(404).json({ error: "User or Password could not be null" });
+		response.resultado.statusCode = "404";
+		response.resultado.statusText = "User Not Found";
+
+
+		res.status(404).json(response);
 	}
 };
 
@@ -53,51 +72,51 @@ const validateUser = async (req: Request, res: Response) => {
 	const username = req.body.username;
 	const password = req.body.password;
 
-    const data = {
-        username: username,
-        password: password
-    }
-    const response = {
-        resultado: {
-            statusCode: "",
-            statusText: ""
-        },
-        user: {
-            idUsuario: "",
-            username: ""
-        }
-    }
-    if (username && password) {
-        try {
-            console.log(`User Data: ${JSON.stringify(data)}`);
-            const result = await database.obtenerUsuariosPorUsername(data);
-            console.log(`Result: ${JSON.stringify(result)}`);
-            if (JSON.stringify(result) === undefined) {
-                response.resultado.statusCode = "404";
-                response.resultado.statusText = "User Not Found";
+	const data = {
+		username: username,
+		password: password
+	}
+	const response = {
+		resultado: {
+			statusCode: "",
+			statusText: ""
+		},
+		user: {
+			idUsuario: "",
+			username: ""
+		}
+	}
+	if (username && password) {
+		try {
+			console.log(`User Data: ${JSON.stringify(data)}`);
+			const result = await database.obtenerUsuariosPorUsername(data);
+			console.log(`Result: ${JSON.stringify(result)}`);
 
-                response.user.idUsuario = result.idUsuario;
-                response.user.username = result.username
-                res.status(200).json(response);
-            } else {
-                response.resultado.statusCode = "200";
-                response.resultado.statusText = "OK";
+			if (result.length === 0) {
+				response.resultado.statusCode = "404";
+				response.resultado.statusText = "User Not Found";
 
-                response.user.idUsuario = result.idUsuario;
-                response.user.username = result.username
-                res.status(200).json(response);
-            }
+				
+				res.status(200).json(response);
+			} else {
+				response.resultado.statusCode = "200";
+				response.resultado.statusText = "OK";
 
-        } catch (err) {
-            res.status(500).json({ error: err?.message });
-        }
-    } else {
-        response.resultado.statusCode = "404";
-        response.resultado.statusText = "User Not Found";
+				response.user.idUsuario = result[0].idUsuario;
+				response.user.username = result[0].username
+				res.status(200).json(response);
+			}
+
+		} catch (err) {
+			res.status(500).json({ error: err?.message });
+		}
+	} else {
+		response.resultado.statusCode = "404";
+		response.resultado.statusText = "User Not Found";
 
 
-        res.status(404).json(response);
-    }
+		res.status(404).json(response);
+	}
 };
 
 
@@ -144,7 +163,7 @@ const updateUser = async (req: Request, res: Response) => {
 		const password = req.body.password;
 		const username = req.body.username;
 		if (userId) {
-			const data: { username: string, password: string } = { username, password};
+			const data: { username: string, password: string } = { username, password };
 			if (password) {
 				data.password = password;
 			}

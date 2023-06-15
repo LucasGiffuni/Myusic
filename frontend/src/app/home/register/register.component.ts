@@ -77,12 +77,15 @@ export class RegisterComponent {
           this._parent.addAlert(this.alert);
         } else if (response.resultado.statusCode == "200") {
           this.alert.id = 0;
-          this.alert.text = "Bienvenido " + response.user.username;
+          this.alert.text = "Usuario " + response.user.username + " creado correctamente";
           this.alert.type = "success";
           this.alert.style = '#0d6832';
 
 
+
           this._parent.addAlert(this.alert);
+          this.clickButton('/login')
+
         }
       });
     } else {
@@ -95,4 +98,5 @@ export class RegisterComponent {
     }
 
   }
+
 }

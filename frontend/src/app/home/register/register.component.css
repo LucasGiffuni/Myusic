@@ -62,8 +62,7 @@
 }
 
 #register-component-signUpBody {
-  margin-top: auto;
-  text-align: center;
+  margin: 0 auto 0 0;
 }
 #register-component-formButton:hover {
   opacity: 0.9;
