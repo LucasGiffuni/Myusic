@@ -134,7 +134,16 @@ export default class Database {
 
         const request = this.poolconnection.request();
 
-        const result = await request.query(`SELECT * FROM Cancion`)
+        const result = await request.query(`SELECT * FROM Cancion`);
+        return result.recordset;
+    }
+
+    async getSongReproductions(){
+        await this.connect();
+
+        const request = this.poolconnection.request();
+
+        const result = await request.query(`SELECT * FROM Cancion ORDER BY vecesReproducidas DESC`);
 
         return result.recordset;
     }
