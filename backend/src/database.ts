@@ -148,4 +148,22 @@ export default class Database {
         return result.recordset;
     }
 
+    async editSong(data:{songId:number,title:string, gender:string, date:Date, author:string, referenceLink:string}){
+        await this.connect();
+
+        const request = this.poolconnection.request();
+
+        request.input('songId', sql.Int(), data.songId);
+        request.input('title', sql.NVarChar(255), data.title);
+        request.input('gender', sql.NVarChar(255), data.gender);
+        request.input('date', sql.Date(), data.date);
+        request.input('author', sql.NVarChar(255), data.author);
+        request.input('referenceLink', sql.NVarChar(255), data.referenceLink);
+
+        const result = await request.query(`UPDATE Cancion SET Titulo = @title, Genero = @gender, 
+        FechaLanzamiento = @Date, LinkReferencia = @referenceLink WHERE idCancion = @songId`);
+
+        return result.recordset;
+    }    
+
 }

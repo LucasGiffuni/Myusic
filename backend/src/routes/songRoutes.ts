@@ -11,5 +11,8 @@ router.get('/getSongReproductions',(req,res) => {
     controller.getSongReproductions(req,res);
 })
 
+router.put('/editSong',(req,res)=>{
+    controller.editSong(req,res);
+})
 
 export default router;

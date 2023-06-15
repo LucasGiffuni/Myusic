@@ -14,7 +14,7 @@ const getAllSongs = async (req: Request, res: Response) => {
         const result = await database.getAllSongs();
         const response:IResponse<any[]> = {
             Result:{
-                statuscode: "",
+                statuscode:"",
                 statustext:""
             },
             data:result
@@ -62,5 +62,47 @@ const getSongReproductions = async (req: Request, res: Response) => {
     }
 }
 
+const editSong = async (req:Request, res: Response) => {
+    const songId = req.body.songId
+    const title = req.body.title;
+    const gender = req.body.gender;
+    const referenceLink = req.body.referenceLink;
+    const author = req.body.auth;
+    const date = req.body.date;
+    //if para validar los datos que me llegan
+    try {
+        const data = {
+            songId,
+            title,
+            gender,
+            date,
+            author,
+            referenceLink
+        }
+        const result = await database.editSong(data);
+        const response:IResponse<any[]> = {
+            Result:{
+                statuscode:"",
+                statustext:""
+            },
+            data:result
+        }
+        if (result.length > 0){
+            response.Result.statuscode = "200";
+            response.Result.statustext = "OK";
+            res.status(200);
+            res.json(response);
+        }else{
+            response.Result.statuscode = "404";
+            response.Result.statustext = "Not found";
+            res.status(404);
+            res.json(response);
+        }
 
-export default {getAllSongs, getSongReproductions};
+    } catch (err) {
+        res.status(500).json({ error: err?.message });
+    }
+}
+
+
+export default {getAllSongs, getSongReproductions, editSong};
