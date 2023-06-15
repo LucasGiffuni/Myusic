@@ -46,8 +46,8 @@ export default class Database {
         const result = await request
             .input('id', sql.Int, +id)
             .query(`
-            Select Usuario.username, Album.titulo, Cancion.titulo, Cancion.autor, Cancion.genero from Cancion 
-            JOIN CancionAlbum on (CancionAlbum.idCancion = Cancion.idCancion) 
+            Select Usuario.username, Album.titulo, Cancion.titulo, Cancion.autor, Cancion.genero from Cancion
+            JOIN CancionAlbum on (CancionAlbum.idCancion = Cancion.idCancion)
             JOIN Album on (Album.idAlbum = CancionAlbum.idAlbum)
             join Usuario on (Album.idUsuario = Usuario.idUsuario)
             where Usuario.idUsuario = @id
@@ -65,6 +65,21 @@ export default class Database {
 
         const result = await request.query(
             `INSERT INTO Usuario (username, password) VALUES (@username, @password)`
+        );
+
+        return result.rowsAffected[0];
+    }
+
+	async updateUser(userId: number, data: { username: string; password: string; }) {
+        await this.connect();
+
+        const request = this.poolconnection.request();
+		request.input('userId', sql.Int, userId);
+        request.input('username', sql.NVarChar(255), data.username);
+        request.input('password', sql.NVarChar(255), data.password);
+
+        const result = await request.query(
+            `UPDATE Usuario SET username = @username, password = @password WHERE IdUsuario = @userId`
         );
 
         return result.rowsAffected[0];
@@ -92,7 +107,7 @@ export default class Database {
                 idCancion,
                 fechaAgregado,
                 vecesReproducido
-                ) 
+                )
                 values(
                 @idAlbum,
                 @idCancion,
@@ -120,7 +135,7 @@ export default class Database {
 
         const request = this.poolconnection.request();
 
-        
+
         request.input('username', sql.NVarChar(255), data.username);
         request.input('password', sql.NVarChar(255), data.password);
 
