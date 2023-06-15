@@ -1,0 +1,14 @@
+<div class="profile-container">
+  <div class="profile-picture">
+    <img src="user-profile-picture.jpg" alt="User Profile Picture">
+  </div>
+  <div class="username-bar">
+    <span>{{ currentUser.username }}</span>
+    <button (click)="changeUsername()">Change Username</button>
+  </div>
+  <div class="password-bar">
+    <span>{{ currentUser.password }}</span>
+    <button (click)="changePassword()">Change Password</button>
+  </div>
+</div>
+
