@@ -117,24 +117,19 @@ const addSongToAlbum = async (req: Request, res: Response) => {
 
 const updateUser = async (req: Request, res: Response) => {
 	try {
-		const userId = req.body.idUsuario;
+		const userId = parseInt(req.body.idUsuario);
 		const password = req.body.password;
 		const username = req.body.username;
 		if (userId) {
-			if (password || username) {
-				const data: { password?: string, username?: string } = {};
-				if (password) {
-					data.password = password;
-				}
-				if (username) {
-					data.username = username;
-				}
-				const result = await database.updateUser(userId, data);
-				res.send('User updated successfully');
+			const data: { username: string, password: string } = { username, password};
+			if (password) {
+				data.password = password;
 			}
-			else {
-				res.status(400).send('Please provide at least one value to update');
-		  	}
+			if (username) {
+				data.username = username;
+			}
+			const result = await database.updateUser(userId, data);
+			res.send('User updated successfully');
 		}
 		else {
 			res.status(400).send('Invalid user ID');
