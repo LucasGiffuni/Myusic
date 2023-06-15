@@ -6,6 +6,7 @@ import fs from "fs";
 import cors from 'cors';
 import userRoutes from "./routes/userRoutes";
 import loginRoutes from './routes/loginRoutes'
+import albumRoutes from "./routes/albumRoutes";
 
 
 const app = express();
@@ -38,6 +39,7 @@ app.use((req, res, next) => {
 
 });
 app.use('/user', userRoutes);
+app.use('/album', albumRoutes);
 
 app.use((req, res, next) => {
 	res.header('Access-Control-Allow-Origin', '*');
