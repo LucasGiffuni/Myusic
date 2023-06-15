@@ -3,9 +3,13 @@ import { CommonModule } from '@angular/common';
 import { Services } from '../../services/services.service';
 import { HomeComponent } from '../home.component';
 import { AlertInterface } from '../../interfaces/IAlert';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
+  host: {
+    class: 'login-component'
+  },
   standalone: true,
   imports: [CommonModule],
   template: `
@@ -14,8 +18,8 @@ import { AlertInterface } from '../../interfaces/IAlert';
     <h1 id="login-component-title"> Login </h1>
     <form id="login-component-form">
 
-      <div class="login-component-formInputBody">
-        <input type="text" class="login-component-formInput" placeholder="Username" (focusout)="onFocusOutUsername($event)">
+        <div class="login-component-formInputBody">
+          <input type="text" class="login-component-formInput" placeholder="Username" (focusout)="onFocusOutUsername($event)">
       </div>
       <div class="login-component-formInputBody">
         <input type="password" class="login-component-formInput" placeholder="Password" (focusout)="onFocusOutPassword($event)">
@@ -28,7 +32,8 @@ import { AlertInterface } from '../../interfaces/IAlert';
 
         <div id="login-component-signUpBody">
           <p> Not a User?
-            <a routerLink="/register">Sign Up</a>
+          <button class="link" (click)="clickButton('/register')">Sign In</button>
+
           </p>
         </div>
     </form>
@@ -48,9 +53,12 @@ export class LoginComponent {
 
   userService: Services = inject(Services);
 
-  constructor(private viewContainerRef: ViewContainerRef) {
+  constructor(private viewContainerRef: ViewContainerRef, private router: Router) {
     this.alert = {} as AlertInterface;
 
+  }
+  clickButton(path: string) {
+    this.router.navigate([path]);
   }
 
   onFocusOutUsername(event: any) {
@@ -59,6 +67,7 @@ export class LoginComponent {
   onFocusOutPassword(event: any) {
     this.password = event.target.value
   }
+
 
   login() {
 
@@ -80,6 +89,7 @@ export class LoginComponent {
           this.alert.type = "success";
           this.alert.style = '#0d6832';
 
+          this.clickButton('/home')
 
           this._parent.addAlert(this.alert);
         }

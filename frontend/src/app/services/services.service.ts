@@ -12,7 +12,7 @@ export class Services {
   constructor() { }
 
 
-  async createUser(username: string, password: string) {
+  async register(username: string, password: string) {
     const body = {
       username: username,
       password: password

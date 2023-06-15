@@ -37,9 +37,7 @@ const createUser = async (req: Request, res: Response) => {
                     username: username,
                     password: password
                 }
-                console.log(`User Data: ${JSON.stringify(data)}`);
                 const result = database.createUser(data);
-                console.log(`Result: ${JSON.stringify(result)}`);
                 res.status(200).json("User " + data.username + " created!");
 
             } catch (err) {

@@ -3,23 +3,25 @@ import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 
 import { LibraryComponent } from "./library/library.component";
-import { SidebarComponent } from "./sidebar/sidebar.component";
 import { LoginComponent } from "./login/login.component";
 import { AlertComponent } from "../alert/alert.component";
 import { AlertInterface } from '../interfaces/IAlert';
 
 @Component({
   selector: 'app-home',
+  imports: [CommonModule, RouterOutlet, LibraryComponent, LoginComponent, AlertComponent],
   standalone: true,
   template: `
    <div id="home-component">
-      <router-outlet></router-outlet>
+    <div id="login-component">
+        <router-outlet ></router-outlet>
+
+    </div>
 
       <app-alert  [alert]="alert" />
    </div>
   `,
-  styleUrls: ['./home.component.css'],
-  imports: [CommonModule, RouterOutlet, LibraryComponent, SidebarComponent, LoginComponent, AlertComponent]
+  styleUrls: ['./home.component.css']
 })
 export class HomeComponent {
 
@@ -29,7 +31,6 @@ export class HomeComponent {
 
   constructor() {
     this.alerts = [] as AlertInterface[];
-    setInterval(this.myFunction, 5000);
 
   }
 
@@ -43,7 +44,7 @@ export class HomeComponent {
   }
 
   myFunction() {
-
+    this.alerts.pop()
     console.log(this.alert.id);
   }
 
