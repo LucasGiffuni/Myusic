@@ -70,6 +70,21 @@ export default class Database {
         return result.rowsAffected[0];
     }
 
+	async updateUser(userId: number, data: { username: string; password: string; }) {
+        await this.connect();
+
+        const request = this.poolconnection.request();
+		request.input('userId', sql.Int, userId);
+        request.input('username', sql.NVarChar(255), data.username);
+        request.input('password', sql.NVarChar(255), data.password);
+
+        const result = await request.query(
+            `UPDATE Usuario SET username = @username, password = @password WHERE IdUsuario = @userId`
+        );
+
+        return result.rowsAffected[0];
+    }
+
     async addSongToAlbum(data: { songID: any; albumID: any; }) {
         await this.connect();
         const request = this.poolconnection.request();
@@ -110,7 +125,7 @@ export default class Database {
         const request = this.poolconnection.request();
         const result = await request
             .input('id', sql.Int, +id)
-            .query(`SELECT * FROM Usuario WHERE idUsuario = @id`);
+            .query(`SELECT * FROM Usuario WHERE idUsuario = 24`);
 
         return result.recordset[0];
     }
@@ -126,7 +141,7 @@ export default class Database {
 
         const result = await request.query(`SELECT * FROM Usuario WHERE username = @username AND password = @password`);
 
-        return result.recordset[0];
+        return result.recordset;
     }
 
     async getAllSongs(){

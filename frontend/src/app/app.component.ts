@@ -7,12 +7,13 @@ import { HomeComponent } from "./home/home.component";
   selector: 'app-root',
   standalone: true,
   template: `
-  
+
     <app-home id="home-component"/>
   `,
   styleUrls: ['./app.component.css'],
-  imports: [CommonModule, RouterOutlet, HomeComponent]
+  imports: [CommonModule, HomeComponent]
 })
 export class AppComponent {
   title = 'MyMusic';
+
 }
