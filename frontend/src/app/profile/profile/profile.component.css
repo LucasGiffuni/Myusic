@@ -1,0 +1,27 @@
+.profile-container {
+    text-align: center;
+  }
+
+  .profile-picture {
+    margin-bottom: 20px;
+    border-radius: 50%;
+    overflow: hidden;
+    width: 150px;
+    height: 150px;
+  }
+
+  .profile-picture img {
+    width: 100%;
+    height: auto;
+  }
+
+  .username-bar, .password-bar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+
+  .username-bar button, .password-bar button {
+    margin-left: 10px;
+  }
