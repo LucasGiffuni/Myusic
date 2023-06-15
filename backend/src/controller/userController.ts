@@ -163,4 +163,4 @@ const updateUser = async (req: Request, res: Response) => {
 	}
 };
 
-export default { getUser, getUserPlaylists, createUser, addSongToAlbum, validateUser };
+export default { getUser, getUserPlaylists, createUser, addSongToAlbum, validateUser, updateUser };
