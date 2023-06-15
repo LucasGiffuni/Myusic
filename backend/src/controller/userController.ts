@@ -37,9 +37,7 @@ const createUser = async (req: Request, res: Response) => {
                     username: username,
                     password: password
                 }
-                console.log(`User Data: ${JSON.stringify(data)}`);
                 const result = database.createUser(data);
-                console.log(`Result: ${JSON.stringify(result)}`);
                 res.status(200).json("User " + data.username + " created!");
 
             } catch (err) {
@@ -55,25 +53,50 @@ const validateUser = async (req: Request, res: Response) => {
     const username = req.body.username;
     const password = req.body.password;
 
+    const data = {
+        username: username,
+        password: password
+    }
+    const response = {
+        resultado: {
+            statusCode: "",
+            statusText: ""
+        },
+        user: {
+            idUsuario: "",
+            username: ""
+        }
+    }
     if (username && password) {
-
-
         try {
-            const data = {
-                username: username,
-                password: password
-            }
             console.log(`User Data: ${JSON.stringify(data)}`);
             const result = await database.obtenerUsuariosPorUsername(data);
             console.log(`Result: ${JSON.stringify(result)}`);
-            res.status(200).json(result);
+            if (JSON.stringify(result) === undefined) {
+                response.resultado.statusCode = "404";
+                response.resultado.statusText = "User Not Found";
 
+                response.user.idUsuario = result.idUsuario;
+                response.user.username = result.username
+                res.status(200).json(response);
+            } else {
+                response.resultado.statusCode = "200";
+                response.resultado.statusText = "OK";
+
+                response.user.idUsuario = result.idUsuario;
+                response.user.username = result.username
+                res.status(200).json(response);
+            }
+       
         } catch (err) {
             res.status(500).json({ error: err?.message });
         }
-
     } else {
-        res.status(404).json({ error: "User or Password could not be null" });
+        response.resultado.statusCode = "404";
+        response.resultado.statusText = "User Not Found";
+
+
+        res.status(404).json(response);
     }
 };
 
