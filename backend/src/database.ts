@@ -125,7 +125,7 @@ export default class Database {
         const request = this.poolconnection.request();
         const result = await request
             .input('id', sql.Int, +id)
-            .query(`SELECT * FROM Usuario WHERE idUsuario = @id`);
+            .query(`SELECT * FROM Usuario WHERE idUsuario = 24`);
 
         return result.recordset[0];
     }
@@ -141,7 +141,7 @@ export default class Database {
 
         const result = await request.query(`SELECT * FROM Usuario WHERE username = @username AND password = @password`);
 
-        return result.recordset[0];
+        return result.recordset;
     }
 
 
