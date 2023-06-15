@@ -9,20 +9,20 @@ const encrypt = new passEcrypt()
 
 const getUser = async (req: Request, res: Response) => {
 
-    try {
-        // Get the person with the specified ID
-        const personId = req.params.userId;
-        console.log(`personId: ${personId}`);
-        if (personId) {
-            const result = await database.read(personId);
-            console.log(`persons: ${JSON.stringify(result)}`);
-            res.status(200).json(result);
-        } else {
-            res.status(404);
-        }
-    } catch (err) {
-        res.status(500).json({ error: err?.message });
-    }
+	try {
+		// Get the person with the specified ID
+		const personId = req.params.userId;
+		console.log(`personId: ${personId}`);
+		if (personId) {
+			const result = await database.read(personId);
+			console.log(`persons: ${JSON.stringify(result)}`);
+			res.status(200).json(result);
+		} else {
+			res.status(404);
+		}
+	} catch (err) {
+		res.status(500).json({ error: err?.message });
+	}
 };
 
 
@@ -40,18 +40,18 @@ const createUser = async (req: Request, res: Response) => {
                 const result = database.createUser(data);
                 res.status(200).json("User " + data.username + " created!");
 
-            } catch (err) {
-                res.status(500).json({ error: err?.message });
-            }
-        });
-    } else {
-        res.status(404).json({ error: "User or Password could not be null" });
-    }
+			} catch (err) {
+				res.status(500).json({ error: err?.message });
+			}
+		});
+	} else {
+		res.status(404).json({ error: "User or Password could not be null" });
+	}
 };
 
 const validateUser = async (req: Request, res: Response) => {
-    const username = req.body.username;
-    const password = req.body.password;
+	const username = req.body.username;
+	const password = req.body.password;
 
     const data = {
         username: username,
@@ -87,7 +87,7 @@ const validateUser = async (req: Request, res: Response) => {
                 response.user.username = result.username
                 res.status(200).json(response);
             }
-       
+
         } catch (err) {
             res.status(500).json({ error: err?.message });
         }
@@ -102,43 +102,65 @@ const validateUser = async (req: Request, res: Response) => {
 
 
 const getUserPlaylists = async (req: Request, res: Response) => {
-    try {
-        const personId = req.params.idUsuario;
-        console.log(`personId: ${personId}`);
+	try {
+		const personId = req.params.idUsuario;
+		console.log(`personId: ${personId}`);
 
-        if (personId) {
-            const result = await database.getUserPlaylists(personId);
-            console.log(`persons: ${JSON.stringify(result)}`);
-            res.status(200).json(result);
-        } else {
-            res.status(404);
-        }
-    } catch (err) {
-        res.status(500).json({ error: err?.message });
-    }
+		if (personId) {
+			const result = await database.getUserPlaylists(personId);
+			console.log(`persons: ${JSON.stringify(result)}`);
+			res.status(200).json(result);
+		} else {
+			res.status(404);
+		}
+	} catch (err) {
+		res.status(500).json({ error: err?.message });
+	}
 };
 
 
 const addSongToAlbum = async (req: Request, res: Response) => {
-    try {
-        const songID = req.body.idCancion;
-        const albumID = req.body.idAlbum;
-        if (songID && albumID) {
-            const data = {
-                songID: songID,
-                albumID: albumID
-            }
-            const result = await database.addSongToAlbum(data);
-            res.status(200).json("La cancion " + data.songID + " fue agregada correctamente al album " + data.albumID);
-        } else {
-            res.status(404).json({ error: "idCancion or idAlbum could not be null" });
-        }
-    } catch (err) {
-        res.status(500).json({ error: err?.message });
-    }
+	try {
+		const songID = req.body.idCancion;
+		const albumID = req.body.idAlbum;
+		if (songID && albumID) {
+			const data = {
+				songID,
+				albumID
+			}
+			const result = await database.addSongToAlbum(data);
+			res.status(200).json("La cancion " + data.songID + " fue agregada correctamente al album " + data.albumID);
+		} else {
+			res.status(404).json({ error: "idCancion or idAlbum could not be null" });
+		}
+	} catch (err) {
+		res.status(500).json({ error: err?.message });
+	}
 };
 
+const updateUser = async (req: Request, res: Response) => {
+	try {
+		const userId = parseInt(req.body.idUsuario);
+		const password = req.body.password;
+		const username = req.body.username;
+		if (userId) {
+			const data: { username: string, password: string } = { username, password};
+			if (password) {
+				data.password = password;
+			}
+			if (username) {
+				data.username = username;
+			}
+			const result = await database.updateUser(userId, data);
+			res.send('User updated successfully');
+		}
+		else {
+			res.status(400).send('Invalid user ID');
+		}
+	}
+	catch (error) {
+		res.status(500).send('Error updating user');
+	}
+};
 
-
-
-export default { getUser, getUserPlaylists, createUser, addSongToAlbum, validateUser };
+export default { getUser, getUserPlaylists, createUser, addSongToAlbum, validateUser, updateUser };
