@@ -92,7 +92,7 @@ export class LoginComponent {
           this.alert.type = "success";
           this.alert.style = '#0d6832';
 
-          this.clickButton('/home')
+          this.clickButton('/homePage')
 
           this._parent.addAlert(this.alert);
         }
