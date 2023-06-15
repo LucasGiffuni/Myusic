@@ -1,17 +1,22 @@
 import { NextFunction, Request, Response } from 'express';
 import Database from '../database';
-
 import passEcrypt from '../config/passEncrypt';
-
 const database = new Database();
 const encrypt = new passEcrypt()
+import cookieParser from 'cookie-parser';
+import jwt from 'jsonwebtoken';
+import fs from "fs";
 
+
+const RSA_PRIVATE_KEY = fs.readFileSync('private.key');
+
+// writeFile function with filename, content and callback function
 
 const getUser = async (req: Request, res: Response) => {
 
 	try {
 		// Get the person with the specified ID
-		const personId = req.params.userId;
+		const personId = req.body.userId;
 		console.log(`personId: ${personId}`);
 		if (personId) {
 			const result = await database.read(personId);
@@ -45,7 +50,7 @@ const createUser = async (req: Request, res: Response) => {
 		}
 	}
 	if (username && password) {
-		try {	
+		try {
 			const result = database.createUser(data);
 
 			response.resultado.statusCode = "200";
@@ -68,6 +73,8 @@ const createUser = async (req: Request, res: Response) => {
 	}
 };
 
+
+
 const validateUser = async (req: Request, res: Response) => {
 	const username = req.body.username;
 	const password = req.body.password;
@@ -83,7 +90,8 @@ const validateUser = async (req: Request, res: Response) => {
 		},
 		user: {
 			idUsuario: "",
-			username: ""
+			username: "",
+			token: ""
 		}
 	}
 	if (username && password) {
@@ -96,14 +104,23 @@ const validateUser = async (req: Request, res: Response) => {
 				response.resultado.statusCode = "404";
 				response.resultado.statusText = "User Not Found";
 
-				
+
 				res.status(200).json(response);
 			} else {
+
+
 				response.resultado.statusCode = "200";
 				response.resultado.statusText = "OK";
 
 				response.user.idUsuario = result[0].idUsuario;
 				response.user.username = result[0].username
+				const idUser: string = result[0].idUsuario.toString();
+				console.log("user " + idUser.toString())
+				const jwt = generateJWT(idUser);
+				response.user.token = jwt;
+
+				res.cookie("SESSIONID", jwt, { httpOnly: false, secure: false });
+
 				res.status(200).json(response);
 			}
 
@@ -118,6 +135,18 @@ const validateUser = async (req: Request, res: Response) => {
 		res.status(404).json(response);
 	}
 };
+
+
+const generateJWT = (userId: string) => {
+	const jwtBearerToken = jwt.sign({}, RSA_PRIVATE_KEY, {
+		algorithm: 'RS256',
+		expiresIn: 1800,
+		subject: userId
+	})
+
+	return jwtBearerToken;
+}
+
 
 
 const getUserPlaylists = async (req: Request, res: Response) => {
