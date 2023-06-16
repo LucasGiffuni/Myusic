@@ -1,6 +1,7 @@
 import { Component, ViewContainerRef, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Services } from '../../services/services.service';
+import { HomeComponent } from '../home.component';
 import { AlertInterface } from '../../interfaces/IAlert';
 import { Router } from '@angular/router';
 
@@ -48,6 +49,7 @@ export class LoginComponent {
 
   alert: AlertInterface
   _injector = this.viewContainerRef.parentInjector;
+  _parent: HomeComponent = this._injector.get<HomeComponent>(HomeComponent);
 
   userService: Services = inject(Services);
 
@@ -83,7 +85,7 @@ export class LoginComponent {
           this.alert.style = '#af233a';
 
 
-          // this._parent.addAlert(this.alert);
+          this._parent.addAlert(this.alert);
         } else if (response.resultado.statusCode == "200") {
           this.alert.id = 0;
           this.alert.text = "Bienvenido " + response.user.username;
@@ -92,7 +94,7 @@ export class LoginComponent {
 
           this.clickButton('/homePage')
 
-          // this._parent.addAlert(this.alert);
+          this._parent.addAlert(this.alert);
         }
       });
     } else {
@@ -101,7 +103,7 @@ export class LoginComponent {
       this.alert.type = "error";
       this.alert.style = '#af233a';
 
-      // this._parent.addAlert(this.alert);
+      this._parent.addAlert(this.alert);
     }
 
   }
