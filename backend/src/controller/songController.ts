@@ -80,24 +80,24 @@ const editSong = async (req:Request, res: Response) => {
             referenceLink
         }
         const result = await database.editSong(data);
-        const response:IResponse<any[]> = {
-            Result:{
-                statuscode:"",
-                statustext:""
-            },
-            data:result
-        }
-        if (result.length > 0){
-            response.Result.statuscode = "200";
-            response.Result.statustext = "OK";
-            res.status(200);
-            res.json(response);
-        }else{
-            response.Result.statuscode = "404";
-            response.Result.statustext = "Not found";
-            res.status(404);
-            res.json(response);
-        }
+        // const response:IResponse<any[]> = {
+        //     Result:{
+        //         statuscode:"",
+        //         statustext:""
+        //     },
+        //     data:result
+        // }
+        // if (result.length > 0){
+        //     response.Result.statuscode = "200";
+        //     response.Result.statustext = "OK";
+        //     res.status(200);
+        //     res.json(response);
+        // }else{
+        //     response.Result.statuscode = "404";
+        //     response.Result.statustext = "Not found";
+        //     res.status(404);
+        //     res.json(response);
+        // }
 
     } catch (err) {
         res.status(500).json({ error: err?.message });
