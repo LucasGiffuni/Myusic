@@ -1,5 +1,6 @@
 import bcrypt from "bcryptjs";
 import { config } from '../config/config';
+import CryptoJS from "crypto-js";
 
 
 export default class passEcrypt {
@@ -10,12 +11,12 @@ export default class passEcrypt {
 
 
     async encrypt(pass: string) {
-        return await bcrypt.hash(pass, this.rounds);
+        return CryptoJS.AES.encrypt(pass, this.Secret).toString();
     }
 
 
-    async decrypt(pass: string, hash: string) {
-        return bcrypt.compare(pass, hash);
+    async decrypt(hash: string) {
+        return CryptoJS.AES.decrypt(hash, this.Secret).toString(CryptoJS.enc.Utf8);
     }
 
 }
