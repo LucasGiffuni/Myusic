@@ -7,14 +7,11 @@ import { Injectable } from '@angular/core';
 export class Services {
 
   url = 'http://localhost:3000';
-
-
   actualToken = "";
 
   constructor() { }
 
 
-  async createUser(username: string, password: string) {
   async register(username: string, password: string) {
     const body = {
       username: username,
@@ -29,7 +26,6 @@ export class Services {
       }
     })).json());
   }
-
 
   async updateUser(userId: number, username: string, password: string) {
     const body = {
@@ -55,7 +51,6 @@ export class Services {
       username: username,
       password: password
     }
-
     return (await (await fetch(`${this.url}/login/validateUser`, {
       method: 'POST',
       body: JSON.stringify(body),
