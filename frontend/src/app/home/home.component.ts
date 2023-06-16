@@ -13,10 +13,8 @@ import { AlertInterface } from '../interfaces/IAlert';
   template: `
    <div id="home-component">
     <div id="login-component">
-        <router-outlet ></router-outlet>
-
+        <router-outlet></router-outlet>
     </div>
-
       <app-alert  [alert]="alert" />
    </div>
   `,

@@ -8,8 +8,10 @@ import { AlbumComponent } from './album/album.component';
   imports: [CommonModule, AlbumComponent],
   template: `
     <div id="library-component">
-      <h1 id="library-component-album-title">Tus Albums</h1>
+      <h1 id="library-component-album-title">Add album</h1>
       <div id="library-component-album-list">
+        <app-album id="album-component"></app-album>
+        <app-album id="album-component"></app-album>
         <app-album id="album-component"></app-album>
         <app-album id="album-component"></app-album>
         <app-album id="album-component"></app-album>
