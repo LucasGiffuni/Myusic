@@ -5,32 +5,34 @@
   display: flex;
   justify-content: center;
   align-items: center;
-
 }
 
-#home-component-footer {
-  border-top: 1px solid black;
-  position: absolute;
-  bottom: 0;
-  width: 100%;
+#home-component-header {
+  overflow: hidden;
+  background-color: #333;
+  position: fixed; /* Set the navbar to fixed position */
+  top: 0; /* Position the navbar at the top of the page */
+  width: 100%; /* Full width */
   height: 5%;
-  background-color: #2a2438;
 }
 
-#home-component-sidebar {
-  float: left;
-
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
+#home-button {
+  position: fixed; /* Set the navbar to fixed position */
+  top: 0; /* Position the navbar at the top of the page */
+  left: 0;
 }
 
+#home-button:hover {
+  opacity: 0.6;
+  cursor: pointer;
+}
 
-  
-
-#login-component {
-
-  width: 25%;
-  height: 50%;
+#user-button {
+  position: fixed; /* Set the navbar to fixed position */
+  top: 0; /* Position the navbar at the top of the page */
+  right: 0;
+}
+#user-button:hover {
+  opacity: 0.6;
+  cursor: pointer;
 }
