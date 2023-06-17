@@ -163,6 +163,40 @@ export default class Database {
 
     return result.recordset;
   }
+  
+  //function to create a new album in de Data Base
+  async createSong(data: { title: any; gender: any;date: any;author: any; referenceLink: any }) {
+    await this.connect();
+    let dateSong = new Date("now");
+    const request = this.poolconnection.request();
+    request.input("titulo", sql.NVarChar(255), data.title);
+    request.input("genero", sql.NVarChar(255), data.gender);
+    request.input("fecha", sql.NVarChar(255), data.date);
+    request.input("fechaCreacion", sql.Date, dateSong);
+    request.input("autor", sql.NVarChar(255), data.author);
+    request.input("link", sql.NVarChar(255), data.referenceLink);
+
+    const result = await request.query(
+      `INSERT INTO Songs(
+                titulo,
+                genero,
+                fecha,
+                fechaCreacion,
+                autor,
+                link
+                ) 
+                values(
+                @titulo,
+                @genero,
+                @fecha,
+                @fechaCreacion,
+                @autor,
+                @link
+                )
+            )`
+    );
+    return result.rowsAffected[0];
+  }
 
   async editSong(data: {
     songId: any;
@@ -248,3 +282,4 @@ export default class Database {
     return result.rowsAffected[0];
   }
 }
+
