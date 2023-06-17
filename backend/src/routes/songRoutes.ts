@@ -15,4 +15,8 @@ router.put('/editSong',(req,res)=>{
     controller.editSong(req,res);
 })
 
+router.post('/createSong',(req,res)=>{
+    controller.createSong(req,res);
+})
+
 export default router;

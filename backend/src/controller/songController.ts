@@ -104,5 +104,44 @@ const editSong = async (req:Request, res: Response) => {
     }
 }
 
+const createSong = async (req:Request, res: Response)=> {
+    const title = req.body.title;
+    const gender = req.body.gender;
+    const referenceLink = req.body.referenceLink;
+    const author = req.body.auth;
+    const date = req.body.date;
+    
+    try {
+        const data = {
+            title,
+            gender,
+            date,
+            author,
+            referenceLink
+        }
+        const result = await database.createSong(data);
+        const response:IResponse<any[]> = {
+            Result:{
+                statuscode:"",
+                statustext:""
+            },
+            data:result
+        }
+        if (result.length > 0){
+            response.Result.statuscode = "200";
+            response.Result.statustext = "OK";
+            res.status(200);
+            res.json(response);
+        }else{
+            response.Result.statuscode = "404";
+            response.Result.statustext = "Not found";
+            res.status(404);
+            res.json(response);
+        }
+    } catch (err) {
+        res.status(500).json({ error: err?.message });
+    }
+}
 
-export default {getAllSongs, getSongReproductions, editSong};
+
+export default {getAllSongs, getSongReproductions, editSong, createSong};
