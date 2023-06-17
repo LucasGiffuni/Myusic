@@ -12,7 +12,12 @@ import { AlertInterface } from '../interfaces/IAlert';
   standalone: true,
   template: `
     <div id="home-component">
+      <div id="home-component-header">
+     <i id="home-button" class="material-icons w3-xxlarge">home</i>
+     <i id="user-button"class="material-icons w3-xxlarge">person</i>
+      </div>
       <router-outlet></router-outlet>
+      <app-alert *ngFor="let alert of alerts" [alert]="alert"></app-alert>
     </div>
   `,
   styleUrls: ['./home.component.css'],
