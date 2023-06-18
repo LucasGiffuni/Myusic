@@ -4,11 +4,33 @@ import { UserInterface } from 'src/app/interfaces/IUser';
 
 @Component({
   selector: 'app-profile',
-  templateUrl: './profile.component.html',
+  
+  template: `
+  
+  <div class="container">
+  
+
+  <div class="profile">
+    <div class="form-group">
+      <h1>User Profile:</h1>
+      <label for="username">Username:</label>
+      <input type="text" id="username" value="{{currentUser.username}}" disabled>
+      <button (click)="changeUsername()" >Change</button>
+    </div>
+    <div class="form-group">
+      <label for="password">Password:</label>
+      <input type="password" id="password" value="{{currentUser.password}}" disabled>
+      <button (click)="changePassword()">Change</button>
+    </div>
+  </div>
+</div>
+  
+ `,
   styleUrls: ['./profile.component.css']
 })
 export class ProfileComponent {
   currentUser: UserInterface;
+  
 
   constructor(private userService: UserService) {
     this.currentUser = this.userService.getUser();
