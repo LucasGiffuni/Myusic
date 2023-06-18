@@ -184,7 +184,7 @@ export default class Database {
                 fechaCreacion,
                 autor,
                 link
-                ) 
+                )
                 values(
                 @titulo,
                 @genero,
@@ -210,7 +210,7 @@ export default class Database {
     request.input('author', sql.NVarChar(255), data.author);
     request.input('referenceLink', sql.NVarChar(255), data.referenceLink);
 
-    const result = await request.query(`UPDATE Cancion SET Titulo = @title, Genero = @gender, 
+    const result = await request.query(`UPDATE Cancion SET Titulo = @title, Genero = @gender,
     FechaLanzamiento = @Date, LinkReferencia = @referenceLink WHERE idCancion = @songId`);
 
     return result.recordset;
@@ -223,6 +223,20 @@ export default class Database {
 
     const result = await request.query(
       `SELECT * FROM Cancion ORDER BY vecesReproducidas DESC`
+    );
+
+    return result.recordset;
+  }
+
+  async increaseSongReproductions(timesReproduced: number) {
+    await this.connect();
+
+    const request = this.poolconnection.request();
+	request.input("timesReproduced", sql.Int, timesReproduced);
+
+    const result = await request.query(
+      `UPDATE Cancion
+	  SET vecesReproducidas=@timesReproduced`
     );
 
     return result.recordset;
@@ -244,7 +258,7 @@ export default class Database {
                 titulo,
                 descripcion,
                 fechaCreacion
-                ) 
+                )
                 values(
                 @idUsuario,
                 @titulo,
@@ -279,10 +293,10 @@ export default class Database {
     request.input("titulo", sql.NVarChar(255), data.albumTitle);
     request.input("descripcion", sql.NVarChar(255), data.description);
     const result = await request.query(
-      ` 
+      `
         UPDATE Albums
         SET idUsuario=@idUsuario, titulo=@titulo, descripcion=@descripcion
-        WHERE idAlbum=@idAlbum   
+        WHERE idAlbum=@idAlbum
         `
     );
     return result.rowsAffected[0];
