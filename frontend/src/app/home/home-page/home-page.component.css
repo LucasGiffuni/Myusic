@@ -1,10 +1,10 @@
-#library-component {
+.library-component {
   width: 100%;
   height: 30%;
   justify-content: center;
 }
 
-#library-component-album-list {
+.library-component-album-list {
   display: grid;
   align-content: flex-start;
   grid-template-columns: 50% 50% 50% 50%;
@@ -16,7 +16,7 @@
 
 }
 
-#album-component {
+.album-component {
   width: 92%;
   height: 65%;
   margin-right: 10px;
@@ -41,7 +41,7 @@
   display: none; /* Oculta la barra de desplazamiento en navegadores webkit como Chrome y Safari */
 }
 
-#library-component-album-list::-webkit-scrollbar {
+.library-component-album-list::-webkit-scrollbar {
   display: none; /* Oculta la barra de desplazamiento en navegadores webkit como Chrome y Safari */
 }
 
