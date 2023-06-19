@@ -7,7 +7,7 @@ import { Injectable } from '@angular/core';
 export class Services {
 
   url = 'http://localhost:3000';
-
+  actualToken = "";
 
   constructor() { }
 
@@ -17,7 +17,7 @@ export class Services {
       username: username,
       password: password
     }
-    return (await (await fetch(`${this.url}/user/createUser`, {
+    return (await (await fetch(`${this.url}/login/createUser`, {
       method: 'POST',
       body: JSON.stringify(body),
       headers: {
@@ -29,7 +29,7 @@ export class Services {
 
   async updateUser(userId: number, username: string, password: string) {
     const body = {
-	  userId: userId,
+      userId: userId,
       username: username,
       password: password
     }
@@ -38,6 +38,7 @@ export class Services {
       body: JSON.stringify(body),
       headers: {
         Accept: 'application/json',
+        'Authorization': 'Bearer ' + this.actualToken,
         'Content-Type': 'application/json',
       }
     })).json());
@@ -50,7 +51,7 @@ export class Services {
       username: username,
       password: password
     }
-    return (await (await fetch(`${this.url}/user/validateUser`, {
+    return (await (await fetch(`${this.url}/login/validateUser`, {
       method: 'POST',
       body: JSON.stringify(body),
       headers: {

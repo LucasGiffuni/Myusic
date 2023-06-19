@@ -73,7 +73,10 @@ export class LoginComponent {
 
     if (this.username && this.password) {
       this.userService.login(this.username, this.password).then((response) => {
-        console.log(response)
+
+
+        this.userService.actualToken = response.user.token;
+
 
         if (response.resultado.statusCode == "404") {
           this.alert.id = 0;
@@ -89,7 +92,7 @@ export class LoginComponent {
           this.alert.type = "success";
           this.alert.style = '#0d6832';
 
-          this.clickButton('/home')
+          this.clickButton('/songDetail')
 
           this._parent.addAlert(this.alert);
         }
