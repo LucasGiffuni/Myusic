@@ -34,7 +34,7 @@ import { SongComponent } from './song/song.component';
         <app-song class = "song-component"></app-song>
       </div>
     </div>
-    <div class = "library-component">
+    <div class = "library-component-latest">
       <h1 class = "library-component-title">The latest</h1>
       <div class = library-component-songLatest-list>
         <app-song class = "songLatest-component"></app-song>
