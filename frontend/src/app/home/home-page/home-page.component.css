@@ -1,10 +1,9 @@
-#library-component {
+.library-component {
   width: 100%;
   height: 30%;
-  justify-content: center;
 }
 
-#library-component-album-list {
+.library-component-album-list {
   display: grid;
   align-content: flex-start;
   grid-template-columns: 50% 50% 50% 50%;
@@ -16,7 +15,7 @@
 
 }
 
-#album-component {
+.album-component {
   width: 92%;
   height: 65%;
   margin-right: 10px;
@@ -28,6 +27,7 @@
   display: flex;
   margin-left: 1.5%;
   text-align: initial;
+  color: #c7b9b3;
 }
 
 .library-component-song-list{
@@ -41,10 +41,24 @@
   display: none; /* Oculta la barra de desplazamiento en navegadores webkit como Chrome y Safari */
 }
 
-#library-component-album-list::-webkit-scrollbar {
+.library-component-album-list::-webkit-scrollbar {
   display: none; /* Oculta la barra de desplazamiento en navegadores webkit como Chrome y Safari */
 }
 
 .song-component{
   margin-right: 5%;
+}
+
+.library-component-songLatest-list{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-direction: column;
+}
+
+.songLatest-component{
+  display: flex;
+  width: 50%;
+  margin-bottom: 5%;
 }
