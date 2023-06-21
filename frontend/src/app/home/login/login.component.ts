@@ -76,7 +76,7 @@ export class LoginComponent {
 
 
         this.userService.actualToken = response.user.token;
-
+        this.userService.userId = response.user.idUsuario;
 
         if (response.resultado.statusCode == "404") {
           this.alert.id = 0;

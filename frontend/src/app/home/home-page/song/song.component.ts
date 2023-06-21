@@ -16,8 +16,4 @@ import { CommonModule } from '@angular/common';
 })
 export class SongComponent {
   @Input() songLatest : any;
-
-  imprimir(){
-    console.log('latestsong: ' + this.songLatest);
-  }
 }
