@@ -5,6 +5,8 @@ import jwt from 'jsonwebtoken';
 import fs from "fs";
 import cors from 'cors';
 import userRoutes from "./routes/userRoutes";
+import albumsRoutes from "./routes/albumsRoutes";
+
 
 import songRoutes from "./routes/songRoutes";
 
@@ -61,6 +63,10 @@ app.use((req, res, next) => {
 app.use('/user', userRoutes);
 app.use('/song',songRoutes);
 
+
+app.use ('/albums',albumsRoutes);
+
+app.use ('/song',albumsRoutes);
 
 /** Error handling */
 app.use((req, res, next) => {

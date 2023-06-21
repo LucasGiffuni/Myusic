@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { LoginComponent } from './login/login.component';
+import { LoginComponent } from '../login/login.component';
 import { RouterOutlet } from '@angular/router';
+import { Router } from '@angular/router';
 
 import { AlertComponent } from '../alert/alert.component';
 import { AlertInterface } from '../interfaces/IAlert';
@@ -11,12 +12,12 @@ import { AlertInterface } from '../interfaces/IAlert';
   imports: [CommonModule, RouterOutlet, LoginComponent, AlertComponent],
   standalone: true,
   template: `
-   <div id="home-component">
-    <div id="login-component">
-        <router-outlet></router-outlet>
-    </div>
-      <app-alert  [alert]="alert" />
-   </div>
+      <div id="home-component-header">
+        <i id="home-button" class="material-icons w3-xxlarge" (click)="homeButton()">home</i>
+        <i id="user-button"class="material-icons w3-xxlarge" (click)="userButton()">person</i>
+      </div>
+      <router-outlet></router-outlet>
+      <app-alert *ngFor="let alert of alerts" [alert]="alert"></app-alert>
   `,
   styleUrls: ['./home.component.css'],
 })
@@ -25,7 +26,7 @@ export class HomeComponent {
 
   alert = {} as AlertInterface;
 
-  constructor() {
+  constructor(private router: Router) {
     this.alerts = [] as AlertInterface[];
   }
 
@@ -39,5 +40,16 @@ export class HomeComponent {
   myFunction() {
     this.alerts.pop();
     console.log(this.alert.id);
+  }
+
+  clickButton(path: string) {
+    this.router.navigate([path]);
+  }
+
+  userButton() {
+    this.clickButton('/profile')
+  }
+  homeButton() {
+    this.clickButton('/homePage')
   }
 }

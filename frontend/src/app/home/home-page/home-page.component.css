@@ -1,6 +1,7 @@
 .library-component {
   width: 100%;
   height: 30%;
+  margin-top: 12%;
 }
 
 .library-component-album-list {
@@ -69,5 +70,5 @@
 .library-component-latest{
   width: 100%;
   height: auto;
-  margin-top: 10%;
+  margin-top: 25%;
 }
