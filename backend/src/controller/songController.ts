@@ -65,8 +65,9 @@ const getSongReproductions = async (req: Request, res: Response) => {
 const increaseSongReproductions = async (req: Request, res: Response) => {
 	try {
 		const timesReproduced = await database.getSongReproductions();
+		const songId = req.body.songId
 		let i: number = 0;
-		const result = await database.increaseSongReproductions(parseInt(timesReproduced.toString())+1);
+		const result = await database.increaseSongReproductions(parseInt(timesReproduced.toString())+1, songId);
 		const response: IResponse<any[]> = {
 			Result: {
 				statuscode: "",

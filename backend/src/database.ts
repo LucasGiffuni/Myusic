@@ -228,15 +228,17 @@ export default class Database {
     return result.recordset;
   }
 
-  async increaseSongReproductions(timesReproduced: number) {
+  async increaseSongReproductions(timesReproduced: number, idCancion: number) {
     await this.connect();
 
     const request = this.poolconnection.request();
 	request.input("timesReproduced", sql.Int, timesReproduced);
+	request.input("idCancion", sql.Int, idCancion);
 
     const result = await request.query(
       `UPDATE Cancion
-	  SET vecesReproducidas=@timesReproduced`
+	  SET vecesReproducidas=@timesReproduced
+	  WHERE idCancion = @idCancion`
     );
 
     return result.recordset;
