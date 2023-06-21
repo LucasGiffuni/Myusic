@@ -1,12 +1,3 @@
-#home-component {
-  width: 100%;
-  height: 100%;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
 #home-component-header {
   overflow: hidden;
   background-color: #333;

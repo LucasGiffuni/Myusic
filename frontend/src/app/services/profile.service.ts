@@ -6,8 +6,9 @@ import { UserInterface } from '../interfaces/IUser';
 })
 export class UserService {
   private currentUser: UserInterface = {
+    id:0,
     username: '',
-    password: ''
+    password: '',
   };
 
   getUser(): UserInterface {

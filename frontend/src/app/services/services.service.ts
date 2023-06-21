@@ -8,6 +8,7 @@ export class Services {
 
   url = 'http://localhost:3000';
   actualToken = "";
+  userId! : number;
 
   constructor() { }
 
@@ -61,5 +62,14 @@ export class Services {
     })).json());
   }
 
+  async getAlbums(idUser:number){
+    return (await(await fetch(`${this.url}/getAlbums/:${idUser}`,{
+      method: 'GET',
+      headers:{
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      }
+    })).json());
+  }
 
 }
