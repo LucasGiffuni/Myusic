@@ -227,6 +227,18 @@ export default class Database {
 
     return result.recordset;
   }
+  
+  	async deleteSong(songId: number) {
+		  await this.connect();
+
+      const request = this.poolconnection.request();
+
+      request.input('songId', sql.Int(), songId);
+
+      const result = await request.query(`DELETE FROM Cancion WHERE idCancion = @songId`);
+
+      return result.recordset;
+	}
 
   //function to create a new album in de Data Base
   async createAlbum(data: { userId: any; albumTitle: any; description: any }) {
