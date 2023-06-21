@@ -45,7 +45,7 @@ import { SongComponent } from './song/song.component';
         <app-song class = "songLatest-component"></app-song>
         <app-song class = "songLatest-component"></app-song>
         <app-song class = "songLatest-component"></app-song>
-        <app-song class = "songLatest-component"></app-song>
+        <app-song [songLatest]="this.songLatestStyle" class = "songLatest-component"></app-song>
       </div>
     </div>
   `,
@@ -54,6 +54,26 @@ import { SongComponent } from './song/song.component';
 export class HomePageComponent implements AfterViewInit {
   @ViewChild('listAlbums', {static:false}) listAlbums! : ElementRef;
   
+  songLatestStyle = {
+    'song':{
+      'display': 'flex',
+      'align-items': 'center',
+      'background-color': '#D9D9D9',
+      'width': '100%',
+      'border-radius': '6%',
+      },
+    'img-song':{
+  
+      },
+    'title-song':{
+  
+      },
+    'bandAuthor-song':{
+  
+      },
+  
+  };
+ 
   ngAfterViewInit(){
     const albumList = this.listAlbums.nativeElement;
     const albums = albumList.querySelectorAll('.album-component');
@@ -66,4 +86,7 @@ export class HomePageComponent implements AfterViewInit {
       containerAlbum.style.gridTemplateColumns = `repeat(${numColumns}, 50%)`;
     }
   }
+
 }
+
+

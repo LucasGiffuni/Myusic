@@ -46,15 +46,18 @@
 }
 
 .song-component{
+  width: 100%;
+  height: 100%;
   margin-right: 5%;
 }
 
 .library-component-songLatest-list{
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: repeat(3,100%); 
+  grid-template-rows: 33%;
+  height: 100%;
+  overflow-x: auto;
+  scrollbar-width: none; /* Oculta la barra de desplazamiento en navegadores Firefox */
 }
 
 .songLatest-component{
@@ -65,6 +68,6 @@
 
 .library-component-latest{
   width: 100%;
-  height: 30%;
+  height: auto;
   margin-top: 10%;
 }
