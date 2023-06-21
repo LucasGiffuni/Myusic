@@ -200,4 +200,4 @@ const createSong = async (req: Request, res: Response) => {
     // }
 }
 
-export default { getAllSongs, getSongReproductions, increaseSongReproductions, editSong, createSong };
+export default { getAllSongs, getSongReproductions, increaseSongReproductions, editSong, createSong, deleteSong };
