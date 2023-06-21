@@ -184,7 +184,7 @@ export default class Database {
                 fechaCreacion,
                 autor,
                 link
-                ) 
+                )
                 values(
                 @titulo,
                 @genero,
@@ -210,7 +210,7 @@ export default class Database {
     request.input('author', sql.NVarChar(255), data.author);
     request.input('referenceLink', sql.NVarChar(255), data.referenceLink);
 
-    const result = await request.query(`UPDATE Cancion SET Titulo = @title, Genero = @gender, 
+    const result = await request.query(`UPDATE Cancion SET Titulo = @title, Genero = @gender,
     FechaLanzamiento = @Date, LinkReferencia = @referenceLink WHERE idCancion = @songId`);
 
     return result.recordset;
@@ -240,6 +240,22 @@ export default class Database {
       return result.recordset;
 	}
 
+  async increaseSongReproductions(timesReproduced: number, idCancion: number) {
+    await this.connect();
+
+    const request = this.poolconnection.request();
+	request.input("timesReproduced", sql.Int, timesReproduced);
+	request.input("idCancion", sql.Int, idCancion);
+
+    const result = await request.query(
+      `UPDATE Cancion
+	  SET vecesReproducidas=@timesReproduced
+	  WHERE idCancion = @idCancion`
+    );
+
+    return result.recordset;
+  }
+
   //function to create a new album in de Data Base
   async createAlbum(data: { userId: any; albumTitle: any; description: any }) {
     await this.connect();
@@ -256,7 +272,7 @@ export default class Database {
                 titulo,
                 descripcion,
                 fechaCreacion
-                ) 
+                )
                 values(
                 @idUsuario,
                 @titulo,
@@ -291,10 +307,10 @@ export default class Database {
     request.input("titulo", sql.NVarChar(255), data.albumTitle);
     request.input("descripcion", sql.NVarChar(255), data.description);
     const result = await request.query(
-      ` 
+      `
         UPDATE Albums
         SET idUsuario=@idUsuario, titulo=@titulo, descripcion=@descripcion
-        WHERE idAlbum=@idAlbum   
+        WHERE idAlbum=@idAlbum
         `
     );
     return result.rowsAffected[0];

@@ -62,6 +62,36 @@ const getSongReproductions = async (req: Request, res: Response) => {
     }
 }
 
+const increaseSongReproductions = async (req: Request, res: Response) => {
+	try {
+		const timesReproduced = await database.getSongReproductions();
+		const songId = req.body.songId
+		let i: number = 0;
+		const result = await database.increaseSongReproductions(parseInt(timesReproduced.toString())+1, songId);
+		const response: IResponse<any[]> = {
+			Result: {
+				statuscode: "",
+				statustext: ""
+			},
+			data: result
+		}
+		if (result.length > 0) {
+			response.Result.statuscode = "200";
+			response.Result.statustext = "OK";
+			res.json(response);
+			res.status(200);
+		} else {
+			response.Result.statuscode = "404";
+			response.Result.statustext = "Not found";
+			res.json(response);
+			res.status(404);
+		}
+	} catch (err) {
+		res.status(500).json({ error: err?.message });
+	}
+
+}
+
 const editSong = async (req: Request, res: Response) => {
     const songId = req.body.songId
     const title = req.body.title;
@@ -170,5 +200,4 @@ const createSong = async (req: Request, res: Response) => {
     // }
 }
 
-
-export default { getAllSongs, getSongReproductions, editSong, createSong, deleteSong };
+export default { getAllSongs, getSongReproductions, increaseSongReproductions, editSong, createSong };

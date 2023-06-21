@@ -11,6 +11,10 @@ router.get('/getSongReproductions',(req,res) => {
     controller.getSongReproductions(req,res);
 })
 
+router.post('/increaseSongReproductions', (req,res) => {
+    controller.increaseSongReproductions(req,res);
+})
+
 router.put('/editSong',(req,res)=>{
     controller.editSong(req,res);
 })
