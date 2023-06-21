@@ -227,6 +227,18 @@ export default class Database {
 
     return result.recordset;
   }
+  
+  	async deleteSong(songId: number) {
+		  await this.connect();
+
+      const request = this.poolconnection.request();
+
+      request.input('songId', sql.Int(), songId);
+
+      const result = await request.query(`DELETE FROM Cancion WHERE idCancion = @songId`);
+
+      return result.recordset;
+	}
 
   async increaseSongReproductions(timesReproduced: number, idCancion: number) {
     await this.connect();
