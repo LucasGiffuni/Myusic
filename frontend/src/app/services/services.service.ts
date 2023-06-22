@@ -63,10 +63,11 @@ export class Services {
   }
 
   async getAlbums(idUser:number){
-    return (await(await fetch(`${this.url}/getAlbums/:${idUser}`,{
+    return (await(await fetch(`${this.url}/albums/getAlbums/${idUser}`,{
       method: 'GET',
       headers:{
         Accept: 'application/json',
+        'Authorization': 'Bearer ' + this.actualToken,
         'Content-Type': 'application/json',
       }
     })).json());

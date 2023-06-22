@@ -5,10 +5,6 @@ const database = new Database();
 import jwt from 'jsonwebtoken';
 import fs from "fs";
 
-
-
-
-
 const addSongToAlbum = async (req: Request, res: Response) => {
     const songID = req.body.username;
     const albumID = req.body.password;

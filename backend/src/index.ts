@@ -14,6 +14,7 @@ import loginRoutes from './routes/loginRoutes'
 import albumRoutes from "./routes/albumRoutes";
 
 
+
 const app = express();
 const RSA_PRIVATE_KEY = fs.readFileSync('private.key');
 
@@ -44,6 +45,7 @@ app.use((req, res, next) => {
 });
 app.use('/user', userRoutes);
 app.use('/album', albumRoutes);
+app.use('/albums', albumsRoutes);
 
 app.use((req, res, next) => {
 	res.header('Access-Control-Allow-Origin', '*');
