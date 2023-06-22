@@ -153,7 +153,7 @@ export default class Database {
   }
 
   async readAlbums(id: string | number) {
-    console.log(id);
+    console.log('id: ' + id);
     await this.connect();
 
     const request = this.poolconnection.request();

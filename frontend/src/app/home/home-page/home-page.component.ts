@@ -57,12 +57,12 @@ import { UserInterface } from 'src/app/interfaces/IUser';
 export class HomePageComponent implements AfterViewInit {
   @ViewChild('listAlbums', {static:false}) listAlbums! : ElementRef;
   
-
   albumService: Services = inject(Services);
   albumList! : any;
 
   constructor(){
     this.albumList = this.albumService.getAlbums(this.albumService.userId);
+    console.log(this.albumList);
   }
   
   ngAfterViewInit(){
