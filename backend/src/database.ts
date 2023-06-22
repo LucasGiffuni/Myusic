@@ -151,6 +151,15 @@ export default class Database {
     const result = await request.query(`SELECT * FROM Cancion`);
     return result.recordset;
   }
+  async getSongsById(id: string | number) {
+    await this.connect();
+
+    const request = this.poolconnection.request();
+
+    const result = await request.input("id", sql.Int, +id)
+      .query(`SELECT * FROM Cancion WHERE idCancion = @id`);
+    return result.recordset;
+  }
 
   async readAlbums(id: string | number) {
     console.log(id);
@@ -227,25 +236,25 @@ export default class Database {
 
     return result.recordset;
   }
-  
-  	async deleteSong(songId: number) {
-		  await this.connect();
 
-      const request = this.poolconnection.request();
+  async deleteSong(songId: number) {
+    await this.connect();
 
-      request.input('songId', sql.Int(), songId);
+    const request = this.poolconnection.request();
 
-      const result = await request.query(`DELETE FROM Cancion WHERE idCancion = @songId`);
+    request.input('songId', sql.Int(), songId);
 
-      return result.recordset;
-	}
+    const result = await request.query(`DELETE FROM Cancion WHERE idCancion = @songId`);
+
+    return result.recordset;
+  }
 
   async increaseSongReproductions(timesReproduced: number, idCancion: number) {
     await this.connect();
 
     const request = this.poolconnection.request();
-	request.input("timesReproduced", sql.Int, timesReproduced);
-	request.input("idCancion", sql.Int, idCancion);
+    request.input("timesReproduced", sql.Int, timesReproduced);
+    request.input("idCancion", sql.Int, idCancion);
 
     const result = await request.query(
       `UPDATE Cancion

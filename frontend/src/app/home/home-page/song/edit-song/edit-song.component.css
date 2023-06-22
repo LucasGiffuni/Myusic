@@ -1,5 +1,4 @@
 .container {
-  background-color: #f2f2f2;
   padding: 20px;
   display: flex;
   justify-content: center;
@@ -7,16 +6,19 @@
   height: 100vh;
 }
 
-.profile {
-  background-color: #fff;
+.editSong {
+  background-color: aqua;
   padding: 20px;
   border-radius: 5px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   max-width: 400px;
   width: 100%;
+  border: 1px solid black;
 }
 
-
+#editSong-component-title{
+  text-align: center;
+}
 
 .form-group {
   margin-bottom: 20px;
@@ -27,7 +29,7 @@ label {
   margin-bottom: 5px;
 }
 
-.editSongInput {
+input {
   width: 100%;
   padding: 10px;
   border-radius: 3px;
