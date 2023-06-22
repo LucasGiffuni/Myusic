@@ -6,6 +6,9 @@ const router = express.Router();
 router.get('/getSongs', (req,res) => {
     controller.getAllSongs(req,res);
 })
+router.get('/getSongById/:songId', (req,res) => {
+    controller.getSongById(req,res);
+})
 
 router.get('/getSongReproductions',(req,res) => {
     controller.getSongReproductions(req,res);
