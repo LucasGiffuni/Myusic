@@ -2,9 +2,9 @@ import { Component, AfterViewInit, ViewChild, ElementRef, Input, inject} from '@
 import { CommonModule } from '@angular/common';
 import { AlbumComponent } from './album/album.component';
 import { SongComponent } from './song/song.component';
-import { Album } from 'src/app/interfaces/album';
 import { Services } from 'src/app/services/services.service';
 import { UserInterface } from 'src/app/interfaces/IUser';
+import { CookieService } from 'src/app/services/cookie.service';
 
 @Component({
   selector: 'app-home-page',
@@ -56,15 +56,17 @@ import { UserInterface } from 'src/app/interfaces/IUser';
 })
 export class HomePageComponent implements AfterViewInit {
   @ViewChild('listAlbums', {static:false}) listAlbums! : ElementRef;
-  
+
   albumService: Services = inject(Services);
+  cookieService: CookieService = inject(CookieService);
+
   albumList! : any;
 
   constructor(){
-    this.albumList = this.albumService.getAlbums(this.albumService.userId);
+    this.albumList = this.albumService.getAlbums(this.cookieService.get("USERID"));
     console.log(this.albumList);
   }
-  
+
   ngAfterViewInit(){
     const albumList = this.listAlbums.nativeElement;
     const albums = albumList.querySelectorAll('.album-component');

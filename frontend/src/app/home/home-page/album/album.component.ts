@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Album } from 'src/app/interfaces/album';
+import { IAlbum } from 'src/app/interfaces/IAlbum';
 
 @Component({
   selector: 'app-album',
@@ -18,5 +18,5 @@ import { Album } from 'src/app/interfaces/album';
   styleUrls: ['./album.component.css']
 })
 export class AlbumComponent {
-  @Input() albums! : Album
+  @Input() albums! : IAlbum
 }

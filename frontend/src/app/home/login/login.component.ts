@@ -4,6 +4,8 @@ import { Services } from '../../services/services.service';
 import { HomeComponent } from '../home.component';
 import { AlertInterface } from '../../interfaces/IAlert';
 import { Router } from '@angular/router';
+import { HttpClientModule } from '@angular/common/http'
+import { CookieService } from 'src/app/services/cookie.service';
 
 @Component({
   selector: 'app-login',
@@ -11,7 +13,7 @@ import { Router } from '@angular/router';
     class: 'login-component'
   },
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, HttpClientModule,],
   template: `
 
     <div id="login-body-component">
@@ -52,6 +54,7 @@ export class LoginComponent {
   _parent: HomeComponent = this._injector.get<HomeComponent>(HomeComponent);
 
   userService: Services = inject(Services);
+  cookieService: CookieService = inject(CookieService);
 
   constructor(private viewContainerRef: ViewContainerRef, private router: Router) {
     this.alert = {} as AlertInterface;
@@ -75,8 +78,7 @@ export class LoginComponent {
       this.userService.login(this.username, this.password).then((response) => {
 
 
-        this.userService.actualToken = response.user.token;
-        this.userService.userId = response.user.idUsuario;
+        this.cookieService.set("USERID", response.user.idUsuario);
 
         if (response.resultado.statusCode == "404") {
           this.alert.id = 0;
@@ -91,7 +93,7 @@ export class LoginComponent {
           this.alert.text = "Bienvenido " + response.user.username;
           this.alert.type = "success";
           this.alert.style = '#0d6832';
-
+          this.cookieService.set("SESSIONID", response.user.token);
           this.clickButton('/homePage')
 
           this._parent.addAlert(this.alert);
