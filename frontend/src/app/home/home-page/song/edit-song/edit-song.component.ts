@@ -60,6 +60,6 @@ export class EditSongComponent {
   }
 
   editSong(){
-    
+    this.songService.updateUser(this.changedSong);
   }
 }
