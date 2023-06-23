@@ -32,9 +32,9 @@ const getUser = async (req: Request, res: Response) => {
 
 
 const createUser = async (req: Request, res: Response) => {
-  
-const username = req.body.username;
-const password = req.body.password;
+
+	const username = req.body.username;
+	const password = req.body.password;
 
 	const data = {
 		username: username,
@@ -119,6 +119,7 @@ const validateUser = async (req: Request, res: Response) => {
 				const jwt = generateJWT(idUser);
 				response.user.token = jwt;
 
+		
 				res.cookie("SESSIONID", jwt, { httpOnly: false, secure: false });
 
 				res.status(200).json(response);

@@ -64,10 +64,7 @@ app.use((req, res, next) => {
 
 app.use('/user', userRoutes);
 app.use('/song',songRoutes);
-
-
 app.use ('/albums',albumsRoutes);
-
 app.use ('/song',albumsRoutes);
 
 /** Error handling */

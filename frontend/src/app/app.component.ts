@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterOutlet } from '@angular/router';
 import { HomeComponent } from "./home/home.component";
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { HTTPInterceptor } from './services/HTTPInterceptor';
 
 @Component({
   selector: 'app-root',
@@ -12,7 +13,8 @@ import { HomeComponent } from "./home/home.component";
     <app-home id="home-component"/>
   `,
   styleUrls: ['./app.component.css'],
-  imports: [CommonModule, HomeComponent]
+  imports: [CommonModule, HomeComponent, HttpClientModule],
+  providers: [{ provide: HTTP_INTERCEPTORS, useClass: HTTPInterceptor, multi: true },]
 })
 export class AppComponent {
   title = 'MyMusic';

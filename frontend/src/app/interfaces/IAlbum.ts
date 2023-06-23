@@ -1,4 +1,4 @@
-export interface Album {
+export interface IAlbum {
     idAlbum:number,
     idUsuario:number,
     titulo:string,
