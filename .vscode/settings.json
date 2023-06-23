@@ -1,0 +1,8 @@
+{
+    "appService.defaultWebAppToDeploy": "/subscriptions/a00859d8-7a6a-4882-b911-154ae8cc94d8/resourceGroups/Myusic_group/providers/Microsoft.Web/sites/Myusic",
+    "appService.deploySubpath": "frontend/dist/my-music",
+    "appService.zipIgnorePattern": [
+        "node_modules{,/**}",
+        ".vscode{,/**}"
+    ]
+}
