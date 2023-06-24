@@ -28,10 +28,12 @@ import { Router } from '@angular/router';
   styleUrls: ['./changpasword.component.css']
 })
 export class ChangpaswordComponent {
-  currentPassword: string = "passwordHolder";
+  currentPassword: string = "password";
   currentPasswordUser: string = "";
   newPassword: string ="";
   userService: Services = inject(Services);
+  tempUserId: number=25;
+  tempUsername: string="tempName";
 
   constructor(private router: Router) {
     //get the current password
@@ -51,7 +53,11 @@ export class ChangpaswordComponent {
       }
     }else{
       this.currentPassword=this.newPassword;
-      //change password
+      this.userService.updateUser(this.tempUserId,this.tempUsername,this.newPassword);
+      const element = document.getElementById("passwordOld");
+      if (element) {
+        element.style.color = "black";
+      }
     }
   }
   clickButton(path: string) {
