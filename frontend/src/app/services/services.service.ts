@@ -20,8 +20,6 @@ export class Services {
 
   }
 
-
-
   async register(username: string, password: string) {
     const body = {
       username: username,
@@ -71,16 +69,5 @@ export class Services {
     })).json());
   }
 
-  async getAlbums(idUser: number) :Promise<IResponse<IAlbum>> {
-    console.log(`idUser ${idUser}`);
-    return (await (await fetch(`${this.url}/albums/getAlbums/${idUser}`, {
-      method: 'GET',
-      headers: {
-        Accept: 'application/json',
-        'Authorization': 'Bearer ' + this.cookieService.get("SESSIONID"),
-        'Content-Type': 'application/json',
-      }
-    })).json()) ?? [];
-  }
 
 }

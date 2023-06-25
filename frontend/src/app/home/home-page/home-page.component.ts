@@ -2,10 +2,12 @@ import { Component, ViewChild, ElementRef, inject, AfterViewChecked} from '@angu
 import { CommonModule } from '@angular/common';
 import { AlbumComponent } from './album/album.component';
 import { SongComponent } from './song/song.component';
-import { Services } from 'src/app/services/services.service';
 import { CookieService } from 'src/app/services/cookie.service';
 import { IAlbum } from 'src/app/interfaces/IAlbum';
 import { IResponse } from 'src/app/interfaces/IResponse';
+import { AlbumService } from 'src/app/services/album.service';
+import { SongService } from 'src/app/services/song.service';
+import { ISong } from 'src/app/interfaces/ISong';
 
 @Component({
   selector: 'app-home-page',
@@ -15,16 +17,13 @@ import { IResponse } from 'src/app/interfaces/IResponse';
     <div class="library-component">
       <h1 class="library-component-title">Add album</h1>
       <div #listAlbums class="library-component-album-list">
-        <app-album class="album-component" *ngFor="let album of this.albumList" [albums]="album"></app-album>
+        <app-album class="album-component" *ngFor="let album of this.albumList" [album]="album"></app-album>
       </div>
     </div>
     <div class = "library-component">
       <h1 class = "library-component-title">Add song</h1>
       <div class = "library-component-song-list">
-        <app-song class = "song-component"></app-song>
-        <app-song class = "song-component"></app-song>
-        <app-song class = "song-component"></app-song>
-        <app-song class = "song-component"></app-song>
+        <app-song class = "song-component" *ngFor="let song of this.songList" [song]="song"></app-song>
       </div>
     </div>
     <div class = "library-component-latest">
@@ -47,13 +46,20 @@ import { IResponse } from 'src/app/interfaces/IResponse';
 export class HomePageComponent implements AfterViewChecked {
   @ViewChild('listAlbums', {static:false}) listAlbums! : ElementRef;
 
-  albumService: Services = inject(Services);
+  albumService: AlbumService = inject(AlbumService);
+  songService: SongService = inject(SongService);
   cookieService: CookieService = inject(CookieService);
 
   albumList : IAlbum[] = [];
+  songList : ISong[] = []
 
   constructor(){
-    this.albumService.getAlbums(this.cookieService.get("USERID"))
+    this.getAlbums();
+    this.getSongs();
+  }
+
+  async getAlbums(){
+    await this.albumService.getAlbums(this.cookieService.get("USERID"))
     .then((value:IResponse<IAlbum>) => {
       value.data.forEach(element => {
         this.albumList.push(element);
@@ -62,6 +68,21 @@ export class HomePageComponent implements AfterViewChecked {
     .catch(error => {
       console.error(error);
     })
+    
+  }
+
+  async getSongs(){
+    await this.songService.getSongs()
+    .then((value:IResponse<ISong>) =>{
+      value.data.forEach(element => {
+        this.songList.push(element);
+        console.log(element.titulo)
+      });
+      console.log(this.songList);
+    })
+    .catch(err => {
+      console.error(err);
+    });
   }
 
   ngAfterViewChecked() {
