@@ -170,6 +170,7 @@ export default class Database {
       .input("id", sql.Int, +id)
       .query(`SELECT * FROM Album WHERE idUsuario = @id`);
 
+    // console.log('result: ' + result.recordset)
     return result.recordset;
   }
 
