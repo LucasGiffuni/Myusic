@@ -1,7 +1,7 @@
 export interface IAlbum {
     idAlbum:number,
-    idUsuario:number,
     titulo:string,
     descripcion:string,
-    fechaCreacion:Date
+    fechaCreacion:Date,
+    idUsuario:number,
 }

@@ -1,6 +1,8 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { CookieService } from 'src/app/services/cookie.service';
+import { IResponse } from '../interfaces/IResponse';
+import { IAlbum } from '../interfaces/IAlbum';
 
 
 @Injectable({
@@ -69,7 +71,8 @@ export class Services {
     })).json());
   }
 
-  async getAlbums(idUser: number) {
+  async getAlbums(idUser: number) :Promise<IResponse<IAlbum>> {
+    console.log(`idUser ${idUser}`);
     return (await (await fetch(`${this.url}/albums/getAlbums/${idUser}`, {
       method: 'GET',
       headers: {
@@ -77,7 +80,7 @@ export class Services {
         'Authorization': 'Bearer ' + this.cookieService.get("SESSIONID"),
         'Content-Type': 'application/json',
       }
-    })).json());
+    })).json()) ?? [];
   }
 
 }
