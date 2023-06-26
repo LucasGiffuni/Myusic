@@ -247,7 +247,7 @@ export default class Database {
 
     const result = await request.query(`DELETE FROM Cancion WHERE idCancion = @songId`);
 
-    return result.recordset;
+    return result.rowsAffected[0];
   }
 
   async increaseSongReproductions(timesReproduced: number, idCancion: number) {
@@ -270,11 +270,11 @@ export default class Database {
     await this.connect();
 
     const request = this.poolconnection.request();
-    
+
     const result = await request.query(
-      `SELECT * 
-      FROM 
-      Cancion 
+      `SELECT *
+      FROM
+      Cancion
       ORDER BY fechaLanzamiento DESC`
       );
     return result.recordset;
