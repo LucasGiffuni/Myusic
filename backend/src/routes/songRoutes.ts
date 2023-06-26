@@ -30,4 +30,9 @@ router.post('/createSong',(req,res)=>{
     controller.createSong(req,res);
 })
 
+router.get('/getSongsByDate',(req,res)=>{
+    controller.getSongsByDate(req,res);
+})
+
+
 export default router;

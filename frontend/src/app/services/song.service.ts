@@ -35,4 +35,14 @@ export class SongService {
 
   }
 
+  async getSongsByDate() : Promise<IResponse<ISong>>{
+    return (await(await fetch(`${this.url}/song/getSongsByDate`,{
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        'Authorization': 'Bearer ' + this.cookieService.get("SESSIONID"),
+        'Content-Type': 'application/json',
+      }
+    })).json()) ?? [];
+  }
 }

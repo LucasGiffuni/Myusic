@@ -266,6 +266,20 @@ export default class Database {
     return result.recordset;
   }
 
+  async getSongsByDate(){
+    await this.connect();
+
+    const request = this.poolconnection.request();
+    
+    const result = await request.query(
+      `SELECT * 
+      FROM 
+      Cancion 
+      ORDER BY fechaLanzamiento DESC`
+      );
+    return result.recordset;
+  }
+
   //function to create a new album in de Data Base
   async createAlbum(data: { userId: any; albumTitle: any; description: any }) {
     await this.connect();

@@ -8,12 +8,12 @@ import { IResponse } from 'src/app/interfaces/IResponse';
 import { AlbumService } from 'src/app/services/album.service';
 import { SongService } from 'src/app/services/song.service';
 import { ISong } from 'src/app/interfaces/ISong';
+import { SongLatestComponent } from "./song/song-latest/song-latest.component";
 
 @Component({
-  selector: 'app-home-page',
-  standalone: true,
-  imports: [CommonModule, AlbumComponent, SongComponent],
-  template: `
+    selector: 'app-home-page',
+    standalone: true,
+    template: `
     <div class="library-component">
       <h1 class="library-component-title">Add album</h1>
       <div #listAlbums class="library-component-album-list">
@@ -28,23 +28,32 @@ import { ISong } from 'src/app/interfaces/ISong';
     </div>
     <div class = "library-component-latest">
       <h1 class = "library-component-title">The latest</h1>
-      <div class = library-component-songLatest-list>
-        <app-song class = "songLatest-component"></app-song>
-        <app-song class = "songLatest-component"></app-song>
-        <app-song class = "songLatest-component"></app-song>
-        <app-song class = "songLatest-component"></app-song>
-        <app-song class = "songLatest-component"></app-song>
-        <app-song class = "songLatest-component"></app-song>
-        <app-song class = "songLatest-component"></app-song>
-        <app-song class = "songLatest-component"></app-song>
-        <app-song class = "songLatest-component"></app-song>
+      <div #listSongLatest class = "library-component-songLatest-list">
+        <app-song-latest class = "songLatest-component"></app-song-latest>
+        <app-song-latest class = "songLatest-component"></app-song-latest>
+        <app-song-latest class = "songLatest-component"></app-song-latest>
+        <app-song-latest class = "songLatest-component"></app-song-latest>
+        <app-song-latest class = "songLatest-component"></app-song-latest>
+        <app-song-latest class = "songLatest-component"></app-song-latest>
+        <app-song-latest class = "songLatest-component"></app-song-latest>
+        <app-song-latest class = "songLatest-component"></app-song-latest>
+        <app-song-latest class = "songLatest-component"></app-song-latest>
+        <app-song-latest class = "songLatest-component"></app-song-latest>
+        <app-song-latest class = "songLatest-component"></app-song-latest>
+        <app-song-latest class = "songLatest-component"></app-song-latest>
+        <app-song-latest class = "songLatest-component"></app-song-latest>
+        <app-song-latest class = "songLatest-component"></app-song-latest>
+        <app-song-latest class = "songLatest-component"></app-song-latest>
+        <app-song-latest class = "songLatest-component"></app-song-latest>
       </div>
     </div>
   `,
-  styleUrls: ['./home-page.component.css'],
+    styleUrls: ['./home-page.component.css'],
+    imports: [CommonModule, AlbumComponent, SongComponent, SongLatestComponent]
 })
 export class HomePageComponent implements AfterViewChecked {
   @ViewChild('listAlbums', {static:false}) listAlbums! : ElementRef;
+  @ViewChild('listSongLatest', {static:false}) listSongLatest! : ElementRef;
 
   albumService: AlbumService = inject(AlbumService);
   songService: SongService = inject(SongService);
@@ -56,6 +65,7 @@ export class HomePageComponent implements AfterViewChecked {
   constructor(){
     this.getAlbums();
     this.getSongs();
+    this.getSongsByDate();
   }
 
   async getAlbums(){
@@ -76,7 +86,19 @@ export class HomePageComponent implements AfterViewChecked {
     .then((value:IResponse<ISong>) =>{
       value.data.forEach(element => {
         this.songList.push(element);
-        console.log(element.titulo)
+      });
+    })
+    .catch(err => {
+      console.error(err);
+    });
+  }
+
+  async getSongsByDate(){
+    await this.songService.getSongsByDate()
+    .then((value:IResponse<ISong>) =>{
+      value.data.forEach(element => {
+        this.songList.push(element);
+        console.log('titulo: ' + element.titulo)
       });
       console.log(this.songList);
     })
@@ -84,18 +106,28 @@ export class HomePageComponent implements AfterViewChecked {
       console.error(err);
     });
   }
+  
 
   ngAfterViewChecked() {
     const albumList = this.listAlbums.nativeElement;
     const albums = albumList.querySelectorAll('.album-component');
-    const totalAlbums = albums.length;
-    console.log(totalAlbums);
+    const entireAlbums = albums.length;
+    
+    const songLatestList = this.listSongLatest.nativeElement;
+    const songsLatests = songLatestList.querySelectorAll('.songLatest-component');
+    const entireSongLatests = songsLatests.length;
 
     const containerAlbum = document.querySelector('.library-component-album-list');
-    if (containerAlbum != null) {
-      const numColumns = Math.ceil(totalAlbums / 2);
-      //@ts-ignore
-      containerAlbum.style.gridTemplateColumns = `repeat(${numColumns}, 50%)`;
+    const containerSongLatest = document.querySelector('.library-component-songLatest-list')
+
+    this.countColumns(containerAlbum,entireAlbums,50,2);
+    this.countColumns(containerSongLatest, entireSongLatests,100,4);
+  }
+
+  countColumns(container : any, entire : number, capacity:number, columns:number ){
+    if (container != null) {
+      const numColumns = Math.ceil(entire / columns);
+      container.style.gridTemplateColumns = `repeat(${numColumns}, ${capacity}%)`;
     }
   }
 }
