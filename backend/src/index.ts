@@ -12,6 +12,7 @@ import songRoutes from "./routes/songRoutes";
 
 import loginRoutes from './routes/loginRoutes'
 import albumRoutes from "./routes/albumRoutes";
+import { IResponse } from "./interfaces/IResponse";
 
 
 
@@ -33,16 +34,32 @@ app.use((req, res, next) => {
 
 		jwt.verify(token, RSA_PRIVATE_KEY, (err: Error) => {
 			if (err) {
-				return res.sendStatus(403);
+				const response: IResponse<any> = {
+					Result: {
+						statuscode: "403",
+						statustext: "Unauthorized"
+					},
+					data: {}
+				}
+
+				res.status(403).json(response);
 			}
 
 			next();
 		});
 	} else {
-		res.sendStatus(401);
+		const response: IResponse<any> = {
+			Result: {
+				statuscode: "401",
+				statustext: "Unauthorized"
+			},
+			data: {}
+		}
+		res.status(401).json(response);
 	}
 
 });
+
 app.use('/user', userRoutes);
 app.use('/album', albumRoutes);
 app.use('/albums', albumsRoutes);
@@ -63,9 +80,9 @@ app.use((req, res, next) => {
 /** Routes go here */
 
 app.use('/user', userRoutes);
-app.use('/song',songRoutes);
-app.use ('/albums',albumsRoutes);
-app.use ('/song',albumsRoutes);
+app.use('/song', songRoutes);
+app.use('/albums', albumsRoutes);
+app.use('/song', albumsRoutes);
 
 /** Error handling */
 app.use((req, res, next) => {
