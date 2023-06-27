@@ -2,8 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ISong } from 'src/app/interfaces/ISong';
 import { YouTubePlayerModule } from '@angular/youtube-player';
-import {MatIconModule} from '@angular/material/icon';
-import {MatButtonModule} from '@angular/material/button';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-song-detail',
@@ -11,7 +10,7 @@ import {MatButtonModule} from '@angular/material/button';
     class: 'song-detail-component'
   },
   standalone: true,
-  imports: [CommonModule, YouTubePlayerModule, MatIconModule, MatButtonModule],
+  imports: [CommonModule, YouTubePlayerModule, MatButtonModule],
   template: `
 	<script src="https://www.youtube.com/iframe_api"></script>
 
