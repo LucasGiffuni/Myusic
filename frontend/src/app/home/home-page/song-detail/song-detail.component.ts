@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ISong } from 'src/app/interfaces/ISong';
 import { YouTubePlayerModule } from '@angular/youtube-player';
@@ -20,10 +20,15 @@ import { YouTubePlayerModule } from '@angular/youtube-player';
       <!-- <img id="song-detail-image" src={{song.imageCoverLink}}> -->
     </div>
 
+	<button (click)="playMusic()">Play Music</button>
+	<button (click)="pauseMusic()">Pause Music</button>
+	<button (click)="stopMusic()">Stop Music</button>
+
 	<youtube-player
 		[videoId]="videoId"
+		[height]="1"
+        [width]="1"
 		(ready)="onPlayerReady($event)"
-		(stateChange)="onPlayerStateChange($event)"
 	></youtube-player>
 
 
@@ -44,11 +49,12 @@ export class SongDetailComponent {
     vecesReproducidas: 0
   }
 
-  videoId = 'CD-E-LDc384';
+  videoId: string = 'CD-E-LDc384';
   player: any;
 
-
   apiLoaded = false;
+
+  @ViewChild('youtubePlayer') youtubePlayer: any;
 
   ngOnInit() {
     if (!this.apiLoaded) {
@@ -59,15 +65,27 @@ export class SongDetailComponent {
     }
   }
 
+
   onPlayerReady(event: any) {
     this.player = event.target;
   }
 
-  onPlayerStateChange(event: any) {
-    // Handle player state changes here (e.g., play, pause, etc.)
+  playMusic() {
+    if (this.player) {
+      this.player.playVideo();
+    }
   }
 
+  pauseMusic() {
+	if (this.player) {
+		this.player.pauseVideo();
+	}
+  }
 
-
+  stopMusic() {
+	if (this.player) {
+		this.player.stopVideo();
+	}
+  }
 
 }
