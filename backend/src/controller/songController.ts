@@ -165,15 +165,16 @@ const editSong = async (req: Request, res: Response) => {
 const deleteSong = async (req: Request, res: Response) => {
     try {
         const songId: number = parseInt(req.body.songId)
-        const result = await database.deleteSong(songId);
-        const response: IResponse<any[]> = {
+		const userId: number = parseInt(req.body.userId)
+        const result = await database.deleteSong(songId, userId);
+        const response: IResponse<number> = {
             Result: {
                 statuscode: "",
                 statustext: ""
             },
             data: result
         }
-        if (result.length > 0) {
+        if (result > 0) {
             response.Result.statuscode = "200";
             response.Result.statustext = "OK";
             res.json(response);
