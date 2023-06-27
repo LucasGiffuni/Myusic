@@ -77,19 +77,22 @@ export class SongDetailComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
 
-    this.sub = this.route.params.subscribe(params => {
-      this.id = +params['id']; // (+) converts string 'id' to a number
 
-      this.songService.getSongByID(this.id).then((response) => {
-        this.selectedSong = response.data[0]
-        console.log(this.selectedSong)
 
-        this.splitted = this.selectedSong.linkReferencia.split("=")[1]
-        console.log(this.splitted);
-      })
+    if (!this.apiLoaded) {
+      this.sub = this.route.params.subscribe(params => {
+        this.id = +params['id']; // (+) converts string 'id' to a number
 
-    });
-    if (!this.apiLoaded && this.splitted != "") {
+        this.songService.getSongByID(this.id).then((response) => {
+          this.selectedSong = response.data[0]
+          console.log(this.selectedSong)
+
+          this.splitted = this.selectedSong.linkReferencia.split("=")[1]
+          console.log(this.splitted);
+          this.videoId = this.splitted
+        })
+
+      });
       const tag = document.createElement('script');
       tag.src = 'https://www.youtube.com/iframe_api';
       document.body.appendChild(tag);
@@ -124,6 +127,10 @@ export class SongDetailComponent implements OnInit, OnDestroy {
     if (this.player) {
       this.player.stopVideo();
     }
+  }
+
+  splitLink(link: string) {
+    return link.split("=")[1];
   }
 
 }
