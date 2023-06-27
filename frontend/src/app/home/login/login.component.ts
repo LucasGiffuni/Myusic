@@ -2,7 +2,6 @@ import { Component, Inject, ViewContainerRef, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Services } from '../../services/services.service';
 import { HomeComponent } from '../home.component';
-import { AlertInterface } from '../../interfaces/IAlert';
 import { Router } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http'
 import { CookieService } from 'src/app/services/cookie.service';
@@ -50,7 +49,6 @@ export class LoginComponent {
   username: string = "";
   password: string = "";
 
-  alert: AlertInterface
   _injector = this.viewContainerRef.parentInjector;
   _parent: HomeComponent = this._injector.get<HomeComponent>(HomeComponent);
 
@@ -59,7 +57,6 @@ export class LoginComponent {
 
 
   constructor(private viewContainerRef: ViewContainerRef, private router: Router, private _snackBar: MatSnackBar) {
-    this.alert = {} as AlertInterface;
 
   }
   clickButton(path: string) {

@@ -45,4 +45,17 @@ export class SongService {
       }
     })).json()) ?? [];
   }
+
+
+  async createSong(idUser: number,body: ISong): Promise<IResponse<ISong>> {
+    return (await (await fetch(`${this.url}/song/createSong/${idUser}`, {
+      method: 'POST',
+      body: JSON.stringify(body),
+      headers: {
+        Accept: 'application/json',
+        'Authorization': 'Bearer ' + this.cookieService.get("SESSIONID"),
+        'Content-Type': 'application/json',
+      }
+    })).json()) ?? [];
+  }
 }

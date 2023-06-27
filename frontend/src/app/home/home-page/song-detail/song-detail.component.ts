@@ -54,7 +54,8 @@ export class SongDetailComponent {
     linkReferencia: "",
     imagen: "https://upload.wikimedia.org/wikipedia/en/thumb/c/c8/Metallica_-_Enter_Sandman_cover.jpg/220px-Metallica_-_Enter_Sandman_cover.jpg",
     autor: "Metallica",
-    vecesReproducidas: 0
+    vecesReproducidas: 0,
+    idUsuario: 0
   }
 
   videoId: string = 'CD-E-LDc384';
