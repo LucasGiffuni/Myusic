@@ -80,15 +80,20 @@ export class CreateSongDialogComponent {
     }
 
     if (this.songTitle || this.genero || this.fechaLanzamiento || this.autor || this.imagen) {
-      this.songService.createSong(data.idUsuario, data).then((response: IResponse<any>) => {
+      if(this.songTitle.length <= 30 || this.autor.length <= 15){
+        this.songService.createSong(data.idUsuario, data).then((response: IResponse<any>) => {
         if (response.Result.statuscode === "200") {
           this.openSnackBar("Song " + this.songTitle + " creado correctamente!", "Cerrar")
-
+          setTimeout(() => {
+            location.reload();
+          }, 30000); 
         } else {
           this.openSnackBar("ERROR: " + response.Result.statustext, "Cerrar")
         }
       });
-
+      }else{
+        this.openSnackBar("Titulo debe ser menor o igual a 30 caracteres y autor menor o igual a 15 caracteres", "Cerrar")
+      }
     } else {
       this.openSnackBar("Los datos no pueden ser nulos o vacios", "Cerrar")
 

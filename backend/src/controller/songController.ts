@@ -127,7 +127,6 @@ const editSong = async (req: Request, res: Response) => {
     const referenceLink = req.body.referenceLink;
     const author = req.body.auth;
     const date = req.body.date;
-    //if para validar los datos que me llegan
     try {
         const data = {
             songId,

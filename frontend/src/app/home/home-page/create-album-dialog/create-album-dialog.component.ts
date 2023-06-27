@@ -55,17 +55,23 @@ export class CreateAlbumDialogComponent {
       idUsuario: 24
     }
     if (this.albumDescription || this.albumTitle) {
+      if(this.albumTitle.length <= 30){
       this.albumService.createAlbum(data.idUsuario, data).then((response: IResponse<any>) =>{
         if (response.Result.statuscode === "200"){
-          this.openSnackBar("Album " + this.albumTitle + " creado correctamente!", "Cerrar")
-
+          this.openSnackBar("Album " + this.albumTitle + " creado correctamente!", "Cerrar");
+          setTimeout(() => {
+            location.reload();
+          }, 3000);
         }else{
-          this.openSnackBar("ERROR: " + response.Result.statustext, "Cerrar")
+          this.openSnackBar("ERROR: " + response.Result.statustext, "Cerrar");
         }
       });
+    }else{
+      this.openSnackBar("Titulo debe ser menor o igual a 30 caracteres", "Cerrar");
+    }
 
     }else{
-      this.openSnackBar("Titulo o Descripcion no puede ser nulo", "Cerrar")
+      this.openSnackBar("Titulo o Descripcion no puede ser nulo", "Cerrar");
 
     }
   }

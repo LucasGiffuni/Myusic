@@ -1,4 +1,4 @@
-import { Component, ViewChild, ElementRef, inject, AfterViewChecked} from '@angular/core';
+import { Component, ViewChild, ElementRef, inject, AfterViewChecked, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AlbumComponent } from './album/album.component';
 import { SongComponent } from './song/song.component';
@@ -11,6 +11,7 @@ import { ISong } from 'src/app/interfaces/ISong';
 import { SongLatestComponent } from "./song/song-latest/song-latest.component";
 import { MatDialog, MatDialogRef, MatDialogModule } from '@angular/material/dialog';
 import { Router } from '@angular/router';
+
 
 
 import { CreateSongDialogComponent } from './create-song-dialog/create-song-dialog.component';
@@ -157,11 +158,12 @@ export class HomePageComponent implements AfterViewChecked {
 
 
   addAlbum() {
-    this.openSongDialog('0ms', '0ms')
+   this.openSongDialog('0ms', '0ms')
+    
   }
   addSong() {
     this.openAlbumDialog('0ms', '0ms')
-
+  
   }
 
   openSongDialog(enterAnimationDuration: string, exitAnimationDuration: string): void {
@@ -170,6 +172,7 @@ export class HomePageComponent implements AfterViewChecked {
       enterAnimationDuration,
       exitAnimationDuration,
     });
+   
   }
 
   openAlbumDialog(enterAnimationDuration: string, exitAnimationDuration: string): void {
