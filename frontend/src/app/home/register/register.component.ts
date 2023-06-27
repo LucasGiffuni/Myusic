@@ -4,10 +4,12 @@ import { Services } from '../../services/services.service';
 import { HomeComponent } from '../home.component';
 import { AlertInterface } from '../../interfaces/IAlert';
 import { Router } from '@angular/router';
+import { MAT_SNACK_BAR_DATA, MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, MatSnackBarModule],
   template: `
     <div id="register-body-component">
     <h1 id="register-component-title"> Register </h1>
@@ -47,7 +49,7 @@ export class RegisterComponent {
 
   userService: Services = inject(Services);
 
-  constructor(private viewContainerRef: ViewContainerRef, private router: Router) {
+  constructor(private viewContainerRef: ViewContainerRef, private router: Router, private _snackBar: MatSnackBar) {
     this.alert = {} as AlertInterface;
   }
   clickButton(path: string) {
@@ -68,35 +70,28 @@ export class RegisterComponent {
         console.log(response)
 
         if (response.resultado.statusCode == "404") {
-          this.alert.id = 0;
-          this.alert.text = response.resultado.statusText;
-          this.alert.type = "success";
-          this.alert.style = '#af233a';
+          this.openSnackBar(response.resultado.statusText, "undo")
 
-
-          this._parent.addAlert(this.alert);
         } else if (response.resultado.statusCode == "200") {
-          this.alert.id = 0;
-          this.alert.text = "Usuario " + response.user.username + " creado correctamente";
-          this.alert.type = "success";
-          this.alert.style = '#0d6832';
 
 
 
-          this._parent.addAlert(this.alert);
+          this.openSnackBar("Usuario " + response.user.username + " creado correctamente", "Close")
+
           this.clickButton('/login')
 
         }
       });
     } else {
-      this.alert.id = 0;
-      this.alert.text = "Username and password cannot be null";
-      this.alert.type = "error";
-      this.alert.style = '#af233a';
+      this.openSnackBar("Username and password cannot be null", "Close")
 
-      this._parent.addAlert(this.alert);
     }
 
+  }
+  openSnackBar(message: string, action: string) {
+    this._snackBar.open(message, action, {
+      duration: 2500
+    });
   }
 
 }

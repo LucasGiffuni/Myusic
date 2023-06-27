@@ -281,13 +281,13 @@ export default class Database {
   }
 
   //function to create a new album in de Data Base
-  async createAlbum(data: { userId: any; albumTitle: any; description: any }) {
+  async createAlbum(data: { userId: number; albumTitle: string; albumDescription: string }) {
     await this.connect();
-    let dateAlbum = new Date("now");
+    let dateAlbum = "2023-06-24";
     const request = this.poolconnection.request();
     request.input("idUsuario", sql.Int, data.userId);
     request.input("titulo", sql.NVarChar(255), data.albumTitle);
-    request.input("descripcion", sql.NVarChar(255), data.description);
+    request.input("descripcion", sql.NVarChar(255), data.albumDescription);
     request.input("fechaCreacion", sql.Date, dateAlbum);
 
     const result = await request.query(
