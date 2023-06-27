@@ -1,4 +1,4 @@
-import { Component, ViewContainerRef, inject } from '@angular/core';
+import { Component, Inject, ViewContainerRef, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Services } from '../../services/services.service';
 import { HomeComponent } from '../home.component';
@@ -6,6 +6,7 @@ import { AlertInterface } from '../../interfaces/IAlert';
 import { Router } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http'
 import { CookieService } from 'src/app/services/cookie.service';
+import { MAT_SNACK_BAR_DATA, MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-login',
@@ -13,18 +14,18 @@ import { CookieService } from 'src/app/services/cookie.service';
     class: 'login-component'
   },
   standalone: true,
-  imports: [CommonModule, HttpClientModule,],
+  imports: [CommonModule, HttpClientModule, MatSnackBarModule],
   template: `
 
     <div id="login-body-component">
     <h1 id="login-component-title"> Login </h1>
-    <form id="login-component-form">
+    <form id="login-component-form" >
 
         <div class="login-component-formInputBody">
-          <input type="text" class="login-component-formInput" placeholder="Username" (focusout)="onFocusOutUsername($event)">
+          <input type="text" class="login-component-formInput" placeholder="Username" (input)="onFocusOutUsername($event)">
       </div>
       <div class="login-component-formInputBody">
-        <input type="password" class="login-component-formInput" placeholder="Password" (focusout)="onFocusOutPassword($event)">
+        <input type="password" class="login-component-formInput" placeholder="Password" (input)="onFocusOutPassword($event)">
       </div>
 
       <div id="login-component-formButtonBody">
@@ -56,7 +57,8 @@ export class LoginComponent {
   userService: Services = inject(Services);
   cookieService: CookieService = inject(CookieService);
 
-  constructor(private viewContainerRef: ViewContainerRef, private router: Router) {
+
+  constructor(private viewContainerRef: ViewContainerRef, private router: Router, private _snackBar: MatSnackBar) {
     this.alert = {} as AlertInterface;
 
   }
@@ -81,34 +83,28 @@ export class LoginComponent {
         this.cookieService.set("USERID", response.user.idUsuario);
 
         if (response.resultado.statusCode == "404") {
-          this.alert.id = 0;
-          this.alert.text = response.resultado.statusText;
-          this.alert.type = "success";
-          this.alert.style = '#af233a';
 
 
-          this._parent.addAlert(this.alert);
+          this.openSnackBar(response.resultado.statusText, "undo")
+
         } else if (response.resultado.statusCode == "200") {
-          this.alert.id = 0;
-          this.alert.text = "Bienvenido " + response.user.username;
-          this.alert.type = "success";
-          this.alert.style = '#0d6832';
           this.cookieService.set("SESSIONID", response.user.token);
+          this.openSnackBar("Welcome " + response.user.username , "Close")
           this.clickButton('/homePage')
 
-          this._parent.addAlert(this.alert);
         }
       });
     } else {
-      this.alert.id = 0;
-      this.alert.text = "Username and password cannot be null";
-      this.alert.type = "error";
-      this.alert.style = '#af233a';
+      this.openSnackBar("Username and password cannot be null", "Close")
 
-      this._parent.addAlert(this.alert);
     }
 
   }
 
+  openSnackBar(message: string, action: string) {
+    this._snackBar.open(message, action, {
+      duration: 2500
+    });
+  }
 
 }
