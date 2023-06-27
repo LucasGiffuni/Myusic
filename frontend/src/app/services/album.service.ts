@@ -7,7 +7,7 @@ import { IAlbum } from '../interfaces/IAlbum';
   providedIn: 'root'
 })
 export class AlbumService {
-  
+
   url = 'http://localhost:3000';
   cookieService: CookieService = inject(CookieService);
 

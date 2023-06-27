@@ -1,4 +1,4 @@
-import { Component, ViewChild, ElementRef, inject, AfterViewChecked} from '@angular/core';
+import { Component, ViewChild, ElementRef, inject, AfterViewChecked } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AlbumComponent } from './album/album.component';
 import { SongComponent } from './song/song.component';
@@ -9,11 +9,12 @@ import { AlbumService } from 'src/app/services/album.service';
 import { SongService } from 'src/app/services/song.service';
 import { ISong } from 'src/app/interfaces/ISong';
 import { SongLatestComponent } from "./song/song-latest/song-latest.component";
+import { Router } from '@angular/router';
 
 @Component({
-    selector: 'app-home-page',
-    standalone: true,
-    template: `
+  selector: 'app-home-page',
+  standalone: true,
+  template: `
     <div class="library-component">
       <h1 class="library-component-title">Add album</h1>
       <div #listAlbums class="library-component-album-list">
@@ -48,71 +49,77 @@ import { SongLatestComponent } from "./song/song-latest/song-latest.component";
       </div>
     </div>
   `,
-    styleUrls: ['./home-page.component.css'],
-    imports: [CommonModule, AlbumComponent, SongComponent, SongLatestComponent]
+  styleUrls: ['./home-page.component.css'],
+  imports: [CommonModule, AlbumComponent, SongComponent, SongLatestComponent]
 })
 export class HomePageComponent implements AfterViewChecked {
-  @ViewChild('listAlbums', {static:false}) listAlbums! : ElementRef;
-  @ViewChild('listSongLatest', {static:false}) listSongLatest! : ElementRef;
+  @ViewChild('listAlbums', { static: false }) listAlbums!: ElementRef;
+  @ViewChild('listSongLatest', { static: false }) listSongLatest!: ElementRef;
 
   albumService: AlbumService = inject(AlbumService);
   songService: SongService = inject(SongService);
   cookieService: CookieService = inject(CookieService);
 
-  albumList : IAlbum[] = [];
-  songList : ISong[] = []
+  albumList: IAlbum[] = [];
+  songList: ISong[] = []
 
-  constructor(){
+  constructor(private router: Router) {
     this.getAlbums();
     this.getSongs();
     this.getSongsByDate();
   }
 
-  async getAlbums(){
+  async getAlbums() {
     await this.albumService.getAlbums(this.cookieService.get("USERID"))
-    .then((value:IResponse<IAlbum>) => {
-      value.data.forEach(element => {
-        this.albumList.push(element);
-      });
-    })
-    .catch(error => {
-      console.error(error);
-    })
-    
+      .then((value: IResponse<IAlbum>) => {
+
+        console.log(value.Result)
+        if (value.Result.statuscode === "403") {
+          this.router.navigate(['/login']);
+        }
+        value.data.forEach(element => {
+          this.albumList.push(element);
+        });
+
+      })
+      .catch(error => {
+        console.error(error);
+      })
+
   }
 
-  async getSongs(){
+  async getSongs() {
     await this.songService.getSongs()
-    .then((value:IResponse<ISong>) =>{
-      value.data.forEach(element => {
-        this.songList.push(element);
+      .then((value: IResponse<ISong>) => {
+        value.data.forEach(element => {
+          this.songList.push(element);
+        });
+      })
+      .catch(err => {
+        console.error(err);
       });
-    })
-    .catch(err => {
-      console.error(err);
-    });
   }
 
-  async getSongsByDate(){
+  async getSongsByDate() {
     await this.songService.getSongsByDate()
-    .then((value:IResponse<ISong>) =>{
-      value.data.forEach(element => {
-        this.songList.push(element);
-        console.log('titulo: ' + element.titulo)
+      .then((value: IResponse<ISong>) => {
+        value.data.forEach(element => {
+          this.songList.push(element);
+          console.log('titulo: ' + element.titulo)
+        });
+        console.log(this.songList);
+      })
+      .catch(err => {
+        console.error(err);
       });
-      console.log(this.songList);
-    })
-    .catch(err => {
-      console.error(err);
-    });
   }
-  
+
 
   ngAfterViewChecked() {
     const albumList = this.listAlbums.nativeElement;
     const albums = albumList.querySelectorAll('.album-component');
     const entireAlbums = albums.length;
-    
+
     const songLatestList = this.listSongLatest.nativeElement;
     const songsLatests = songLatestList.querySelectorAll('.songLatest-component');
     const entireSongLatests = songsLatests.length;
@@ -120,11 +127,11 @@ export class HomePageComponent implements AfterViewChecked {
     const containerAlbum = document.querySelector('.library-component-album-list');
     const containerSongLatest = document.querySelector('.library-component-songLatest-list')
 
-    this.countColumns(containerAlbum,entireAlbums,50,2);
-    this.countColumns(containerSongLatest, entireSongLatests,100,4);
+    this.countColumns(containerAlbum, entireAlbums, 50, 2);
+    this.countColumns(containerSongLatest, entireSongLatests, 100, 4);
   }
 
-  countColumns(container : any, entire : number, capacity:number, columns:number ){
+  countColumns(container: any, entire: number, capacity: number, columns: number) {
     if (container != null) {
       const numColumns = Math.ceil(entire / columns);
       container.style.gridTemplateColumns = `repeat(${numColumns}, ${capacity}%)`;
