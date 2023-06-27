@@ -9,6 +9,8 @@ import { AlbumService } from 'src/app/services/album.service';
 import { SongService } from 'src/app/services/song.service';
 import { ISong } from 'src/app/interfaces/ISong';
 import { SongLatestComponent } from "./song/song-latest/song-latest.component";
+import { MatButtonModule } from '@angular/material/button';
+import { MatDialog, MatDialogRef, MatDialogModule } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 
 @Component({
@@ -16,13 +18,20 @@ import { Router } from '@angular/router';
   standalone: true,
   template: `
     <div class="library-component">
-      <h1 class="library-component-title">Add album</h1>
-      <div #listAlbums class="library-component-album-list">
+      <div class="button-text">
+        <h1 class="library-component-title">Add album</h1>
+        <i id="album-button" class="material-icons w3-xxlarge" (click)="addSong()">add</i>
+      </div>
+        <div #listAlbums class="library-component-album-list">
         <app-album class="album-component" *ngFor="let album of this.albumList" [album]="album"></app-album>
       </div>
     </div>
     <div class = "library-component">
+    <div class="button-text">
       <h1 class = "library-component-title">Add song</h1>
+      <i id="song-button" class="material-icons w3-xxlarge" (click)="addAlbum()">add</i>
+      </div>
+
       <div class = "library-component-song-list">
         <app-song class = "song-component" *ngFor="let song of this.songList" [song]="song"></app-song>
       </div>
@@ -50,7 +59,8 @@ import { Router } from '@angular/router';
     </div>
   `,
   styleUrls: ['./home-page.component.css'],
-  imports: [CommonModule, AlbumComponent, SongComponent, SongLatestComponent]
+  imports: [CommonModule, AlbumComponent, SongComponent, SongLatestComponent, MatDialogModule]
+
 })
 export class HomePageComponent implements AfterViewChecked {
   @ViewChild('listAlbums', { static: false }) listAlbums!: ElementRef;
@@ -63,7 +73,8 @@ export class HomePageComponent implements AfterViewChecked {
   albumList: IAlbum[] = [];
   songList: ISong[] = []
 
-  constructor(private router: Router) {
+
+  constructor(private router: Router,public dialog: MatDialog) {
     this.getAlbums();
     this.getSongs();
     this.getSongsByDate();
@@ -72,14 +83,15 @@ export class HomePageComponent implements AfterViewChecked {
   async getAlbums() {
     await this.albumService.getAlbums(this.cookieService.get("USERID"))
       .then((value: IResponse<IAlbum>) => {
+        value.data.forEach(element => {
+          this.albumList.push(element);
+        });
 
         console.log(value.Result)
         if (value.Result.statuscode === "403") {
           this.router.navigate(['/login']);
         }
-        value.data.forEach(element => {
-          this.albumList.push(element);
-        });
+       
 
       })
       .catch(error => {
@@ -137,4 +149,90 @@ export class HomePageComponent implements AfterViewChecked {
       container.style.gridTemplateColumns = `repeat(${numColumns}, ${capacity}%)`;
     }
   }
+
+
+  addAlbum() {
+    this.openSongDialog('0ms', '0ms')
+  }
+  addSong() {
+    this.openAlbumDialog('0ms', '0ms')
+
+  }
+
+  openSongDialog(enterAnimationDuration: string, exitAnimationDuration: string): void {
+    this.dialog.open(CreateSongDialog, {
+      width: '250px',
+      enterAnimationDuration,
+      exitAnimationDuration,
+    });
+  }
+
+  openAlbumDialog(enterAnimationDuration: string, exitAnimationDuration: string): void {
+    this.dialog.open(CreateAlbumDialog, {
+      width: '250px',
+      enterAnimationDuration,
+      exitAnimationDuration,
+    });
+  }
 }
+
+
+
+
+@Component({
+  selector: 'CreateSongDialog',
+  template: `
+  <h1 mat-dialog-title>CreateSongDialog</h1>
+  <div mat-dialog-content>
+    Would you like to delete cat.jpeg?
+  </div>
+  <div mat-dialog-actions>
+    <button mat-button mat-dialog-close>No</button>
+    <button mat-button mat-dialog-close cdkFocusInitial>Ok</button>
+</div>
+`,
+  standalone: true,
+  imports: [MatDialogModule, MatButtonModule],
+})
+export class CreateSongDialog {
+  constructor(public dialogRef: MatDialogRef<CreateSongDialog>) { }
+}
+
+
+@Component({
+  selector: 'CreateAlbumDialog',
+  template: `
+  <h1 mat-dialog-title>CreateAlbumDialog</h1>
+  <div mat-dialog-content>
+  <input type="text" id="albumTitle" placeholder="Album Title" >
+  <input type="text" id="albumDescription" placeholder="Album Description" >
+
+  </div>
+  <div mat-dialog-actions>
+    <button mat-button mat-dialog-close>Cancel</button>
+    <button mat-button mat-dialog-close cdkFocusInitial (click)="createAlbum()">Create</button>
+</div>
+`,
+  standalone: true,
+  imports: [MatDialogModule, MatButtonModule],
+})
+export class CreateAlbumDialog {
+  constructor(public dialogRef: MatDialogRef<CreateAlbumDialog>) { }
+  albumService: AlbumService = inject(AlbumService);
+  songService: SongService = inject(SongService);
+  cookieService: CookieService = inject(CookieService);
+
+  createAlbum() {
+
+    const data: IAlbum = {
+      idAlbum: 1,
+      titulo: "",
+      descripcion: '',
+      fechaCreacion: "1991-07-21",
+      idUsuario: 26
+    }
+    this.albumService.createAlbum(data.idUsuario, data);
+  }
+}
+
+

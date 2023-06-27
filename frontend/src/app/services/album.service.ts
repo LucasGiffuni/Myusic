@@ -13,9 +13,22 @@ export class AlbumService {
 
   constructor() { }
 
-  async getAlbums(idUser: number) :Promise<IResponse<IAlbum>> {
+  async getAlbums(idUser: number): Promise<IResponse<IAlbum>> {
     return (await (await fetch(`${this.url}/albums/getAlbums/${idUser}`, {
       method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        'Authorization': 'Bearer ' + this.cookieService.get("SESSIONID"),
+        'Content-Type': 'application/json',
+      }
+    })).json()) ?? [];
+  }
+
+
+  async createAlbum(idUser: number,body: IAlbum): Promise<IResponse<IAlbum>> {
+    return (await (await fetch(`${this.url}/albums/createAlbum/${idUser}`, {
+      method: 'POST',
+      body: JSON.stringify(body),
       headers: {
         Accept: 'application/json',
         'Authorization': 'Bearer ' + this.cookieService.get("SESSIONID"),
