@@ -165,7 +165,8 @@ const editSong = async (req: Request, res: Response) => {
 const deleteSong = async (req: Request, res: Response) => {
     try {
         const songId: number = parseInt(req.body.songId)
-        const result = await database.deleteSong(songId);
+		const userId: number = parseInt(req.body.userId)
+        const result = await database.deleteSong(songId, userId);
         const response: IResponse<number> = {
             Result: {
                 statuscode: "",

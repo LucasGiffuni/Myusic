@@ -238,14 +238,18 @@ export default class Database {
     return result.recordset;
   }
 
-  async deleteSong(songId: number) {
+  async deleteSong(songId: number, userId: number) {
     await this.connect();
 
     const request = this.poolconnection.request();
 
     request.input('songId', sql.Int(), songId);
+	request.input('userId', sql.Int(), userId);
 
-    const result = await request.query(`DELETE FROM Cancion WHERE idCancion = @songId`);
+    const result = await request.query(
+		`DELETE FROM Cancion
+		WHERE idCancion = @songId
+		AND idUsuario = @userId`);
 
     return result.rowsAffected[0];
   }
