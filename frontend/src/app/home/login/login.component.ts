@@ -19,13 +19,13 @@ import { MAT_SNACK_BAR_DATA, MatSnackBar, MatSnackBarModule } from '@angular/mat
 
     <div id="login-body-component">
     <h1 id="login-component-title"> Login </h1>
-    <form id="login-component-form">
+    <form id="login-component-form" >
 
         <div class="login-component-formInputBody">
-          <input type="text" class="login-component-formInput" placeholder="Username" (focusout)="onFocusOutUsername($event)">
+          <input type="text" class="login-component-formInput" placeholder="Username" (input)="onFocusOutUsername($event)">
       </div>
       <div class="login-component-formInputBody">
-        <input type="password" class="login-component-formInput" placeholder="Password" (focusout)="onFocusOutPassword($event)">
+        <input type="password" class="login-component-formInput" placeholder="Password" (input)="onFocusOutPassword($event)">
       </div>
 
       <div id="login-component-formButtonBody">

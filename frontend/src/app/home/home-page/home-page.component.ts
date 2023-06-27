@@ -11,6 +11,7 @@ import { ISong } from 'src/app/interfaces/ISong';
 import { SongLatestComponent } from "./song/song-latest/song-latest.component";
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogRef, MatDialogModule } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home-page',
@@ -59,6 +60,7 @@ import { MatDialog, MatDialogRef, MatDialogModule } from '@angular/material/dial
   `,
   styleUrls: ['./home-page.component.css'],
   imports: [CommonModule, AlbumComponent, SongComponent, SongLatestComponent, MatDialogModule]
+
 })
 export class HomePageComponent implements AfterViewChecked {
   @ViewChild('listAlbums', { static: false }) listAlbums!: ElementRef;
@@ -71,7 +73,8 @@ export class HomePageComponent implements AfterViewChecked {
   albumList: IAlbum[] = [];
   songList: ISong[] = []
 
-  constructor(public dialog: MatDialog) {
+
+  constructor(private router: Router,public dialog: MatDialog) {
     this.getAlbums();
     this.getSongs();
     this.getSongsByDate();
@@ -83,6 +86,13 @@ export class HomePageComponent implements AfterViewChecked {
         value.data.forEach(element => {
           this.albumList.push(element);
         });
+
+        console.log(value.Result)
+        if (value.Result.statuscode === "403") {
+          this.router.navigate(['/login']);
+        }
+       
+
       })
       .catch(error => {
         console.error(error);
