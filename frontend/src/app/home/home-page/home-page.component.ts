@@ -1,4 +1,4 @@
-import { Component, ViewChild, ElementRef, inject, AfterViewChecked } from '@angular/core';
+import { Component, ViewChild, ElementRef, inject, AfterViewChecked} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AlbumComponent } from './album/album.component';
 import { SongComponent } from './song/song.component';
@@ -43,22 +43,13 @@ import { CreateAlbumDialogComponent } from './create-album-dialog/create-album-d
     <div class = "library-component-latest">
       <h1 class = "library-component-title">The latest</h1>
       <div #listSongLatest class = "library-component-songLatest-list">
-        <app-song-latest class = "songLatest-component"></app-song-latest>
-        <app-song-latest class = "songLatest-component"></app-song-latest>
-        <app-song-latest class = "songLatest-component"></app-song-latest>
-        <app-song-latest class = "songLatest-component"></app-song-latest>
-        <app-song-latest class = "songLatest-component"></app-song-latest>
-        <app-song-latest class = "songLatest-component"></app-song-latest>
-        <app-song-latest class = "songLatest-component"></app-song-latest>
-        <app-song-latest class = "songLatest-component"></app-song-latest>
-        <app-song-latest class = "songLatest-component"></app-song-latest>
-        <app-song-latest class = "songLatest-component"></app-song-latest>
-        <app-song-latest class = "songLatest-component"></app-song-latest>
-        <app-song-latest class = "songLatest-component"></app-song-latest>
-        <app-song-latest class = "songLatest-component"></app-song-latest>
-        <app-song-latest class = "songLatest-component"></app-song-latest>
-        <app-song-latest class = "songLatest-component"></app-song-latest>
-        <app-song-latest class = "songLatest-component"></app-song-latest>
+        <app-song-latest class = "songLatest-component" *ngFor="let song of this.songListLastes" [song]="song"></app-song-latest>
+      </div>
+    </div>
+    <div class = "library-component-outstanding">
+      <h1 class = "library-component-title">Outstanding</h1>
+      <div #listSongOutStanding class = "library-component-songOutStanding-list">
+        <app-song-latest class = "songOutStanding-component" *ngFor="let song of this.songListLastes" [song]="song"></app-song-latest>
       </div>
     </div>
   `,
@@ -69,13 +60,15 @@ import { CreateAlbumDialogComponent } from './create-album-dialog/create-album-d
 export class HomePageComponent implements AfterViewChecked {
   @ViewChild('listAlbums', { static: false }) listAlbums!: ElementRef;
   @ViewChild('listSongLatest', { static: false }) listSongLatest!: ElementRef;
+  @ViewChild('listSongOutStanding', {static:false}) listSongOutStanding! : ElementRef;
 
   albumService: AlbumService = inject(AlbumService);
   songService: SongService = inject(SongService);
   cookieService: CookieService = inject(CookieService);
 
   albumList: IAlbum[] = [];
-  songList: ISong[] = []
+  songList: ISong[] = [];
+  songListLastes : ISong[] = [];
 
 
   constructor(private router: Router, public dialog: MatDialog) {
@@ -118,16 +111,16 @@ export class HomePageComponent implements AfterViewChecked {
 
   async getSongsByDate() {
     await this.songService.getSongsByDate()
-      .then((value: IResponse<ISong>) => {
-        value.data.forEach(element => {
-          this.songList.push(element);
-          console.log('titulo: ' + element.titulo)
-        });
-        console.log(this.songList);
-      })
-      .catch(err => {
-        console.error(err);
+    .then((value:IResponse<ISong>) =>{
+      value.data.forEach(element => {
+        this.songListLastes.push(element);
+        console.log('titulo: ' + element.titulo)
       });
+      console.log(this.songList);
+    })
+    .catch(err => {
+      console.error(err);
+    });
   }
 
 
@@ -140,14 +133,22 @@ export class HomePageComponent implements AfterViewChecked {
     const songsLatests = songLatestList.querySelectorAll('.songLatest-component');
     const entireSongLatests = songsLatests.length;
 
+    const songOutStandingList = this.listSongOutStanding.nativeElement;
+    const songOutStanding = songOutStandingList.querySelectorAll('.songOutStanding-component');
+    const entireSongOutStanding = songOutStanding.length;
+
     const containerAlbum = document.querySelector('.library-component-album-list');
     const containerSongLatest = document.querySelector('.library-component-songLatest-list')
+    const containerSongOutStanding = document.querySelector('.library-component-songOutStanding-list')
 
+    this.countColumns(containerAlbum,entireAlbums,50,2);
+    this.countColumns(containerSongLatest, entireSongLatests,100,4);
+    this.countColumns(containerSongOutStanding,entireSongOutStanding,100,4);
     this.countColumns(containerAlbum, entireAlbums, 50, 2);
     this.countColumns(containerSongLatest, entireSongLatests, 100, 4);
   }
 
-  countColumns(container: any, entire: number, capacity: number, columns: number) {
+  countColumns(container : any, entire : number, capacity:number, columns:number ){
     if (container != null) {
       const numColumns = Math.ceil(entire / columns);
       container.style.gridTemplateColumns = `repeat(${numColumns}, ${capacity}%)`;

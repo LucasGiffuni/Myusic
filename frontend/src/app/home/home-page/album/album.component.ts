@@ -19,6 +19,6 @@ export class AlbumComponent {
   @Input() album! : IAlbum 
   
   constructor(){
-    console.log(`album ${this.album}`)
+  
   }
 }
