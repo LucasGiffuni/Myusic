@@ -28,8 +28,8 @@ import { YouTubePlayerModule } from '@angular/youtube-player';
 		[videoId]="videoId"
 		[height]="1"
         [width]="1"
-		(ready)="onPlayerReady($event)"
-	></youtube-player>
+		(ready)="onPlayerReady($event)">
+  </youtube-player>
 
 
    </div>
