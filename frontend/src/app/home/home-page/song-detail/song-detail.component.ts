@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ISong } from 'src/app/interfaces/ISong';
+import { YouTubePlayerModule } from '@angular/youtube-player';
 
 @Component({
   selector: 'app-song-detail',
@@ -8,16 +9,24 @@ import { ISong } from 'src/app/interfaces/ISong';
     class: 'song-detail-component'
   },
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, YouTubePlayerModule],
   template: `
-
+<script src="https://www.youtube.com/iframe_api"></script>
    <div id="song-detail-body-component">
     <h1 id="song-detail-title"> {{song.titulo}}</h1>
     <h3> {{song.autor}}</h3>
-    
+
     <div id="song-detail-image-body">
       <!-- <img id="song-detail-image" src={{song.imageCoverLink}}> -->
     </div>
+
+	<youtube-player
+		[videoId]="videoId"
+		(ready)="onPlayerReady($event)"
+		(stateChange)="onPlayerStateChange($event)"
+	></youtube-player>
+
+
    </div>
   `,
   styleUrls: ['./song-detail.component.css']
@@ -34,5 +43,31 @@ export class SongDetailComponent {
     autor: "Metallica",
     vecesReproducidas: 0
   }
+
+  videoId = 'CD-E-LDc384';
+  player: any;
+
+
+  apiLoaded = false;
+
+  ngOnInit() {
+    if (!this.apiLoaded) {
+      const tag = document.createElement('script');
+      tag.src = 'https://www.youtube.com/iframe_api';
+      document.body.appendChild(tag);
+      this.apiLoaded = true;
+    }
+  }
+
+  onPlayerReady(event: any) {
+    this.player = event.target;
+  }
+
+  onPlayerStateChange(event: any) {
+    // Handle player state changes here (e.g., play, pause, etc.)
+  }
+
+
+
 
 }
