@@ -86,9 +86,9 @@ export class LoginComponent {
 
         } else if (response.resultado.statusCode == "200") {
           this.cookieService.set("SESSIONID", response.user.token);
-          this.openSnackBar("Welcome " + response.user.username , "Close")
+          this.openSnackBar("Welcome " + response.user.username, "Close")
           this.clickButton('/homePage')
-
+          this._parent.loginFlag = true;
         }
       });
     } else {
