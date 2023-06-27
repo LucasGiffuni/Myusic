@@ -7,5 +7,6 @@ export interface ISong {
   linkReferencia: string;
   autor: string;
   vecesReproducidas: number;
-  imagen:string;
+  imagen: string;
+  idUsuario: number;
 }

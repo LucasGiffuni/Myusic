@@ -57,7 +57,7 @@ const createAlbum = async (req: Request, res: Response) => {
             data: []
         }
         console.log(`Albums: ${result}`);
-        if (result > 1) {
+        if (result > 0) {
             response.Result.statuscode = "200";
             response.Result.statustext = "OK";
             res.status(200);
