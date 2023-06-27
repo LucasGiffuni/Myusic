@@ -33,8 +33,6 @@ export class HomeComponent {
 
   }
 
-  ngOnInit() {
-  }
 
 
 
