@@ -165,15 +165,16 @@ const editSong = async (req: Request, res: Response) => {
 const deleteSong = async (req: Request, res: Response) => {
     try {
         const songId: number = parseInt(req.body.songId)
-        const result = await database.deleteSong(songId);
-        const response: IResponse<any[]> = {
+        const userId: number = parseInt(req.body.userId)
+        const result = await database.deleteSong(songId, userId);
+        const response: IResponse<number> = {
             Result: {
                 statuscode: "",
                 statustext: ""
             },
             data: result
         }
-        if (result.length > 0) {
+        if (result > 0) {
             response.Result.statuscode = "200";
             response.Result.statustext = "OK";
             res.json(response);
@@ -190,42 +191,49 @@ const deleteSong = async (req: Request, res: Response) => {
 }
 
 const createSong = async (req: Request, res: Response) => {
-    const title = req.body.title;
-    const gender = req.body.gender;
-    const referenceLink = req.body.referenceLink;
-    const author = req.body.auth;
-    const date = req.body.date;
-
-    // try {
-    //     const data = {
-    //         title,
-    //         gender,
-    //         date,
-    //         author,
-    //         referenceLink
-    //     }
-    //     const result = await database.createSong(data);
-    //     const response:IResponse<any[]> = {
-    //         Result:{
-    //             statuscode:"",
-    //             statustext:""
-    //         },
-    //         data:result
-    //     }
-    //     if (result.length > 0){
-    //         response.Result.statuscode = "200";
-    //         response.Result.statustext = "OK";
-    //         res.status(200);
-    //         res.json(response);
-    //     }else{
-    //         response.Result.statuscode = "404";
-    //         response.Result.statustext = "Not found";
-    //         res.status(404);
-    //         res.json(response);
-    //     }
-    // } catch (err) {
-    //     res.status(500).json({ error: err?.message });
-    // }
+    const titulo = req.body.titulo;
+    const genero = req.body.genero;
+    const linkReferencia = req.body.linkReferencia;
+    const autor = req.body.autor;
+    const fechaLanzamiento = req.body.fechaLanzamiento;
+    const idUsuario = parseInt(req.params.idUser);
+    const vecesReproducidas = 0;
+    const idCancion = 0;
+    const imagen = req.body.imagen;
+    try {
+        const data: ISong = {
+            idCancion,
+            titulo,
+            genero,
+            fechaLanzamiento,
+            linkReferencia,
+            autor,
+            vecesReproducidas,
+            imagen,
+            idUsuario
+        }
+        const result = await database.createSong(data);
+        const response: IResponse<any[]> = {
+            Result: {
+                statuscode: "",
+                statustext: ""
+            },
+            data: []
+        }
+        if (result > 0) {
+            response.Result.statuscode = "200";
+            response.Result.statustext = "OK";
+            res.status(200);
+            res.json(response);
+        } else {
+            response.Result.statuscode = "404";
+            response.Result.statustext = "Not found";
+            res.status(404);
+            res.json(response);
+        }
+    } catch (err) {
+        res.status(500).json({ error: err?.message });
+    }
 }
 
 const getSongsByDate = async (req: Request, res: Response) => {

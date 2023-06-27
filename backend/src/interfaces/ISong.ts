@@ -1,9 +1,12 @@
 export interface ISong {
-    id : number,
-    title:string,
-    genre:string,
-    date:Date,
-    link:string,
-    autor:string,
-    reproductions:number
-}
+    idCancion: number;
+    titulo: string;
+    genero: string;
+    fechaLanzamiento: Date;
+    linkReferencia: string;
+    autor: string;
+    vecesReproducidas: number;
+    imagen: string;
+    idUsuario: number;
+  }
+  

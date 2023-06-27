@@ -26,7 +26,7 @@ router.delete('/deleteSong',(req,res)=>{
     controller.deleteSong(req,res);
 })
 
-router.post('/createSong',(req,res)=>{
+router.post('/createSong/:idUser',(req,res)=>{
     controller.createSong(req,res);
 })
 
