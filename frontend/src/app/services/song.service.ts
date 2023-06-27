@@ -58,4 +58,15 @@ export class SongService {
       }
     })).json()) ?? [];
   }
+
+  async getSongByID(idSong: number): Promise<IResponse<ISong>> {
+    return (await (await fetch(`${this.url}/song/getSongByID/${idSong}`, {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        'Authorization': 'Bearer ' + this.cookieService.get("SESSIONID"),
+        'Content-Type': 'application/json',
+      }
+    })).json()) ?? [];
+  }
 }

@@ -8,7 +8,7 @@ import { RouterModule } from '@angular/router';
   standalone: true,
   imports: [CommonModule, RouterModule],
   template: `
-    <a id="routing" [routerLink]="['/songDetail']">
+    <a id="routing" [routerLink]="['/songDetail', this.song.idCancion]" >
     	<div class = "song-component">
     		<img class="image-song" src={{this.song.imagen}}>
     		<h2 class = "song-title">{{this.song.titulo}}</h2>

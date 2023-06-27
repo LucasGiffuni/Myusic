@@ -14,7 +14,7 @@ const routes: Routes = [
   { path: 'home', component: HomePageComponent },
   { path: 'profile', component: ProfileComponent },
   { path: 'homePage', component: HomePageComponent },
-  { path: 'songDetail', component: SongDetailComponent },
+  { path: 'songDetail/:id', component: SongDetailComponent },
   { path: 'editSong', component: EditSongComponent },
 ];
 

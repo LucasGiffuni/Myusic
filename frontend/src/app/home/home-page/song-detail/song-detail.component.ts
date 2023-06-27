@@ -1,8 +1,11 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, inject } from '@angular/core';
+import { OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ISong } from 'src/app/interfaces/ISong';
 import { YouTubePlayerModule } from '@angular/youtube-player';
 import { MatButtonModule } from '@angular/material/button';
+import { SongService } from 'src/app/services/song.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-song-detail',
@@ -15,11 +18,11 @@ import { MatButtonModule } from '@angular/material/button';
 	<script src="https://www.youtube.com/iframe_api"></script>
 
 	<div id="song-detail-body-component">
-    	<h1 id="song-detail-title"> {{song.titulo}}</h1>
-    	<h3> {{song.autor}}</h3>
+    	<h1 id="song-detail-title"> {{selectedSong.titulo}}</h1>
+    	<h3> {{selectedSong.autor}}</h3>
 
     	<div id="song-detail-image-body">
-    		<!-- <img id="song-detail-image" src={{song.imageCoverLink}}> -->
+    		<img id="song-detail-image" src={{selectedSong.imagen}}>
     	</div>
 
 		<div id="audio-controller">
@@ -44,34 +47,63 @@ import { MatButtonModule } from '@angular/material/button';
   `,
   styleUrls: ['./song-detail.component.css']
 })
-export class SongDetailComponent {
+export class SongDetailComponent implements OnInit, OnDestroy {
 
-  song: ISong = {
+
+  selectedSong: ISong = {
     idCancion: 0,
-    titulo: "Enter Sandman",
-    genero: "Metal",
-    fechaLanzamiento: new Date("1991-07-21"),
+    titulo: "",
+    genero: "",
+    fechaLanzamiento: new Date("now"),
     linkReferencia: "",
-    imagen: "https://upload.wikimedia.org/wikipedia/en/thumb/c/c8/Metallica_-_Enter_Sandman_cover.jpg/220px-Metallica_-_Enter_Sandman_cover.jpg",
-    autor: "Metallica",
+    autor: "",
     vecesReproducidas: 0,
+    imagen: "",
     idUsuario: 0
-  }
+  };
 
-  videoId: string = 'CD-E-LDc384';
+
   player: any;
-
+  id!: number;
+  private sub: any;
   apiLoaded = false;
+  splitted: string = "";
+  videoId: string = this.splitted;
 
   @ViewChild('youtubePlayer') youtubePlayer: any;
+  songService: SongService = inject(SongService);
+
+  constructor(private route: ActivatedRoute) { }
 
   ngOnInit() {
+
+
+
     if (!this.apiLoaded) {
+      this.sub = this.route.params.subscribe(params => {
+        this.id = +params['id']; // (+) converts string 'id' to a number
+
+        this.songService.getSongByID(this.id).then((response) => {
+          this.selectedSong = response.data[0]
+          console.log(this.selectedSong)
+
+          this.splitted = this.selectedSong.linkReferencia.split("=")[1]
+          console.log(this.splitted);
+          this.videoId = this.splitted
+        })
+
+      });
       const tag = document.createElement('script');
       tag.src = 'https://www.youtube.com/iframe_api';
       document.body.appendChild(tag);
       this.apiLoaded = true;
+
     }
+
+
+  }
+  ngOnDestroy() {
+    this.sub.unsubscribe();
   }
 
 
@@ -86,15 +118,19 @@ export class SongDetailComponent {
   }
 
   pauseMusic() {
-	if (this.player) {
-		this.player.pauseVideo();
-	}
+    if (this.player) {
+      this.player.pauseVideo();
+    }
   }
 
   stopMusic() {
-	if (this.player) {
-		this.player.stopVideo();
-	}
+    if (this.player) {
+      this.player.stopVideo();
+    }
+  }
+
+  splitLink(link: string) {
+    return link.split("=")[1];
   }
 
 }
