@@ -31,14 +31,7 @@ export class HomeComponent {
     this.cookie = this.cookieService.get("SESSIONID");
 
   }
-
-
-
-
-
-
-
-
+  
   clickButton(path: string) {
     this.router.navigate([path]);
   }
