@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { UserService } from 'src/app/services/profile.service';
 import { UserInterface } from 'src/app/interfaces/IUser';
 
+import { Router } from '@angular/router';
+
 @Component({
   selector: 'app-profile',
   
@@ -14,13 +16,16 @@ import { UserInterface } from 'src/app/interfaces/IUser';
     <div class="form-group">
       <h1>User Profile:</h1>
       <label for="username">Username:</label>
-      <input type="text" id="username" value="{{currentUser.username}}" disabled>
-      <button (click)="changeUsername()" >Change</button>
+      <input type="text" id="username" value="{{username}}" placeholder="Username" disabled>
+      <button (click)="clickButton('/changeUsserName')">Change</button>
+      
     </div>
     <div class="form-group">
       <label for="password">Password:</label>
-      <input type="password" id="password" value="{{currentUser.password}}" disabled>
-      <button (click)="changePassword()">Change</button>
+      <input type="password" id="password" value="{{password}}" placeholder="Password" disabled>
+      <button (click)="clickButton('/changePassword')">Change</button>
+      
+      
     </div>
   </div>
 </div>
@@ -30,9 +35,17 @@ import { UserInterface } from 'src/app/interfaces/IUser';
 })
 export class ProfileComponent {
   currentUser: UserInterface;
-  
+  username: string = "";
+  password: string = "";
 
-  constructor(private userService: UserService) {
+  onFocusOutUsername(event: any) {
+    this.username = event.target.value
+  }
+  onFocusOutPassword(event: any) {
+    this.password = event.target.value
+  }
+  
+  constructor(private userService: UserService, private router: Router) {
     this.currentUser = this.userService.getUser();
   }
 
@@ -43,12 +56,9 @@ export class ProfileComponent {
       this.currentUser = this.userService.getUser(); 
     }
   }
-
-  changePassword(): void {
-    const newPassword = prompt('Enter a new password:');
-    if (newPassword) {
-      this.userService.changePassword(newPassword);
-      this.currentUser = this.userService.getUser(); 
-    }
+  clickButton(path: string) {
+    this.router.navigate([path]);
   }
+
+
 }
