@@ -1,9 +1,21 @@
-.image-song {
-    margin-top: 5%;
-    max-width: 60%;
-    max-height: 45%;
-    float: left;
-    border-radius: 20%;
+ @media(width < 750px){
+    .image-song {
+        margin-top: 5%;
+        width: 100%;
+        height: 50%;
+        float: left;
+        border-radius: 20%;
+      }
+  }
+
+  @media(width > 1250px){
+    .image-song {
+        margin-top: 5%;
+        width: 50%;
+        height: 50%;
+        float: left;
+        border-radius: 20%;
+      }
   }
 
 .song-component{
