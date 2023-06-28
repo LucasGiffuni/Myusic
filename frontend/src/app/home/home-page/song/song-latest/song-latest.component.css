@@ -31,8 +31,8 @@
 }
 
 .song-title{
-    margin-top: -1%;
-    margin-bottom: 1%;
+    /* margin-top: 0%;
+    margin-bottom: 0%; */
     height: 45%;
     font-size: 1.2em;
 }
@@ -40,7 +40,6 @@
 .author-band{
     font-size: 1em;
     color:  darkslategray;
-    margin-top: 0.5%;
 }
 
 .routing{
