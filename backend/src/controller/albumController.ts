@@ -52,7 +52,7 @@ const getAlbums = async (req: Request, res: Response) => {
             data: result
         }
         console.log(`Albums: ${result}`);
-        if (result.length > 1) {
+        if (result.length > 0) {
             response.Result.statuscode = "200";
             response.Result.statustext = "OK";
             res.status(200);

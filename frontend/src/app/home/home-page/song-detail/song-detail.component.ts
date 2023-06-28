@@ -33,7 +33,7 @@ import { MatIconModule } from '@angular/material/icon';
     <mat-card-title id="songCardTitle">{{selectedSong.titulo}}</mat-card-title>
     <mat-card-subtitle>{{selectedSong.autor}}</mat-card-subtitle>
   </mat-card-header>
-  <img mat-card-image src={{selectedSong.imagen}} alt="Photo of a Shiba Inu">
+  <img mat-card-image src={{selectedSong.imagen}} >
   <mat-card-content>
 
   <youtube-player
@@ -96,6 +96,7 @@ export class SongDetailComponent implements OnInit, OnDestroy {
     if (!this.apiLoaded) {
       this.sub = this.route.params.subscribe(params => {
         this.id = +params['id']; // (+) converts string 'id' to a number
+        this.cookieService.remove("SELECTEDSONG")
         this.cookieService.set("SELECTEDSONG", String(this.id));
         this.songService.getSongByID(this.id).then((response) => {
           this.selectedSong = response.data[0]
