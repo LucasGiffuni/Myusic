@@ -52,7 +52,7 @@ export class CreateAlbumDialogComponent {
       titulo: this.albumTitle,
       descripcion: this.albumDescription,
       fechaCreacion: new Date("now"),
-      idUsuario: 24
+      idUsuario: this.cookieService.get("USERID")
     }
     if (this.albumDescription || this.albumTitle) {
       if(this.albumTitle.length <= 30){

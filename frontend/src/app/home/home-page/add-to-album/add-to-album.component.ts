@@ -69,7 +69,7 @@ export class AddToAlbumComponent {
 
   ngOnInit() {
     this.id = this.cookieService.get("SELECTEDSONG");
-    this.albumService.getUserAlbums(24).then((response) => {
+    this.albumService.getUserAlbums(this.cookieService.get("USERID")).then((response) => {
       console.log(response)
       this.albumList = response.data
     })
@@ -92,7 +92,8 @@ export class AddToAlbumComponent {
     }
 
     this.albumService.addSongToAlbum(data).then((response) => {
-      if (response.Result.statuscode === "200") {
+      console.log(response)
+      if (response.Result.statuscode ===  '200') {
         this.openSnackBar("La cancion " + this.selectedSong.titulo + " fue agregada correctamente al album " + this.selectedAlbum.titulo, "Cerrar")
 
       }
