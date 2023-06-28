@@ -67,6 +67,7 @@ export class ProfileComponent {
   constructor(private router: Router) {
     this.idUsuario=this.cookieService.get("USERID");
     
+    
   }
 
   clickButton(path: string) {

@@ -230,7 +230,7 @@ const getUsernameById = async (req: Request, res: Response) => {
 	} catch (err) {
 		res.status(500).json({ error: err?.message });
 	}
-
+};
 	//Metodo para obtener password por ID 
 const getPasswordById = async (req: Request, res: Response) => {
 	try {
@@ -251,5 +251,5 @@ const getPasswordById = async (req: Request, res: Response) => {
 
 
 
-export default { getUser, getUserPlaylists, createUser, addSongToAlbum, validateUser, updateUser,getUsernameById,getPasswordById};
+export default { getUser, getUserPlaylists, createUser, addSongToAlbum, validateUser, updateUser,getPasswordById,getUsernameById };
 
