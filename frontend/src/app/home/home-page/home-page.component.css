@@ -87,7 +87,7 @@
 .library-component-latest {
   width: 100%;
   height: 30%;
-  margin-top: 10%;
+  margin-top: 15%;
 }
 
 .library-component-outstanding{
@@ -135,4 +135,5 @@
 .button-text {
   column-count: 2;
   column-gap: 0;
+  margin-right: 58%;
 }
