@@ -10,7 +10,7 @@ export class AlbumService {
 
   url = 'http://localhost:3000';
   cookieService: CookieService = inject(CookieService);
-
+  
   constructor() { }
 
   async getAlbums(idUser: number): Promise<IResponse<IAlbum>> {
