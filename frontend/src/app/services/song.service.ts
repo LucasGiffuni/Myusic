@@ -9,7 +9,7 @@ import { IResponse } from '../interfaces/IResponse';
 export class SongService {
   url = 'http://localhost:3000';
 
-  constructor(private cookieService: CookieService) {}
+  constructor(private cookieService: CookieService) { }
 
   async updateUser(body: ISong) {
     return (await (await fetch(`${this.url}/song/editSong`, {
@@ -23,8 +23,8 @@ export class SongService {
     })).json()) ?? [];
   }
 
-  async getSongs() : Promise<IResponse<ISong>>{
-    return (await(await fetch(`${this.url}/song/getSongs`,{
+  async getSongs(): Promise<IResponse<ISong>> {
+    return (await (await fetch(`${this.url}/song/getSongs`, {
       method: 'GET',
       headers: {
         Accept: 'application/json',
@@ -35,8 +35,8 @@ export class SongService {
 
   }
 
-  async getSongsByDate() : Promise<IResponse<ISong>>{
-    return (await(await fetch(`${this.url}/song/getSongsByDate`,{
+  async getSongsByDate(): Promise<IResponse<ISong>> {
+    return (await (await fetch(`${this.url}/song/getSongsByDate`, {
       method: 'GET',
       headers: {
         Accept: 'application/json',
@@ -47,7 +47,7 @@ export class SongService {
   }
 
 
-  async createSong(idUser: number,body: ISong): Promise<IResponse<ISong>> {
+  async createSong(idUser: number, body: ISong): Promise<IResponse<ISong>> {
     return (await (await fetch(`${this.url}/song/createSong/${idUser}`, {
       method: 'POST',
       body: JSON.stringify(body),
@@ -62,6 +62,18 @@ export class SongService {
   async getSongByID(idSong: number): Promise<IResponse<ISong>> {
     return (await (await fetch(`${this.url}/song/getSongByID/${idSong}`, {
       method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        'Authorization': 'Bearer ' + this.cookieService.get("SESSIONID"),
+        'Content-Type': 'application/json',
+      }
+    })).json()) ?? [];
+  }
+
+  async increaseReproductions(body: { songId: number }): Promise<IResponse<ISong>> {
+    return (await (await fetch(`${this.url}/song/increaseSongReproductions`, {
+      method: 'POST',
+      body: JSON.stringify(body),
       headers: {
         Accept: 'application/json',
         'Authorization': 'Bearer ' + this.cookieService.get("SESSIONID"),
