@@ -1,0 +1,140 @@
+.library-component {
+    width: 100%;
+    height: 30%;
+    margin-top: 12%;
+  }
+  
+  .library-component-album-list {
+    display: grid;
+    align-content: flex-start;
+    /* grid-template-columns: 50% 50% 50% 50%; */
+    grid-template-rows: 25% 25%;
+    overflow-x: auto;
+    justify-items: center;
+    height: 100%;
+    scrollbar-width: none; /* Oculta la barra de desplazamiento en navegadores Firefox */
+  }
+  
+  .album-component {
+    width: 92%;
+    height: 80%;
+    margin-right: 10px;
+    margin-left: 10px;
+    margin-bottom: 4%;
+  }
+  
+  .library-component-title {
+    grid-area: 1 / 1 / 2 / 2;
+    display: flex;
+    margin-left: 1.5%;
+    text-align: initial;
+    color: #c7b9b3;
+  
+  }
+  
+  .library-component-song-list {
+    display: flex;
+    overflow-x: auto;
+    scrollbar-width: none; /* Oculta la barra de desplazamiento en navegadores Firefox */
+    width: 100%;
+    height: 100%;
+  
+  }
+  
+  .library-component-song-list::-webkit-scrollbar {
+    display: none; /* Oculta la barra de desplazamiento en navegadores webkit como Chrome y Safari */
+  }
+  
+  .library-component-album-list::-webkit-scrollbar {
+    display: none; /* Oculta la barra de desplazamiento en navegadores webkit como Chrome y Safari */
+  }
+  
+  .library-component-songLatest-list::-webkit-scrollbar{
+    display: none;
+  }
+  
+  .library-component-songOutStanding-list::-webkit-scrollbar{
+    display: none;
+  }
+  
+  .song-component {
+    width: 92%;
+    height: 91%;
+    margin-right: 10px;
+    margin-left: 10px;
+    margin-bottom: 4%;
+  }
+  
+  .library-component-songLatest-list {
+    display: grid;
+    align-content: flex-start;
+    grid-template-columns: repeat(2, 100%);
+    grid-template-rows: 25% 25% 25% 25%;
+    overflow-x: auto;
+    justify-items: center;
+    height: 100%;
+    scrollbar-width: none; /* Oculta la barra de desplazamiento en navegadores Firefox */
+  }
+  
+  .songLatest-component {
+    width: 92%;
+    height: 90%;
+    margin-right: 10px;
+    margin-left: 10px;
+    margin-bottom: 4%;
+  }
+  
+  .library-component-latest {
+    width: 100%;
+    height: 30%;
+    margin-top: 10%;
+  }
+  
+  .library-component-outstanding{
+    width: 100%;
+    height: 30%;
+    margin-top: 14%;
+  }
+  
+  .library-component-songOutStanding-list{
+    display: grid;
+    align-content: flex-start;
+    grid-template-columns: repeat(2, 100%);
+    grid-template-rows: 25% 25% 25% 25%;
+    overflow-x: auto;
+    justify-items: center;
+    height: 100%;
+    scrollbar-width: none; /* Oculta la barra de desplazamiento en navegadores Firefox */
+  }
+  
+  .songOutStanding-component{
+    width: 92%;
+    height: 90%;
+    margin-right: 10px;
+    margin-left: 10px;
+    margin-bottom: 4%;
+  }
+  
+  #song-button {
+    grid-area: 1 / 2 / 2 / 3;
+    left: 0;
+    
+  }
+  #album-button {
+    grid-area: 1 / 2 / 2 / 3;
+    left: 0;
+  }
+  
+  #song-button:hover {
+    opacity: 0.6;
+    cursor: pointer;
+  }
+  #album-button:hover {
+    opacity: 0.6;
+    cursor: pointer;
+  }
+  .button-text {
+    column-count: 2;
+    column-gap: 0;
+  }
+  

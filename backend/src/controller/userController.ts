@@ -141,7 +141,7 @@ const validateUser = async (req: Request, res: Response) => {
 const generateJWT = (userId: string) => {
 	const jwtBearerToken = jwt.sign({}, RSA_PRIVATE_KEY, {
 		algorithm: 'RS256',
-		expiresIn: 200,
+		expiresIn: 2000,
 		subject: userId
 	})
 
