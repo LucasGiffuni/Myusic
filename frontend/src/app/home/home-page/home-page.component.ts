@@ -50,7 +50,7 @@ import { CreateAlbumDialogComponent } from './create-album-dialog/create-album-d
     <div class = "library-component-outstanding">
       <h1 class = "library-component-title">Outstanding</h1>
       <div #listSongOutStanding class = "library-component-songOutStanding-list">
-        <app-song-latest class = "songOutStanding-component" *ngFor="let song of this.songListLastes" [song]="song"></app-song-latest>
+        <app-song-latest class = "songOutStanding-component" *ngFor="let song of this.songListOutStanding" [song]="song"></app-song-latest>
       </div>
     </div>
   `,
@@ -70,12 +70,14 @@ export class HomePageComponent implements AfterViewChecked {
   albumList: IAlbum[] = [];
   songList: ISong[] = [];
   songListLastes : ISong[] = [];
+  songListOutStanding : ISong[] = [];
 
 
   constructor(private router: Router, public dialog: MatDialog) {
     this.getAlbums();
     this.getSongs();
     this.getSongsByDate();
+    this.getSongsByReproductions();
   }
 
   async getAlbums() {
@@ -118,6 +120,20 @@ export class HomePageComponent implements AfterViewChecked {
         console.log('titulo: ' + element.titulo)
       });
       console.log(this.songList);
+    })
+    .catch(err => {
+      console.error(err);
+    });
+  }
+
+  async getSongsByReproductions(){
+    await this.songService.getSongsByReproductions()
+    .then((value:IResponse<ISong>) =>{
+      value.data.forEach(element => {
+        this.songListOutStanding.push(element);
+        console.log('titulo: ' + element.titulo)
+      });
+      console.log(this.songListOutStanding);
     })
     .catch(err => {
       console.error(err);
