@@ -1,5 +1,6 @@
 import { config } from "./config/config";
 import sql from "mssql";
+import { ISong } from "./interfaces/ISong";
 
 export default class Database {
   poolconnection = new sql.ConnectionPool(config);
@@ -151,9 +152,18 @@ export default class Database {
     const result = await request.query(`SELECT * FROM Cancion`);
     return result.recordset;
   }
+  async getSongsById(id: string | number) {
+    await this.connect();
+
+    const request = this.poolconnection.request();
+
+    const result = await request.input("id", sql.Int, +id)
+      .query(`SELECT * FROM Cancion WHERE idCancion = @id`);
+    return result.recordset;
+  }
 
   async readAlbums(id: string | number) {
-    console.log(id);
+    console.log('id: ' + id);
     await this.connect();
 
     const request = this.poolconnection.request();
@@ -161,39 +171,44 @@ export default class Database {
       .input("id", sql.Int, +id)
       .query(`SELECT * FROM Album WHERE idUsuario = @id`);
 
+    // console.log('result: ' + result.recordset)
     return result.recordset;
   }
 
   //function to create a new album in de Data Base
-  async createSong(data: { title: any; gender: any; date: any; author: any; referenceLink: any }) {
+  async createSong(data: ISong) {
     await this.connect();
-    let dateSong = new Date("now");
     const request = this.poolconnection.request();
-    request.input("titulo", sql.NVarChar(255), data.title);
-    request.input("genero", sql.NVarChar(255), data.gender);
-    request.input("fecha", sql.NVarChar(255), data.date);
-    request.input("fechaCreacion", sql.Date, dateSong);
-    request.input("autor", sql.NVarChar(255), data.author);
-    request.input("link", sql.NVarChar(255), data.referenceLink);
+    request.input("titulo", sql.NVarChar(255), data.titulo);
+    request.input("genero", sql.NVarChar(255), data.genero);
+    request.input("fechaLanzamiento", sql.Date, data.fechaLanzamiento);
+    request.input("autor", sql.NVarChar(255), data.autor);
+    request.input("linkReferencia", sql.NVarChar(255), data.linkReferencia);
+    request.input("idUsuario", sql.Int, data.idUsuario);
+    request.input("imagen", sql.NVarChar(255), data.imagen);
 
     const result = await request.query(
-      `INSERT INTO Songs(
+      `INSERT INTO Cancion(
                 titulo,
                 genero,
-                fecha,
-                fechaCreacion,
+                fechaLanzamiento,
+                linkReferencia,
                 autor,
-                link
+                vecesReproducidas,
+                imagen,
+                idUsuario
                 )
                 values(
                 @titulo,
                 @genero,
-                @fecha,
-                @fechaCreacion,
+                @fechaLanzamiento,
+                @linkReferencia,
                 @autor,
-                @link
+                0,
+                @imagen,
+                @idUsuario
                 )
-            )`
+            `
     );
     return result.rowsAffected[0];
   }
@@ -227,25 +242,41 @@ export default class Database {
 
     return result.recordset;
   }
-  
-  	async deleteSong(songId: number) {
-		  await this.connect();
+  async getSongReproductionsByID(songId: number) {
+    await this.connect();
 
-      const request = this.poolconnection.request();
+    const request = this.poolconnection.request();
+    request.input('songId', sql.Int(), songId);
 
-      request.input('songId', sql.Int(), songId);
+    const result = await request.query(
+      `SELECT * FROM Cancion where idCancion = @songId `
+    );
 
-      const result = await request.query(`DELETE FROM Cancion WHERE idCancion = @songId`);
+    return result.recordset[0];
+  }
 
-      return result.recordset;
-	}
+  async deleteSong(songId: number, userId: number) {
+    await this.connect();
+
+    const request = this.poolconnection.request();
+
+    request.input('songId', sql.Int(), songId);
+    request.input('userId', sql.Int(), userId);
+
+    const result = await request.query(
+      `DELETE FROM Cancion
+		WHERE idCancion = @songId
+		AND idUsuario = @userId`);
+
+    return result.rowsAffected[0];
+  }
 
   async increaseSongReproductions(timesReproduced: number, idCancion: number) {
     await this.connect();
 
     const request = this.poolconnection.request();
-	request.input("timesReproduced", sql.Int, timesReproduced);
-	request.input("idCancion", sql.Int, idCancion);
+    request.input("timesReproduced", sql.Int, timesReproduced);
+    request.input("idCancion", sql.Int, idCancion);
 
     const result = await request.query(
       `UPDATE Cancion
@@ -253,21 +284,35 @@ export default class Database {
 	  WHERE idCancion = @idCancion`
     );
 
+    return result.rowsAffected[0];
+  }
+
+  async getSongsByDate() {
+    await this.connect();
+
+    const request = this.poolconnection.request();
+
+    const result = await request.query(
+      `SELECT *
+      FROM
+      Cancion
+      ORDER BY fechaLanzamiento DESC`
+    );
     return result.recordset;
   }
 
   //function to create a new album in de Data Base
-  async createAlbum(data: { userId: any; albumTitle: any; description: any }) {
+  async createAlbum(data: { userId: number; albumTitle: string; albumDescription: string }) {
     await this.connect();
-    let dateAlbum = new Date("now");
+    let dateAlbum = new Date("2023-06-24");
     const request = this.poolconnection.request();
     request.input("idUsuario", sql.Int, data.userId);
     request.input("titulo", sql.NVarChar(255), data.albumTitle);
-    request.input("descripcion", sql.NVarChar(255), data.description);
+    request.input("descripcion", sql.NVarChar(255), data.albumDescription);
     request.input("fechaCreacion", sql.Date, dateAlbum);
 
     const result = await request.query(
-      `INSERT INTO Albums(
+      `INSERT INTO Album(
                 idUsuario,
                 titulo,
                 descripcion,
@@ -279,8 +324,9 @@ export default class Database {
                 @descripcion,
                 @fechaCreacion
                 )
-            )`
+            `
     );
+    console.log(result.rowsAffected[0])
     return result.rowsAffected[0];
   }
   // Function to delete an entire album from the Data Base

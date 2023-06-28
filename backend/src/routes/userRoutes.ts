@@ -14,9 +14,6 @@ router.put('/addSongToAlbum', (req, res) => {
     controller.addSongToAlbum(req, res)
 });
 
-
-
-
 router.put('/updateUser', (req, res) => {
     controller.updateUser(req, res)
 });

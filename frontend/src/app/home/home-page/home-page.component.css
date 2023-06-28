@@ -7,34 +7,37 @@
 .library-component-album-list {
   display: grid;
   align-content: flex-start;
-  grid-template-columns: 50% 50% 50% 50%;
+  /* grid-template-columns: 50% 50% 50% 50%; */
   grid-template-rows: 25% 25%;
   overflow-x: auto;
   justify-items: center;
   height: 100%;
   scrollbar-width: none; /* Oculta la barra de desplazamiento en navegadores Firefox */
-
 }
 
 .album-component {
   width: 92%;
-  height: 65%;
+  height: 80%;
   margin-right: 10px;
   margin-left: 10px;
   margin-bottom: 4%;
 }
 
 .library-component-title {
+  grid-area: 1 / 1 / 2 / 2;
   display: flex;
   margin-left: 1.5%;
   text-align: initial;
   color: #c7b9b3;
+
 }
 
-.library-component-song-list{
+.library-component-song-list {
   display: flex;
   overflow-x: auto;
   scrollbar-width: none; /* Oculta la barra de desplazamiento en navegadores Firefox */
+  width: 100%;
+  height: 100%;
 
 }
 
@@ -46,29 +49,90 @@
   display: none; /* Oculta la barra de desplazamiento en navegadores webkit como Chrome y Safari */
 }
 
-.song-component{
-  width: 100%;
-  height: 100%;
-  margin-right: 5%;
+.library-component-songLatest-list::-webkit-scrollbar{
+  display: none;
 }
 
-.library-component-songLatest-list{
+.library-component-songOutStanding-list::-webkit-scrollbar{
+  display: none;
+}
+
+.song-component {
+  width: 92%;
+  height: 91%;
+  margin-right: 10px;
+  margin-left: 10px;
+  margin-bottom: 4%;
+}
+
+.library-component-songLatest-list {
   display: grid;
-  grid-template-columns: repeat(3,100%); 
-  grid-template-rows: 33%;
-  height: 100%;
+  align-content: flex-start;
+  grid-template-columns: repeat(2, 100%);
+  grid-template-rows: 25% 25% 25% 25%;
   overflow-x: auto;
+  justify-items: center;
+  height: 100%;
   scrollbar-width: none; /* Oculta la barra de desplazamiento en navegadores Firefox */
 }
 
-.songLatest-component{
-  display: flex;
-  width: 50%;
-  margin-bottom: 5%;
+.songLatest-component {
+  width: 92%;
+  height: 90%;
+  margin-right: 10px;
+  margin-left: 10px;
+  margin-bottom: 4%;
 }
 
-.library-component-latest{
+.library-component-latest {
   width: 100%;
-  height: auto;
-  margin-top: 25%;
+  height: 30%;
+  margin-top: 10%;
+}
+
+.library-component-outstanding{
+  width: 100%;
+  height: 30%;
+  margin-top: 14%;
+}
+
+.library-component-songOutStanding-list{
+  display: grid;
+  align-content: flex-start;
+  grid-template-columns: repeat(2, 100%);
+  grid-template-rows: 25% 25% 25% 25%;
+  overflow-x: auto;
+  justify-items: center;
+  height: 100%;
+  scrollbar-width: none; /* Oculta la barra de desplazamiento en navegadores Firefox */
+}
+
+.songOutStanding-component{
+  width: 92%;
+  height: 90%;
+  margin-right: 10px;
+  margin-left: 10px;
+  margin-bottom: 4%;
+}
+
+#song-button {
+  grid-area: 1 / 2 / 2 / 3;
+  left: 0;
+}
+#album-button {
+  grid-area: 1 / 2 / 2 / 3;
+  left: 0;
+}
+
+#song-button:hover {
+  opacity: 0.6;
+  cursor: pointer;
+}
+#album-button:hover {
+  opacity: 0.6;
+  cursor: pointer;
+}
+.button-text {
+  column-count: 2;
+  column-gap: 0;
 }

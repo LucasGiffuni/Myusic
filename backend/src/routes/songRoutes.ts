@@ -6,6 +6,9 @@ const router = express.Router();
 router.get('/getSongs', (req,res) => {
     controller.getAllSongs(req,res);
 })
+router.get('/getSongById/:songId', (req,res) => {
+    controller.getSongById(req,res);
+})
 
 router.get('/getSongReproductions',(req,res) => {
     controller.getSongReproductions(req,res);
@@ -23,8 +26,13 @@ router.delete('/deleteSong',(req,res)=>{
     controller.deleteSong(req,res);
 })
 
-router.post('/createSong',(req,res)=>{
+router.post('/createSong/:idUser',(req,res)=>{
     controller.createSong(req,res);
 })
+
+router.get('/getSongsByDate',(req,res)=>{
+    controller.getSongsByDate(req,res);
+})
+
 
 export default router;
