@@ -5,6 +5,8 @@
   top: 0; /* Position the navbar at the top of the page */
   width: 100%; /* Full width */
   height: 5%;
+  display: flex;
+  justify-content: space-around;
 }
 
 #home-button {
@@ -26,6 +28,28 @@
   color:wheat;
 }
 #user-button:hover {
+  opacity: 0.6;
+  cursor: pointer;
+}
+#searchSongInput{
+  border-radius: 20px;
+}
+#searchSongButton{
+  float: left;
+  width: 20%;
+  padding: 10px;
+  background: #2196F3;
+  color: white;
+  font-size: 17px;
+  border: 1px solid grey;
+  border-left: none; /* Prevent double borders */
+  cursor: pointer;
+}
+#searchButton{
+  margin-top: 4%;
+}
+
+#searchButton:hover{
   opacity: 0.6;
   cursor: pointer;
 }
