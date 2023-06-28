@@ -92,4 +92,14 @@ export class SongService {
       }
     })).json()) ?? [];
   }
+  async getSongBySearchValue(body: { searchValue: string }): Promise<IResponse<ISong>> {
+    return (await (await fetch(`${this.url}/song/getSongsBySearchValue/${body.searchValue}`, {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        'Authorization': 'Bearer ' + this.cookieService.get("SESSIONID"),
+        'Content-Type': 'application/json',
+      }
+    })).json()) ?? [];
+  }
 }

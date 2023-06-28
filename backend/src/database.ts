@@ -54,6 +54,20 @@ export default class Database {
     return result.recordset;
   }
 
+  async searchSongByTitle(data: { searchValue: any}) {
+    await this.connect();
+
+    console.log(data)
+    const request = this.poolconnection.request();
+    request.input("searchValue", sql.NVarChar(255), `%${data.searchValue}%`);
+
+    const result = await request.query(
+      `select * from Cancion where titulo LIKE @searchValue`
+    );
+      console.log(result)
+    return result.recordset;
+  }
+
   async createUser(data: { username: any; password: any }) {
     await this.connect();
     const request = this.poolconnection.request();
