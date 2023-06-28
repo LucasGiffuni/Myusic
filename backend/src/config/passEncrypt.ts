@@ -3,7 +3,7 @@ import { config } from '../config/config';
 import CryptoJS from "crypto-js";
 
 
-export default class passEcrypt {
+export default class PassEcrypt {
 
     Secret = config.encryptSecret;
     rounds = 3;

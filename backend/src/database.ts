@@ -2,31 +2,25 @@ import { config } from "./config/config";
 import sql from "mssql";
 import { ISong } from "./interfaces/ISong";
 
-export default class Database {
+export default class DataBase {
   poolconnection = new sql.ConnectionPool(config);
   connected = false;
 
   async connect() {
     try {
-      console.log(`Database connecting...${this.connected}`);
       if (this.connected === false) {
         this.poolconnection = await sql.connect(config);
         this.connected = true;
-        console.log("Database connection successful");
       } else {
-        console.log("Database already connected");
       }
     } catch (error) {
-      console.error(`Error connecting to database: ${JSON.stringify(error)}`);
     }
   }
 
   async disconnect() {
     try {
       this.poolconnection.close();
-      console.log("Database connection closed");
     } catch (error) {
-      console.error(`Error closing database connection: ${error}`);
     }
   }
 
@@ -163,7 +157,6 @@ export default class Database {
   }
 
   async readAlbums(id: string | number) {
-    console.log('id: ' + id);
     await this.connect();
 
     const request = this.poolconnection.request();
@@ -171,7 +164,6 @@ export default class Database {
       .input("id", sql.Int, +id)
       .query(`SELECT * FROM Album WHERE idUsuario = @id`);
 
-    // console.log('result: ' + result.recordset)
     return result.recordset;
   }
 
@@ -326,7 +318,6 @@ export default class Database {
                 )
             `
     );
-    console.log(result.rowsAffected[0])
     return result.rowsAffected[0];
   }
   // Function to delete an entire album from the Data Base

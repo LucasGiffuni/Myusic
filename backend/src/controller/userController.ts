@@ -17,10 +17,8 @@ const getUser = async (req: Request, res: Response) => {
 	try {
 		// Get the person with the specified ID
 		const personId = req.body.userId;
-		console.log(`personId: ${personId}`);
 		if (personId) {
 			const result = await database.read(personId);
-			console.log(`persons: ${JSON.stringify(result)}`);
 			res.status(200).json(result);
 		} else {
 			res.status(404);
@@ -96,9 +94,7 @@ const validateUser = async (req: Request, res: Response) => {
 	}
 	if (username && password) {
 		try {
-			console.log(`User Data: ${JSON.stringify(data)}`);
 			const result = await database.obtenerUsuariosPorUsername(data);
-			console.log(`Result: ${JSON.stringify(result)}`);
 
 			if (result.length === 0) {
 				response.resultado.statusCode = "404";
@@ -115,12 +111,11 @@ const validateUser = async (req: Request, res: Response) => {
 				response.user.idUsuario = result[0].idUsuario;
 				response.user.username = result[0].username
 				const idUser: string = result[0].idUsuario.toString();
-				console.log("user " + idUser.toString())
 				const jwt = generateJWT(idUser);
 				response.user.token = jwt;
 
-		
-				res.cookie("SESSIONID", jwt, { httpOnly: false, secure: false });
+
+				res.cookie("SESSIONID", jwt, { httpOnly: true, secure: true });
 
 				res.status(200).json(response);
 			}
@@ -154,11 +149,9 @@ const generateJWT = (userId: string) => {
 const getUserPlaylists = async (req: Request, res: Response) => {
 	try {
 		const personId = req.params.idUsuario;
-		console.log(`personId: ${personId}`);
 
 		if (personId) {
 			const result = await database.getUserPlaylists(personId);
-			console.log(`persons: ${JSON.stringify(result)}`);
 			res.status(200).json(result);
 		} else {
 			res.status(404);
@@ -192,7 +185,7 @@ const addSongToAlbum = async (req: Request, res: Response) => {
 
 const updateUser = async (req: Request, res: Response) => {
 	try {
-		const userId = parseInt(req.body.idUsuario);
+		const userId = parseInt(req.body.idUsuario, 10);
 		const password = req.body.password;
 		const username = req.body.username;
 		if (userId) {

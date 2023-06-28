@@ -94,9 +94,8 @@ const increaseSongReproductions = async (req: Request, res: Response) => {
     try {
         const songId = req.body.songId
         const timesReproduced = await database.getSongReproductionsByID(songId);
-        console.log(timesReproduced)
         let i: number = 0;
-        const result = await database.increaseSongReproductions(parseInt(timesReproduced.vecesReproducidas) + 1, songId);
+        const result = await database.increaseSongReproductions(parseInt(timesReproduced.vecesReproducidas, 10) + 1, songId);
         const response: IResponse<any[]> = {
             Result: {
                 statuscode: "",
@@ -164,8 +163,8 @@ const editSong = async (req: Request, res: Response) => {
 
 const deleteSong = async (req: Request, res: Response) => {
     try {
-        const songId: number = parseInt(req.body.songId)
-        const userId: number = parseInt(req.body.userId)
+        const songId: number = parseInt(req.body.songId, 10)
+        const userId: number = parseInt(req.body.userId, 10)
         const result = await database.deleteSong(songId, userId);
         const response: IResponse<number> = {
             Result: {
@@ -196,7 +195,7 @@ const createSong = async (req: Request, res: Response) => {
     const linkReferencia = req.body.linkReferencia;
     const autor = req.body.autor;
     const fechaLanzamiento = req.body.fechaLanzamiento;
-    const idUsuario = parseInt(req.params.idUser);
+    const idUsuario = parseInt(req.params.idUser, 10);
     const vecesReproducidas = 0;
     const idCancion = 0;
     const imagen = req.body.imagen;

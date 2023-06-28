@@ -3,7 +3,7 @@ dotenv.config({ path: `.env.${process.env.NODE_ENV}`, debug: true });
 
 const server = process.env.AZURE_SQL_SERVER;
 const database = process.env.AZURE_SQL_DATABASE;
-const port = parseInt(process.env.AZURE_SQL_PORT);
+const port = parseInt(process.env.AZURE_SQL_PORT, 10);
 const user = process.env.AZURE_SQL_USER;
 const password = process.env.AZURE_SQL_PASSWORD;
 const encryptSecret = process.env.ENCRYPT_SECRET;

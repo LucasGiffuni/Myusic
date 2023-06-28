@@ -51,7 +51,6 @@ const getAlbums = async (req: Request, res: Response) => {
             },
             data: result
         }
-        console.log(`Albums: ${result}`);
         if (result.length > 0) {
             response.Result.statuscode = "200";
             response.Result.statustext = "OK";
@@ -78,7 +77,6 @@ const getUserAlbums = async (req: Request, res: Response) => {
             },
             data: result
         }
-        console.log(`Albums: ${result}`);
         if (result.length > 1) {
             response.Result.statuscode = "200";
             response.Result.statustext = "OK";
@@ -97,7 +95,7 @@ const getUserAlbums = async (req: Request, res: Response) => {
 
 const createAlbum = async (req: Request, res: Response) => {
     try {
-        const userId = parseInt(req.params.idUsuario);
+        const userId = parseInt(req.params.idUsuario, 10);
         const albumTitle = String(req.body.titulo);
         const albumDescription = String(req.body.descripcion)
 
@@ -115,7 +113,6 @@ const createAlbum = async (req: Request, res: Response) => {
             },
             data: []
         }
-        console.log(`Albums: ${result}`);
         if (result > 0) {
             response.Result.statuscode = "200";
             response.Result.statustext = "OK";
