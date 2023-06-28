@@ -361,5 +361,28 @@ export default class Database {
     );
     return result.rowsAffected[0];
   }
+
+  //function to get username by id
+  async getUsernameById(id: string | number) {
+    await this.connect();
+    const request = this.poolconnection.request();
+    const result = await request.input("id", sql.Int, +id).query(`
+            Select Usuario.username
+            where Usuario.idUsuario = @id
+            `);
+
+    return result.recordset;
+  }
+  //function to get password by id
+  async getPasswordById(id: string | number) {
+    await this.connect();
+    const request = this.poolconnection.request();
+    const result = await request.input("id", sql.Int, +id).query(`
+            Select Usuario.password
+            where Usuario.idUsuario = @id
+            `);
+
+    return result.recordset;
+  }
 }
 
