@@ -92,18 +92,19 @@ const getSongReproductions = async (req: Request, res: Response) => {
 
 const increaseSongReproductions = async (req: Request, res: Response) => {
     try {
-        const timesReproduced = await database.getSongReproductions();
         const songId = req.body.songId
+        const timesReproduced = await database.getSongReproductionsByID(songId);
+        console.log(timesReproduced)
         let i: number = 0;
-        const result = await database.increaseSongReproductions(parseInt(timesReproduced.toString()) + 1, songId);
+        const result = await database.increaseSongReproductions(parseInt(timesReproduced.vecesReproducidas) + 1, songId);
         const response: IResponse<any[]> = {
             Result: {
                 statuscode: "",
                 statustext: ""
             },
-            data: result
+            data: []
         }
-        if (result.length > 0) {
+        if (result > 0) {
             response.Result.statuscode = "200";
             response.Result.statustext = "OK";
             res.json(response);
