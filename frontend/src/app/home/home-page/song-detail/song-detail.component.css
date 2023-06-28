@@ -23,15 +23,37 @@
   text-align: center;
 }
 
-
 #audio-controller {
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-	justify-content: flex-end;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
 }
 
 #boton-del-medio {
-	margin-left: 5pt;
-	margin-right: 5pt;
+  margin-left: 5pt;
+  margin-right: 5pt;
+}
+
+@media (width> 1250px) {
+  .example-card {
+    margin-top: 3%;
+
+    max-width: 100%;
+    min-width: 900px;
+
+  }
+}
+
+@media (width < 750px) {
+  .example-card {
+    margin-top: 20%;
+    max-width: 100%;
+    min-width: 300px;
+  }
+}
+
+#add-button:hover {
+  opacity: 0.6;
+  cursor: pointer;
 }

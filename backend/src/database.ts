@@ -242,6 +242,18 @@ export default class Database {
 
     return result.recordset;
   }
+  async getSongReproductionsByID(songId: number) {
+    await this.connect();
+
+    const request = this.poolconnection.request();
+    request.input('songId', sql.Int(), songId);
+
+    const result = await request.query(
+      `SELECT * FROM Cancion where idCancion = @songId `
+    );
+
+    return result.recordset[0];
+  }
 
   async deleteSong(songId: number, userId: number) {
     await this.connect();
@@ -249,10 +261,10 @@ export default class Database {
     const request = this.poolconnection.request();
 
     request.input('songId', sql.Int(), songId);
-	request.input('userId', sql.Int(), userId);
+    request.input('userId', sql.Int(), userId);
 
     const result = await request.query(
-		`DELETE FROM Cancion
+      `DELETE FROM Cancion
 		WHERE idCancion = @songId
 		AND idUsuario = @userId`);
 
@@ -272,10 +284,10 @@ export default class Database {
 	  WHERE idCancion = @idCancion`
     );
 
-    return result.recordset;
+    return result.rowsAffected[0];
   }
 
-  async getSongsByDate(){
+  async getSongsByDate() {
     await this.connect();
 
     const request = this.poolconnection.request();
@@ -285,7 +297,7 @@ export default class Database {
       FROM
       Cancion
       ORDER BY fechaLanzamiento DESC`
-      );
+    );
     return result.recordset;
   }
 
@@ -314,7 +326,7 @@ export default class Database {
                 )
             `
     );
-    console.log( result.rowsAffected[0])
+    console.log(result.rowsAffected[0])
     return result.rowsAffected[0];
   }
   // Function to delete an entire album from the Data Base

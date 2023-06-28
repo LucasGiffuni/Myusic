@@ -5,7 +5,6 @@ import jwt from 'jsonwebtoken';
 import fs from "fs";
 import cors from 'cors';
 import userRoutes from "./routes/userRoutes";
-import albumsRoutes from "./routes/albumsRoutes";
 
 
 import songRoutes from "./routes/songRoutes";
@@ -60,9 +59,6 @@ app.use((req, res, next) => {
 
 });
 
-app.use('/user', userRoutes);
-app.use('/album', albumRoutes);
-app.use('/albums', albumsRoutes);
 
 app.use((req, res, next) => {
 	res.header('Access-Control-Allow-Origin', '*');
@@ -81,8 +77,8 @@ app.use((req, res, next) => {
 
 app.use('/user', userRoutes);
 app.use('/song', songRoutes);
-app.use('/albums', albumsRoutes);
-app.use('/song', albumsRoutes);
+app.use('/albums', albumRoutes);
+
 
 /** Error handling */
 app.use((req, res, next) => {
