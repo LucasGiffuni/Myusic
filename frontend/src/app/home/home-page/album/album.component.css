@@ -26,7 +26,7 @@
   border-bottom-left-radius: 5px;
 }
 
-#album-component-title {
+.album-component-title {
   display: flex;
   justify-content: center; /* Align horizontal */
   align-items: center; /* Align vertical */

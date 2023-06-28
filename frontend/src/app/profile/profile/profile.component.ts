@@ -56,6 +56,7 @@ export class ProfileComponent {
   username: string = '';
   password: string = '';
   cookieService: CookieService = inject(CookieService);
+  loginService: UserService = inject(UserService);
 
 
   onFocusOutUsername(event: any) {
@@ -85,5 +86,6 @@ export class ProfileComponent {
     this.cookieService.remove("SESSIONID")
     this.cookieService.remove("USERID")
     this.cookieService.remove("SELECTEDSONG")
+    this.loginService.loginFlag = false;
   }
 }

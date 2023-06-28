@@ -5,6 +5,9 @@ import { UserInterface } from '../interfaces/IUser';
   providedIn: 'root'
 })
 export class UserService {
+
+  loginFlag: boolean = false
+
   private currentUser: UserInterface = {
     id:0,
     username: '',

@@ -33,6 +33,7 @@ import { MatIconModule } from '@angular/material/icon';
     <mat-card-title id="songCardTitle">{{selectedSong.titulo}}</mat-card-title>
     <mat-card-subtitle>{{selectedSong.autor}}</mat-card-subtitle>
   </mat-card-header>
+  
   <img mat-card-image src={{selectedSong.imagen}} >
   <mat-card-content>
 

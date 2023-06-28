@@ -114,7 +114,6 @@ const validateUser = async (req: Request, res: Response) => {
 				const jwt = generateJWT(idUser);
 				response.user.token = jwt;
 
-
 				res.cookie("SESSIONID", jwt, { httpOnly: true, secure: true });
 
 				res.status(200).json(response);
@@ -136,7 +135,7 @@ const validateUser = async (req: Request, res: Response) => {
 const generateJWT = (userId: string) => {
 	const jwtBearerToken = jwt.sign({}, RSA_PRIVATE_KEY, {
 		algorithm: 'RS256',
-		expiresIn: 1800,
+		expiresIn: 200,
 		subject: userId
 	})
 
