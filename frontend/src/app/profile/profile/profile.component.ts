@@ -62,6 +62,7 @@ export class ProfileComponent {
   userService: Services = inject(Services);
   profileService:UserService=inject(UserService)
   idUsuario: number=-1;
+  loginService: UserService = inject(UserService);
 
 
  
@@ -89,5 +90,6 @@ export class ProfileComponent {
     this.cookieService.remove("SESSIONID")
     this.cookieService.remove("USERID")
     this.cookieService.remove("SELECTEDSONG")
+    this.loginService.loginFlag = false;
   }
 }

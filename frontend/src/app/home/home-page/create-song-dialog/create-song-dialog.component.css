@@ -1,0 +1,23 @@
+#referenceLink{
+  float: left;
+}
+#showReferenceLink{
+  float: right;
+}
+#showReferenceLink:hover{
+  opacity: 0.6;
+  cursor: pointer;
+}
+
+#image{
+  float: left;
+}
+#showImage{
+  float: right;
+}
+
+#showImage:hover{
+  opacity: 0.6;
+  cursor: pointer;
+}
+

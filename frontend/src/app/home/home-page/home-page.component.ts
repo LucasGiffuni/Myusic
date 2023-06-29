@@ -12,10 +12,9 @@ import { SongLatestComponent } from "./song/song-latest/song-latest.component";
 import { MatDialog, MatDialogRef, MatDialogModule } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 
-
-
 import { CreateSongDialogComponent } from './create-song-dialog/create-song-dialog.component';
 import { CreateAlbumDialogComponent } from './create-album-dialog/create-album-dialog.component';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 
 @Component({
@@ -55,13 +54,13 @@ import { CreateAlbumDialogComponent } from './create-album-dialog/create-album-d
     </div>
   `,
   styleUrls: ['./home-page.component.css'],
-  imports: [CommonModule, AlbumComponent, SongComponent, SongLatestComponent, MatDialogModule]
+  imports: [CommonModule, AlbumComponent, SongComponent, SongLatestComponent, MatDialogModule, MatSnackBarModule]
 
 })
 export class HomePageComponent implements AfterViewChecked {
   @ViewChild('listAlbums', { static: false }) listAlbums!: ElementRef;
   @ViewChild('listSongLatest', { static: false }) listSongLatest!: ElementRef;
-  @ViewChild('listSongOutStanding', {static:false}) listSongOutStanding! : ElementRef;
+  @ViewChild('listSongOutStanding', { static: false }) listSongOutStanding!: ElementRef;
 
   albumService: AlbumService = inject(AlbumService);
   songService: SongService = inject(SongService);
@@ -69,11 +68,11 @@ export class HomePageComponent implements AfterViewChecked {
 
   albumList: IAlbum[] = [];
   songList: ISong[] = [];
-  songListLastes : ISong[] = [];
-  songListOutStanding : ISong[] = [];
+  songListLastes: ISong[] = [];
+  songListOutStanding: ISong[] = [];
 
 
-  constructor(private router: Router, public dialog: MatDialog) {
+  constructor(private router: Router, public dialog: MatDialog, private _snackBar: MatSnackBar) {
     this.getAlbums();
     this.getSongs();
     this.getSongsByDate();
@@ -83,15 +82,18 @@ export class HomePageComponent implements AfterViewChecked {
   async getAlbums() {
     await this.albumService.getAlbums(this.cookieService.get("USERID"))
       .then((value: IResponse<IAlbum>) => {
-        value.data.forEach(element => {
-          this.albumList.push(element);
-        });
-
-        console.log(value.Result)
         if (value.Result.statuscode === "403") {
-          this.router.navigate(['/login']);
-        }
+          this.openSessionSnackBar("Session expired", "Cerrar")
 
+          this.router.navigate(['/login']);
+        } else {
+          value.data.forEach(element => {
+            this.albumList.push(element);
+          });
+
+          console.log(value.Result)
+
+        }
 
       })
       .catch(error => {
@@ -103,9 +105,15 @@ export class HomePageComponent implements AfterViewChecked {
   async getSongs() {
     await this.songService.getSongs()
       .then((value: IResponse<ISong>) => {
-        value.data.forEach(element => {
-          this.songList.push(element);
-        });
+        if (value.Result.statuscode === "403") {
+          this.openSessionSnackBar("Session expired", "Cerrar")
+
+          this.router.navigate(['/login']);
+        } else {
+          value.data.forEach(element => {
+            this.songList.push(element);
+          });
+        }
       })
       .catch(err => {
         console.error(err);
@@ -114,30 +122,42 @@ export class HomePageComponent implements AfterViewChecked {
 
   async getSongsByDate() {
     await this.songService.getSongsByDate()
-    .then((value:IResponse<ISong>) =>{
-      value.data.forEach(element => {
-        this.songListLastes.push(element);
-        console.log('titulo: ' + element.titulo)
+      .then((value: IResponse<ISong>) => {
+        if (value.Result.statuscode === "403") {
+          this.openSessionSnackBar("Session expired", "Cerrar")
+
+          this.router.navigate(['/login']);
+        } else {
+          value.data.forEach(element => {
+            this.songListLastes.push(element);
+            console.log('titulo: ' + element.titulo)
+          });
+          console.log(this.songList);
+        }
+      })
+      .catch(err => {
+        console.error(err);
       });
-      console.log(this.songList);
-    })
-    .catch(err => {
-      console.error(err);
-    });
   }
 
-  async getSongsByReproductions(){
+  async getSongsByReproductions() {
     await this.songService.getSongsByReproductions()
-    .then((value:IResponse<ISong>) =>{
-      value.data.forEach(element => {
-        this.songListOutStanding.push(element);
-        console.log('titulo: ' + element.titulo)
+      .then((value: IResponse<ISong>) => {
+        if (value.Result.statuscode === "403") {
+          this.openSessionSnackBar("Session expired", "Cerrar")
+
+          this.router.navigate(['/login']);
+        } else {
+          value.data.forEach(element => {
+            this.songListOutStanding.push(element);
+            console.log('titulo: ' + element.titulo)
+          });
+          console.log(this.songListOutStanding);
+        }
+      })
+      .catch(err => {
+        console.error(err);
       });
-      console.log(this.songListOutStanding);
-    })
-    .catch(err => {
-      console.error(err);
-    });
   }
 
 
@@ -158,14 +178,14 @@ export class HomePageComponent implements AfterViewChecked {
     const containerSongLatest = document.querySelector('.library-component-songLatest-list')
     const containerSongOutStanding = document.querySelector('.library-component-songOutStanding-list')
 
-    this.countColumns(containerAlbum,entireAlbums,50,2);
-    this.countColumns(containerSongLatest, entireSongLatests,100,4);
-    this.countColumns(containerSongOutStanding,entireSongOutStanding,100,4);
+    this.countColumns(containerAlbum, entireAlbums, 50, 2);
+    this.countColumns(containerSongLatest, entireSongLatests, 100, 4);
+    this.countColumns(containerSongOutStanding, entireSongOutStanding, 100, 4);
     this.countColumns(containerAlbum, entireAlbums, 50, 2);
     this.countColumns(containerSongLatest, entireSongLatests, 100, 4);
   }
 
-  countColumns(container : any, entire : number, capacity:number, columns:number ){
+  countColumns(container: any, entire: number, capacity: number, columns: number) {
     if (container != null) {
       const numColumns = Math.ceil(entire / columns);
       container.style.gridTemplateColumns = `repeat(${numColumns}, ${capacity}%)`;
@@ -174,29 +194,33 @@ export class HomePageComponent implements AfterViewChecked {
 
 
   addAlbum() {
-   this.openSongDialog('0ms', '0ms')
-    
+    this.openSongDialog('0ms', '0ms')
+
   }
   addSong() {
     this.openAlbumDialog('0ms', '0ms')
-  
+
   }
 
   openSongDialog(enterAnimationDuration: string, exitAnimationDuration: string): void {
     this.dialog.open(CreateSongDialogComponent, {
-      width: '250px',
+      width: '300px',
       enterAnimationDuration,
       exitAnimationDuration,
     });
-   
+
   }
 
   openAlbumDialog(enterAnimationDuration: string, exitAnimationDuration: string): void {
     this.dialog.open(CreateAlbumDialogComponent, {
-      width: '250px',
+      width: '300px',
       enterAnimationDuration,
       exitAnimationDuration,
     });
+  }
+
+  openSessionSnackBar(message: string, action: string) {
+    this._snackBar.open(message, action);
   }
 }
 

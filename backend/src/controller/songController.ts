@@ -262,7 +262,38 @@ const getSongsByDate = async (req: Request, res: Response) => {
     }
 }
 
+const getSongBySearchValue = async (req: Request, res: Response) => {
+    try {
+        const searchValue = req.params.searchValue
+       const dataI ={
+        searchValue
+        }
+
+        const result = await database.searchSongByTitle(dataI);
+        const response: IResponse<any[]> = {
+            Result: {
+                statuscode: "",
+                statustext: ""
+            },
+            data: result
+        }
+        if (result.length > 0) {
+            response.Result.statuscode = "200";
+            response.Result.statustext = "OK";
+            res.json(response);
+            res.status(200);
+        } else {
+            response.Result.statuscode = "404";
+            response.Result.statustext = "Not found";
+            res.json(response);
+            res.status(404);
+        }
+    } catch (err) {
+        res.status(500).json({ error: err?.message });
+    }
+}
 
 
 
-export default { getAllSongs, getSongById, getSongReproductions, increaseSongReproductions, editSong, createSong, deleteSong, getSongsByDate };
+
+export default { getAllSongs, getSongById, getSongReproductions, increaseSongReproductions, editSong, createSong, deleteSong, getSongsByDate ,getSongBySearchValue};

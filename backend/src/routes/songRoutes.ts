@@ -33,6 +33,10 @@ router.post('/createSong/:idUser',(req,res)=>{
 router.get('/getSongsByDate',(req,res)=>{
     controller.getSongsByDate(req,res);
 })
+router.get('/getSongsBySearchValue/:searchValue',(req,res)=>{
+    controller.getSongBySearchValue(req,res);
+})
+
 
 
 export default router;

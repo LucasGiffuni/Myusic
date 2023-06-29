@@ -49,23 +49,5 @@ export class UserService {
 
 
 
-  /*
-  private currentUser: UserInterface = {
-    id:0,
-    username: '',
-    password: '',
-  };
 
-  getUser(): UserInterface {
-    return this.currentUser;
-  }
-
-  changeUsername(newUsername: string): void {
-    this.currentUser.username = newUsername;
-  }
-
-  changePassword(newPassword: string): void {
-    this.currentUser.password = newPassword;
-  }
-  */
 }
