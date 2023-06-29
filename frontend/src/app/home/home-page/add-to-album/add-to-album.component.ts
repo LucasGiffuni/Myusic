@@ -5,7 +5,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AlbumService } from 'src/app/services/album.service';
 import { MatButtonModule } from '@angular/material/button';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { SongService } from 'src/app/services/song.service';
 import { ISong } from 'src/app/interfaces/ISong';
 import { CookieService } from 'src/app/services/cookie.service';
@@ -65,19 +65,30 @@ export class AddToAlbumComponent {
   selectedAlbumTitle!: string;
   selectedAlbum!: IAlbum;
 
-  constructor(private route: ActivatedRoute, private _snackBar: MatSnackBar) { }
+  constructor(private route: ActivatedRoute, private _snackBar: MatSnackBar, private router: Router) { }
 
   ngOnInit() {
     this.id = this.cookieService.get("SELECTEDSONG");
     this.albumService.getUserAlbums(this.cookieService.get("USERID")).then((response) => {
-      console.log(response)
-      this.albumList = response.data
+      if (response.Result.statuscode === "403") {
+        this.openSnackBar("Session expired", "Cerrar")
+
+        this.router.navigate(['/login']);
+      } else {
+        console.log(response)
+        this.albumList = response.data
+      }
     })
 
     this.songService.getSongByID(this.id).then((response) => {
-      this.selectedSong = response.data[0]
-      console.log(this.selectedSong)
+      if (response.Result.statuscode === "403") {
+        this.openSnackBar("Session expired", "Cerrar")
 
+        this.router.navigate(['/login']);
+      } else {
+        this.selectedSong = response.data[0]
+        console.log(this.selectedSong)
+      }
 
     })
   }
@@ -93,7 +104,7 @@ export class AddToAlbumComponent {
 
     this.albumService.addSongToAlbum(data).then((response) => {
       console.log(response)
-      if (response.Result.statuscode ===  '200') {
+      if (response.Result.statuscode === '200') {
         this.openSnackBar("La cancion " + this.selectedSong.titulo + " fue agregada correctamente al album " + this.selectedAlbum.titulo, "Cerrar")
 
       }

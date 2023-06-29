@@ -5,7 +5,7 @@ import { ISong } from 'src/app/interfaces/ISong';
 import { YouTubePlayerModule } from '@angular/youtube-player';
 import { MatButtonModule } from '@angular/material/button';
 import { SongService } from 'src/app/services/song.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { MatDialog, MatDialogRef, MatDialogModule } from '@angular/material/dialog';
 import { AddToAlbumComponent } from '../add-to-album/add-to-album.component';
@@ -13,6 +13,7 @@ import { CookieService } from 'src/app/services/cookie.service';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSliderModule } from '@angular/material/slider';
 import { FormsModule } from '@angular/forms';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-song-detail',
@@ -21,14 +22,15 @@ import { FormsModule } from '@angular/forms';
   },
   standalone: true,
   imports: [
-	CommonModule,
-	FormsModule,
-	YouTubePlayerModule,
-	MatButtonModule,
-	MatCardModule,
-	MatDialogModule,
-	MatIconModule,
-	MatSliderModule
+    CommonModule,
+    FormsModule,
+    YouTubePlayerModule,
+    MatButtonModule,
+    MatCardModule,
+    MatDialogModule,
+    MatIconModule,
+    MatSliderModule,
+    MatSnackBarModule
   ],
   template: `
 	<script src="https://www.youtube.com/iframe_api"></script>
@@ -98,13 +100,13 @@ export class SongDetailComponent implements OnInit, OnDestroy {
   apiLoaded = false;
   splitted: string = "";
   videoId: string = this.splitted;
-  volume:number = 50;
+  volume: number = 50;
 
   @ViewChild('youtubePlayer') youtubePlayer: any;
   songService: SongService = inject(SongService);
   cookieService: CookieService = inject(CookieService);
 
-  constructor(private route: ActivatedRoute, public dialog: MatDialog) { }
+  constructor(private route: ActivatedRoute, public dialog: MatDialog, private router: Router, private _snackBar: MatSnackBar) { }
 
   ngOnInit() {
 
@@ -114,12 +116,18 @@ export class SongDetailComponent implements OnInit, OnDestroy {
         this.cookieService.remove("SELECTEDSONG")
         this.cookieService.set("SELECTEDSONG", String(this.id));
         this.songService.getSongByID(this.id).then((response) => {
-          this.selectedSong = response.data[0]
-          console.log(this.selectedSong)
+          if (response.Result.statuscode === "403") {
+            this.openSessionSnackBar("Session expired", "Cerrar")
 
-          this.splitted = this.selectedSong.linkReferencia.split("=")[1]
-          console.log(this.splitted);
-          this.videoId = this.splitted
+            this.router.navigate(['/login']);
+          } else {
+            this.selectedSong = response.data[0]
+            console.log(this.selectedSong)
+
+            this.splitted = this.selectedSong.linkReferencia.split("=")[1]
+            console.log(this.splitted);
+            this.videoId = this.splitted
+          }
         })
 
       });
@@ -145,7 +153,7 @@ export class SongDetailComponent implements OnInit, OnDestroy {
 
   onPlayerReady(event: any) {
     this.player = event.target;
-	this.updateVolume();
+    this.updateVolume();
   }
 
   playMusic() {
@@ -168,7 +176,7 @@ export class SongDetailComponent implements OnInit, OnDestroy {
   }
 
   updateVolume() {
-	this.player.setVolume(this.volume);
+    this.player.setVolume(this.volume);
   }
 
   splitLink(link: string) {
@@ -184,5 +192,8 @@ export class SongDetailComponent implements OnInit, OnDestroy {
       enterAnimationDuration,
       exitAnimationDuration,
     });
+  }
+  openSessionSnackBar(message: string, action: string) {
+    this._snackBar.open(message, action);
   }
 }

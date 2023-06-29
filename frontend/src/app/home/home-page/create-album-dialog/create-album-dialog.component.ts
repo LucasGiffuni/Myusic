@@ -8,6 +8,7 @@ import { CookieService } from 'src/app/services/cookie.service';
 import { IAlbum } from 'src/app/interfaces/IAlbum';
 import { MAT_SNACK_BAR_DATA, MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { IResponse } from 'src/app/interfaces/IResponse';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-create-album-dialog',
@@ -28,7 +29,7 @@ import { IResponse } from 'src/app/interfaces/IResponse';
   styleUrls: ['./create-album-dialog.component.css']
 })
 export class CreateAlbumDialogComponent {
-  constructor(public dialogRef: MatDialogRef<CreateAlbumDialogComponent>, private _snackBar: MatSnackBar) { }
+  constructor(public dialogRef: MatDialogRef<CreateAlbumDialogComponent>, private _snackBar: MatSnackBar, private router: Router) { }
   albumService: AlbumService = inject(AlbumService);
   songService: SongService = inject(SongService);
   cookieService: CookieService = inject(CookieService);
@@ -55,22 +56,28 @@ export class CreateAlbumDialogComponent {
       idUsuario: this.cookieService.get("USERID")
     }
     if (this.albumDescription || this.albumTitle) {
-      if(this.albumTitle.length <= 30){
-      this.albumService.createAlbum(data.idUsuario, data).then((response: IResponse<any>) =>{
-        if (response.Result.statuscode === "200"){
-          this.openSnackBar("Album " + this.albumTitle + " creado correctamente!", "Cerrar");
-          setTimeout(() => {
-            location.reload();
-          }, 3000);
-        }else{
-          this.openSnackBar("ERROR: " + response.Result.statustext, "Cerrar");
-        }
-      });
-    }else{
-      this.openSnackBar("Titulo debe ser menor o igual a 30 caracteres", "Cerrar");
-    }
+      if (this.albumTitle.length <= 30) {
+        this.albumService.createAlbum(data.idUsuario, data).then((response: IResponse<any>) => {
+          if (response.Result.statuscode === "403") {
+            this.openSessionSnackBar("Session expired", "Cerrar")
 
-    }else{
+            this.router.navigate(['/login']);
+          } else {
+            if (response.Result.statuscode === "200") {
+              this.openSnackBar("Album " + this.albumTitle + " creado correctamente!", "Cerrar");
+              setTimeout(() => {
+                location.reload();
+              }, 3000);
+            } else {
+              this.openSnackBar("ERROR: " + response.Result.statustext, "Cerrar");
+            }
+          }
+        });
+      } else {
+        this.openSnackBar("Titulo debe ser menor o igual a 30 caracteres", "Cerrar");
+      }
+
+    } else {
       this.openSnackBar("Titulo o Descripcion no puede ser nulo", "Cerrar");
 
     }
@@ -80,5 +87,8 @@ export class CreateAlbumDialogComponent {
     this._snackBar.open(message, action, {
       duration: 2500
     });
+  }
+  openSessionSnackBar(message: string, action: string) {
+    this._snackBar.open(message, action);
   }
 }
