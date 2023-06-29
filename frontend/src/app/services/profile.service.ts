@@ -10,12 +10,42 @@ import { IResponse } from '../interfaces/IResponse';
 })
 export class UserService {
   url = 'http://localhost:3000';
+  cookieService: CookieService = inject(CookieService);
 
-  constructor(private cookieService: CookieService) { }
+  constructor() { }
+
+  async getUsernameById(userId:number){
+    const body={
+      userId:userId
+    }
+    return(await(await fetch(`${this.url}/getUsernameById/:idUsuario`, {
+      method: 'GET',
+      body: JSON.stringify(body),
+      headers: {
+        Accept: 'application/json',
+        'Authorization': 'Bearer ' + this.cookieService.get("SESSIONID"),
+        'Content-Type': 'application/json',
+      }
+    })).json)
   
-  async getUssernameBiId(idUser: number): Promise<IResponse<UserInterface>>{
-    
   }
+
+  async getPasswordById(userId:number){
+    const body={
+      userId:userId
+    }
+    return(await(await fetch(`${this.url}/getPasswordById/:idUsuario`, {
+      method: 'GET',
+      body: JSON.stringify(body),
+      headers: {
+        Accept: 'application/json',
+        'Authorization': 'Bearer ' + this.cookieService.get("SESSIONID"),
+        'Content-Type': 'application/json',
+      }
+    })).json)
+  
+  }
+
 
 
 

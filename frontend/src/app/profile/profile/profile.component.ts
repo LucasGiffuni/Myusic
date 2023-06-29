@@ -8,6 +8,7 @@ import { CookieService } from 'src/app/services/cookie.service';
 import { Services } from '../../services/services.service';
 
 
+
 @Component({
   selector: 'app-profile',
   standalone: true,
@@ -59,15 +60,23 @@ export class ProfileComponent {
   password: string = '';
   cookieService: CookieService = inject(CookieService);
   userService: Services = inject(Services);
-  idUsuario: number=0;
+  profileService:UserService=inject(UserService)
+  idUsuario: number=-1;
 
 
  
 
   constructor(private router: Router) {
     this.idUsuario=this.cookieService.get("USERID");
+    if(this.idUsuario>=0){
+      this.username=String(this.profileService.getUsernameById(this.idUsuario));
+      this.password=String(this.profileService.getPasswordById(this.idUsuario));
+    }else{
+      this.username="Not Value";
+      this.password="Not Value";
+    }
     
-    
+
   }
 
   clickButton(path: string) {
