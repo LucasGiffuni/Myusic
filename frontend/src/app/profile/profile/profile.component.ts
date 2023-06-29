@@ -5,6 +5,9 @@ import { MatIconModule } from '@angular/material/icon';
 
 import { ActivatedRoute, Router } from '@angular/router';
 import { CookieService } from 'src/app/services/cookie.service';
+import { Services } from '../../services/services.service';
+
+
 
 @Component({
   selector: 'app-profile',
@@ -52,34 +55,35 @@ import { CookieService } from 'src/app/services/cookie.service';
   styleUrls: ['./profile.component.css'],
 })
 export class ProfileComponent {
-  currentUser: UserInterface;
+  currentUser: UserInterface | undefined;
   username: string = '';
   password: string = '';
   cookieService: CookieService = inject(CookieService);
+  userService: Services = inject(Services);
+  profileService:UserService=inject(UserService)
+  idUsuario: number=-1;
   loginService: UserService = inject(UserService);
 
 
-  onFocusOutUsername(event: any) {
-    this.username = event.target.value;
-  }
-  onFocusOutPassword(event: any) {
-    this.password = event.target.value;
-  }
+ 
 
-  constructor(private userService: UserService, private router: Router) {
-    this.currentUser = this.userService.getUser();
-  }
-
-  changeUsername(): void {
-    const newUsername = prompt('Enter a new username:');
-    if (newUsername) {
-      this.userService.changeUsername(newUsername);
-      this.currentUser = this.userService.getUser();
+  constructor(private router: Router) {
+    this.idUsuario=this.cookieService.get("USERID");
+    if(this.idUsuario>=0){
+      this.username=String(this.profileService.getUsernameById(this.idUsuario));
+      this.password=String(this.profileService.getPasswordById(this.idUsuario));
+    }else{
+      this.username="Not Value";
+      this.password="Not Value";
     }
+    
+
   }
+
   clickButton(path: string) {
     this.router.navigate([path]);
-  }
+  } 
+
 
   logout() {
     this.router.navigate(["login"]);

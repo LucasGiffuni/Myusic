@@ -2,6 +2,9 @@ import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Services } from 'src/app/services/services.service';
 import { Router } from '@angular/router';
+import { CookieService } from 'src/app/services/cookie.service';
+import { UserService } from 'src/app/services/profile.service';
+import { UserInterface } from 'src/app/interfaces/IUser';
 
 @Component({
   selector: 'app-chang-user-name',
@@ -28,13 +31,24 @@ import { Router } from '@angular/router';
   styleUrls: ['./chang-user-name.component.css']
 })
 export class ChangUserNameComponent {
-  currentName: string = "CurrentNamePlaceHolder";
+
+  currentName: string = "";
   newName: string ="";
   userService: Services = inject(Services);
-  tempUserId: number=25;
-  tempPassword: string="tempPassword"
+  tempUserId: number=-1;
+  cookieService: CookieService = inject(CookieService);
+  profileService:UserService=inject(UserService)
+  idUsuario: number=-1;
+  password:string=""
 
   constructor(private router: Router) {
+    this.idUsuario=this.cookieService.get("USERID");
+    if(this.idUsuario>=0){
+      this.currentName=String(this.profileService.getUsernameById(this.idUsuario));
+      this.password=String(this.profileService.getPasswordById(this.idUsuario));
+    }else{
+      this.currentName="Not Value";
+    }
   }
  
   onFocusOutNameNew(event: any) {
@@ -44,7 +58,7 @@ export class ChangUserNameComponent {
   changeName(): void {
     this.currentName=this.newName;
     this.newName="";
-    this.userService.updateUser(this.tempUserId,this.newName,this.tempPassword);
+    this.userService.updateUser(this.tempUserId,this.newName,this.password);
   }
 
   clickButton(path: string) {
