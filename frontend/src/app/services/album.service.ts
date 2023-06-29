@@ -23,6 +23,16 @@ export class AlbumService {
       }
     })).json()) ?? [];
   }
+  async getAlbumsDetails(idAlbum: number): Promise<IResponse<IAlbum>> {
+    return (await (await fetch(`${this.url}/albums/getAlbumsDetails/${idAlbum}`, {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        'Authorization': 'Bearer ' + this.cookieService.get("SESSIONID"),
+        'Content-Type': 'application/json',
+      }
+    })).json()) ?? [];
+  }
   async getUserAlbums(idUser: number): Promise<IResponse<IAlbum>> {
     return (await (await fetch(`${this.url}/albums/getUserAlbums/${idUser}`, {
       method: 'GET',

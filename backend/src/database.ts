@@ -189,6 +189,20 @@ export default class Database {
     return result.recordset;
   }
 
+  async readAlbumsByIdAlbum(id: string | number) {
+    console.log('id: ' + id);
+    await this.connect();
+
+    const request = this.poolconnection.request();
+    const result = await request
+      .input("id", sql.Int, +id)
+      .query(`SELECT * FROM Album WHERE idAlbum = @id`);
+
+    // console.log('result: ' + result.recordset)
+    console.log(result);
+    return result.recordset[0];
+  }
+
   //function to create a new album in de Data Base
   async createSong(data: ISong) {
     await this.connect();

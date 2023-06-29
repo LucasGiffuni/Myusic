@@ -13,10 +13,13 @@ router.get('/getAlbums/:idUsuario', (req, res) => {
     controller.getAlbums(req, res)
 });
 router.get('/getUserAlbums/:idUsuario', (req, res) => {
-    controller.getAlbums(req, res)
+    controller.getUserAlbums(req, res)
 });
 router.post('/createAlbum/:idUsuario', (req, res) => {
     controller.createAlbum(req, res)
+});
+router.get('/getAlbumsDetails/:idAlbum', (req, res) => {
+    controller.getAlbumsDetails(req, res)
 });
 
 

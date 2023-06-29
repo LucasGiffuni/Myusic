@@ -5,6 +5,7 @@ const database = new Database();
 import jwt from 'jsonwebtoken';
 import fs from "fs";
 import { IResponse } from '../interfaces/IResponse';
+import { IAlbum } from '../interfaces/IAlbum';
 
 const addSongToAlbum = async (req: Request, res: Response) => {
     const songID = req.body.songID;
@@ -131,8 +132,35 @@ const createAlbum = async (req: Request, res: Response) => {
         res.status(500).json({ error: err?.message });
     }
 };
+const getAlbumsDetails = async (req: Request, res: Response) => {
+    try {
+        const idAlbum = req.params.idAlbum;
+        const result = await database.readAlbumsByIdAlbum(idAlbum);
+        const response: IResponse<IAlbum> = {
+            Result: {
+                statuscode: "",
+                statustext: ""
+            },
+            data: result
+        }
+        console.log(`Albums: ${result}`);
+        if (result ) {
+            response.Result.statuscode = "200";
+            response.Result.statustext = "OK";
+            res.status(200);
+            res.json(response);
+        } else {
+            response.Result.statuscode = "404";
+            response.Result.statustext = "Not found";
+            res.status(404);
+            res.json(response);
+        }
+    } catch (err) {
+        res.status(500).json({ error: err?.message });
+    }
+};
 
 
 
 
-export default { addSongToAlbum, getAlbums, createAlbum };
+export default { addSongToAlbum, getAlbums, createAlbum,getUserAlbums,getAlbumsDetails };
