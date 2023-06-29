@@ -11,6 +11,8 @@ import { MatDialog, MatDialogRef, MatDialogModule } from '@angular/material/dial
 import { AddToAlbumComponent } from '../add-to-album/add-to-album.component';
 import { CookieService } from 'src/app/services/cookie.service';
 import { MatIconModule } from '@angular/material/icon';
+import { MatSliderModule } from '@angular/material/slider';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-song-detail',
@@ -18,7 +20,16 @@ import { MatIconModule } from '@angular/material/icon';
     class: 'song-detail-component'
   },
   standalone: true,
-  imports: [CommonModule, YouTubePlayerModule, MatButtonModule, MatCardModule, MatDialogModule, MatIconModule],
+  imports: [
+	CommonModule,
+	FormsModule,
+	YouTubePlayerModule,
+	MatButtonModule,
+	MatCardModule,
+	MatDialogModule,
+	MatIconModule,
+	MatSliderModule
+  ],
   template: `
 	<script src="https://www.youtube.com/iframe_api"></script>
   <div id="song-detail-body-component">
@@ -33,7 +44,7 @@ import { MatIconModule } from '@angular/material/icon';
     <mat-card-title id="songCardTitle">{{selectedSong.titulo}}</mat-card-title>
     <mat-card-subtitle>{{selectedSong.autor}}</mat-card-subtitle>
   </mat-card-header>
-  
+
   <img mat-card-image src={{selectedSong.imagen}} >
   <mat-card-content>
 
@@ -46,6 +57,10 @@ import { MatIconModule } from '@angular/material/icon';
 
   </mat-card-content>
   <mat-card-actions id="audio-controller">
+		<mat-slider discrete color="accent">
+			<input matSliderThumb [(ngModel)]="volume" (input)="updateVolume()">
+		</mat-slider>
+
       <button mat-fab matTooltip="Primary" aria-label="play button" (click)="playMusic()">
 				<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 256 256"><path fill="#303030" d="M240 128a15.74 15.74 0 0 1-7.6 13.51L88.32 229.65a16 16 0 0 1-16.2.3A15.86 15.86 0 0 1 64 216.13V39.87a15.86 15.86 0 0 1 8.12-13.82a16 16 0 0 1 16.2.3l144.08 88.14A15.74 15.74 0 0 1 240 128Z"/></svg>
 			</button>
@@ -83,6 +98,7 @@ export class SongDetailComponent implements OnInit, OnDestroy {
   apiLoaded = false;
   splitted: string = "";
   videoId: string = this.splitted;
+  volume:number = 50;
 
   @ViewChild('youtubePlayer') youtubePlayer: any;
   songService: SongService = inject(SongService);
@@ -91,8 +107,6 @@ export class SongDetailComponent implements OnInit, OnDestroy {
   constructor(private route: ActivatedRoute, public dialog: MatDialog) { }
 
   ngOnInit() {
-
-
 
     if (!this.apiLoaded) {
       this.sub = this.route.params.subscribe(params => {
@@ -131,6 +145,7 @@ export class SongDetailComponent implements OnInit, OnDestroy {
 
   onPlayerReady(event: any) {
     this.player = event.target;
+	this.updateVolume();
   }
 
   playMusic() {
@@ -150,6 +165,10 @@ export class SongDetailComponent implements OnInit, OnDestroy {
     if (this.player) {
       this.player.stopVideo();
     }
+  }
+
+  updateVolume() {
+	this.player.setVolume(this.volume);
   }
 
   splitLink(link: string) {
