@@ -3,6 +3,11 @@ import { CommonModule } from '@angular/common';
 import { Services } from 'src/app/services/services.service';
 import { Router } from '@angular/router';
 
+import { UserService } from 'src/app/services/profile.service';
+import { UserInterface } from 'src/app/interfaces/IUser';
+import { CookieService } from 'src/app/services/cookie.service';
+
+
 @Component({
   selector: 'app-changpasword',
   standalone: true,
@@ -28,15 +33,25 @@ import { Router } from '@angular/router';
   styleUrls: ['./changpasword.component.css']
 })
 export class ChangpaswordComponent {
-  currentPassword: string = "password";
+  currentPassword: string = "";
   currentPasswordUser: string = "";
   newPassword: string ="";
+  idUsuario: number=-1;
+  username: string = '';
   userService: Services = inject(Services);
-  tempUserId: number=25;
-  tempUsername: string="tempName";
+  cookieService: CookieService = inject(CookieService);
+  profileService:UserService=inject(UserService)
+
 
   constructor(private router: Router) {
-    //get the current password
+    this.idUsuario=this.cookieService.get("USERID");
+    if(this.idUsuario>=0){
+      this.username=String(this.profileService.getUsernameById(this.idUsuario));
+      this.currentPassword=String(this.profileService.getPasswordById(this.idUsuario));
+    }else{
+      this.currentPassword="Not Value";
+    }
+    
   }
   onFocusOutPassword(event: any) {
     this.currentPasswordUser = event.target.value
@@ -53,7 +68,8 @@ export class ChangpaswordComponent {
       }
     }else{
       this.currentPassword=this.newPassword;
-      this.userService.updateUser(this.tempUserId,this.tempUsername,this.newPassword);
+      this.currentPasswordUser=this.newPassword;
+      this.userService.updateUser(this.idUsuario,this.username,this.newPassword);
       const element = document.getElementById("passwordOld");
       if (element) {
         element.style.color = "black";
