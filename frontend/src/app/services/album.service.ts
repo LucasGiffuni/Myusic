@@ -9,7 +9,7 @@ import { ISong } from '../interfaces/ISong';
 })
 export class AlbumService {
 
-  url = 'http://localhost:3000';
+  url = 'https://backend.wonderfulsky-826aeb73.brazilsouth.azurecontainerapps.io';
   cookieService: CookieService = inject(CookieService);
 
   constructor() { }
