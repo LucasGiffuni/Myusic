@@ -13,6 +13,7 @@ export class UserService {
   cookieService: CookieService = inject(CookieService);
   loginFlag: boolean = false;
 
+
   constructor() { }
 
   async getUsernameById(userId:number){
@@ -29,7 +30,7 @@ export class UserService {
         'Content-Type': 'application/json',
       }
     })).json)
-  
+
   }
 
   async getPasswordById(userId:number){
@@ -45,7 +46,7 @@ export class UserService {
         'Content-Type': 'application/json',
       }
     })).json)
-  
+
   }
 
   async getUserCredentials(userId:number){

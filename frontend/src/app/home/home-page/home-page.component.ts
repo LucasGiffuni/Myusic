@@ -8,19 +8,19 @@ import { IResponse } from 'src/app/interfaces/IResponse';
 import { AlbumService } from 'src/app/services/album.service';
 import { SongService } from 'src/app/services/song.service';
 import { ISong } from 'src/app/interfaces/ISong';
-import { SongLatestComponent } from "./song/song-latest/song-latest.component";
 import { MatDialog, MatDialogRef, MatDialogModule } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 
 import { CreateSongDialogComponent } from './create-song-dialog/create-song-dialog.component';
 import { CreateAlbumDialogComponent } from './create-album-dialog/create-album-dialog.component';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { SongLatestComponent } from "./song/song-latest/song-latest.component";
 
 
 @Component({
-  selector: 'app-home-page',
-  standalone: true,
-  template: `
+    selector: 'app-home-page',
+    standalone: true,
+    template: `
     <div class="library-component">
       <div class="button-text">
         <h1 class="library-component-title">Add album</h1>
@@ -53,8 +53,8 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
       </div>
     </div>
   `,
-  styleUrls: ['./home-page.component.css'],
-  imports: [CommonModule, AlbumComponent, SongComponent, SongLatestComponent, MatDialogModule, MatSnackBarModule]
+    styleUrls: ['./home-page.component.css'],
+    imports: [CommonModule, AlbumComponent, SongComponent, MatDialogModule, MatSnackBarModule, SongLatestComponent]
 
 })
 export class HomePageComponent implements AfterViewChecked {
@@ -90,8 +90,6 @@ export class HomePageComponent implements AfterViewChecked {
           value.data.forEach(element => {
             this.albumList.push(element);
           });
-
-          console.log(value.Result)
 
         }
 

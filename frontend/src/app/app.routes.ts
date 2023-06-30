@@ -9,6 +9,8 @@ import { ChangpaswordComponent } from './profile/changpasword/changpasword.compo
 import { ChangUserNameComponent } from './profile/chang-user-name/chang-user-name.component';
 import { EditSongComponent } from './home/home-page/song/edit-song/edit-song.component';
 import { SearchSongComponent } from './home/home-page/search-song/search-song.component';
+import { AlbumsongsComponent } from './home/home-page/albumsongs/albumsongs.component';
+
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -21,7 +23,8 @@ const routes: Routes = [
   { path: 'changeUserName', component:ChangUserNameComponent},
   { path: 'songDetail/:id', component: SongDetailComponent },
   { path: 'editSong', component: EditSongComponent },
-  { path: "searchSong/:searchValue" , component: SearchSongComponent}
+  { path: "searchSong/:searchValue" , component: SearchSongComponent},
+  { path: "albumsongs/:idAlbum", component:AlbumsongsComponent}
 ];
 
 export default routes;
