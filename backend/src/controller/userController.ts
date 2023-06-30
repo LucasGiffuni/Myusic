@@ -219,11 +219,9 @@ const updateUser = async (req: Request, res: Response) => {
 const getUsernameById = async (req: Request, res: Response) => {
 	try {
 		const personId = req.params.idUsuario;
-		console.log(`personId: ${personId}`);
-
+		
 		if (personId) {
 			const result = await database.getUsernameById(personId);
-			console.log(`username: ${JSON.stringify(result)}`);
 			res.status(200).json(result);
 		} else {
 			res.status(404);
@@ -236,11 +234,11 @@ const getUsernameById = async (req: Request, res: Response) => {
 const getPasswordById = async (req: Request, res: Response) => {
 	try {
 		const personId = req.params.idUsuario;
-		console.log(`personId: ${personId}`);
+		
 
 		if (personId) {
 			const result = await database.getPasswordById(personId);
-			console.log(`password: ${JSON.stringify(result)}`);
+			
 			res.status(200).json(result);
 		} else {
 			res.status(404);
@@ -254,13 +252,12 @@ const getPasswordById = async (req: Request, res: Response) => {
 const getUserCredentials = async (req: Request, res: Response) => {
 	const userId = req.params.id;
 	const personId = req.params.idUsuario;
-	console.log(`personId: ${personId}`);
-	console.log(`userId: ${userId}`);
+
 	try {
 	  const userIdNumber = parseInt(personId, 10);
 	  const credentials = await database.getUserCredentials(userIdNumber);
 	  if (credentials) {
-		console.log(credentials)
+		
 		res.status(200).json(credentials);
 	  } else {
 		res.status(404).json({ error: 'User not found' });
