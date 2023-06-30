@@ -79,7 +79,6 @@ export class Services {
         'Content-Type': 'application/json',
       }
     });
-    console.log("implemented getUSerProfile in service.service");
     return response.json();
   }
 

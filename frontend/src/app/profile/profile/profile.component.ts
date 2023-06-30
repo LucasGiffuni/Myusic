@@ -64,28 +64,17 @@ export class ProfileComponent {
 
   constructor(private router: Router) {
     this.userId = parseInt(this.cookieService.get('USERID'), 10);
-    console.log("ttttttttttttttttt"+this.userId); 
     this.getUserProfile();  
   }
 
   async getUserProfile() {
-    console.log("entergetUser"); 
     const response = await this.userService.getUserProfile(this.userId);
-    console.log("pass awiat")
     //const response = await this.profileService.getUserCredentials(this.userId);
     if (response) {
 
-      console.log(" akbabdaj"); 
-      console.log(response.username); 
-
-      //this.currentUser = response.data;
-      //this.username = this.currentUser?.username ?? '';
-      //this.password = this.currentUser?.password ?? '';
       this.username = response.username;
       this.password = response.password;
     }else{
-
-      console.log("Failur"); 
 
       this.username="Not found";
       this.password="Not found";

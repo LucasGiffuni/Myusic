@@ -192,7 +192,8 @@ const addSongToAlbum = async (req: Request, res: Response) => {
 
 const updateUser = async (req: Request, res: Response) => {
 	try {
-		const userId = parseInt(req.body.idUsuario);
+		
+		const userId = req.body.userId;
 		const password = req.body.password;
 		const username = req.body.username;
 		if (userId) {
