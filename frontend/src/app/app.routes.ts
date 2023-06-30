@@ -18,7 +18,7 @@ const routes: Routes = [
   { path: 'profile', component: ProfileComponent },
   { path: 'homePage', component: HomePageComponent },
   { path: 'changePassword', component:ChangpaswordComponent},
-  { path: 'changeUsserName', component:ChangUserNameComponent},
+  { path: 'changeUserName', component:ChangUserNameComponent},
   { path: 'songDetail/:id', component: SongDetailComponent },
   { path: 'editSong', component: EditSongComponent },
   { path: "searchSong/:searchValue" , component: SearchSongComponent}

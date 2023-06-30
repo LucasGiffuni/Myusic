@@ -2,7 +2,6 @@ import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Services } from 'src/app/services/services.service';
 import { Router } from '@angular/router';
-
 import { UserService } from 'src/app/services/profile.service';
 import { UserInterface } from 'src/app/interfaces/IUser';
 import { CookieService } from 'src/app/services/cookie.service';
@@ -36,7 +35,7 @@ export class ChangpaswordComponent {
   currentPassword: string = "";
   currentPasswordUser: string = "";
   newPassword: string ="";
-  idUsuario: number=-1;
+  userId: number=-1;
   username: string = '';
   userService: Services = inject(Services);
   cookieService: CookieService = inject(CookieService);
@@ -44,10 +43,10 @@ export class ChangpaswordComponent {
 
 
   constructor(private router: Router) {
-    this.idUsuario=this.cookieService.get("USERID");
-    if(this.idUsuario>=0){
-      this.username=String(this.profileService.getUsernameById(this.idUsuario));
-      this.currentPassword=String(this.profileService.getPasswordById(this.idUsuario));
+    this.userId=this.cookieService.get("USERID");
+    if(this.userId>=0){
+      this.username=String(this.profileService.getUsernameById(this.userId));
+      this.currentPassword=String(this.profileService.getPasswordById(this.userId));
     }else{
       this.currentPassword="Not Value";
     }
@@ -69,7 +68,7 @@ export class ChangpaswordComponent {
     }else{
       this.currentPassword=this.newPassword;
       this.currentPasswordUser=this.newPassword;
-      this.userService.updateUser(this.idUsuario,this.username,this.newPassword);
+      this.userService.updateUser(this.userId,this.username,this.newPassword);
       const element = document.getElementById("passwordOld");
       if (element) {
         element.style.color = "black";

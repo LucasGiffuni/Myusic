@@ -398,5 +398,19 @@ export default class Database {
 
     return result.recordset;
   }
+  //get credential
+  async getUserCredentials(id: string | number) {
+    console.log(`waitng conect`);
+    await this.connect();
+  
+    const request = this.poolconnection.request();
+    const result = await request.input("id", sql.Int, id).query(`
+      SELECT username, password
+      FROM Usuario
+      WHERE idUsuario = @id
+    `);
+    console.log(result.recordset[0]);
+    return result.recordset[0];
+  }
 }
 

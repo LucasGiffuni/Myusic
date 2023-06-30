@@ -11,6 +11,7 @@ import { IResponse } from '../interfaces/IResponse';
 export class UserService {
   url = 'http://localhost:3000';
   cookieService: CookieService = inject(CookieService);
+  loginFlag: boolean = false;
 
   constructor() { }
 
@@ -18,6 +19,7 @@ export class UserService {
     const body={
       userId:userId
     }
+    console.log(userId)
     return(await(await fetch(`${this.url}/getUsernameById/:idUsuario`, {
       method: 'GET',
       body: JSON.stringify(body),
@@ -43,6 +45,20 @@ export class UserService {
         'Content-Type': 'application/json',
       }
     })).json)
+  
+  }
+
+  async getUserCredentials(userId:number){
+    console.log("enterProfileServis"); 
+    const response = await fetch(`${this.url}/getUserCredentials/${userId}`, {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        'Authorization': 'Bearer ' + this.cookieService.get("SESSIONID"),
+        'Content-Type': 'application/json',
+      }
+    });
+    return response.json();
   
   }
 

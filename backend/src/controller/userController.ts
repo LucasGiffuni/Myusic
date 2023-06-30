@@ -249,7 +249,29 @@ const getPasswordById = async (req: Request, res: Response) => {
 	}
 };
 
+//credentials
+const getUserCredentials = async (req: Request, res: Response) => {
+	const userId = req.params.id;
+	const personId = req.params.idUsuario;
+	console.log(`personId: ${personId}`);
+	console.log(`userId: ${userId}`);
+	try {
+	  const userIdNumber = parseInt(personId, 10);
+	  const credentials = await database.getUserCredentials(userIdNumber);
+	  if (credentials) {
+		console.log(credentials)
+		res.status(200).json(credentials);
+	  } else {
+		res.status(404).json({ error: 'User not found' });
+	  }
+	} catch (err) {
+	  res.status(500).json({ error: err?.message });
+	}
+  };
+  
+
+  
 
 
-export default { getUser, getUserPlaylists, createUser, addSongToAlbum, validateUser, updateUser,getPasswordById,getUsernameById };
+export default { getUser, getUserPlaylists, createUser, addSongToAlbum, validateUser, updateUser,getPasswordById,getUsernameById,getUserCredentials };
 

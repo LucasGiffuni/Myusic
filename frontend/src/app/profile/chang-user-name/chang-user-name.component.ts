@@ -38,14 +38,14 @@ export class ChangUserNameComponent {
   tempUserId: number=-1;
   cookieService: CookieService = inject(CookieService);
   profileService:UserService=inject(UserService)
-  idUsuario: number=-1;
+  userId: number=-1;
   password:string=""
 
   constructor(private router: Router) {
-    this.idUsuario=this.cookieService.get("USERID");
-    if(this.idUsuario>=0){
-      this.currentName=String(this.profileService.getUsernameById(this.idUsuario));
-      this.password=String(this.profileService.getPasswordById(this.idUsuario));
+    this.userId=this.cookieService.get("USERID");
+    if(this.userId>=0){
+      this.currentName=String(this.profileService.getUsernameById(this.userId));
+      this.password=String(this.profileService.getPasswordById(this.userId));
     }else{
       this.currentName="Not Value";
     }
@@ -56,9 +56,10 @@ export class ChangUserNameComponent {
   }
 
   changeName(): void {
-    this.currentName=this.newName;
+    //this.currentName=this.newName;
+    this.userService.updateUser(this.userId,this.newName,this.password);
     this.newName="";
-    this.userService.updateUser(this.tempUserId,this.newName,this.password);
+    this.currentName=String(this.profileService.getUsernameById(this.userId));
   }
 
   clickButton(path: string) {
