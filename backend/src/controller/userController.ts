@@ -17,10 +17,8 @@ const getUser = async (req: Request, res: Response) => {
 	try {
 		// Get the person with the specified ID
 		const personId = req.body.userId;
-		console.log(`personId: ${personId}`);
 		if (personId) {
 			const result = await database.read(personId);
-			console.log(`persons: ${JSON.stringify(result)}`);
 			res.status(200).json(result);
 		} else {
 			res.status(404);
@@ -37,8 +35,8 @@ const createUser = async (req: Request, res: Response) => {
 	const password = req.body.password;
 
 	const data = {
-		username: username,
-		password: password
+		username,
+		password
 	}
 	const response = {
 		resultado: {
@@ -80,8 +78,8 @@ const validateUser = async (req: Request, res: Response) => {
 	const password = req.body.password;
 
 	const data = {
-		username: username,
-		password: password
+		username,
+		password
 	}
 	const response = {
 		resultado: {
@@ -96,9 +94,7 @@ const validateUser = async (req: Request, res: Response) => {
 	}
 	if (username && password) {
 		try {
-			console.log(`User Data: ${JSON.stringify(data)}`);
 			const result = await database.obtenerUsuariosPorUsername(data);
-			console.log(`Result: ${JSON.stringify(result)}`);
 
 			if (result.length === 0) {
 				response.resultado.statusCode = "404";
@@ -115,11 +111,10 @@ const validateUser = async (req: Request, res: Response) => {
 				response.user.idUsuario = result[0].idUsuario;
 				response.user.username = result[0].username
 				const idUser: string = result[0].idUsuario.toString();
-				console.log("user " + idUser.toString())
-				const jwt = generateJWT(idUser);
-				response.user.token = jwt;
+				const token = generateJWT(idUser);
+				response.user.token = token;
 
-		
+
 				res.cookie("SESSIONID", jwt, { httpOnly: true, secure: true });
 
 				res.status(200).json(response);
@@ -154,11 +149,9 @@ const generateJWT = (userId: string) => {
 const getUserPlaylists = async (req: Request, res: Response) => {
 	try {
 		const personId = req.params.idUsuario;
-		console.log(`personId: ${personId}`);
 
 		if (personId) {
 			const result = await database.getUserPlaylists(personId);
-			console.log(`persons: ${JSON.stringify(result)}`);
 			res.status(200).json(result);
 		} else {
 			res.status(404);
@@ -192,7 +185,7 @@ const addSongToAlbum = async (req: Request, res: Response) => {
 
 const updateUser = async (req: Request, res: Response) => {
 	try {
-		
+
 		const userId = req.body.userId;
 		const password = req.body.password;
 		const username = req.body.username;
@@ -215,11 +208,11 @@ const updateUser = async (req: Request, res: Response) => {
 		res.status(500).send('Error updating user');
 	}
 };
-//Metodo para obtener username por ID 
+// Metodo para obtener username por ID
 const getUsernameById = async (req: Request, res: Response) => {
 	try {
 		const personId = req.params.idUsuario;
-		
+
 		if (personId) {
 			const result = await database.getUsernameById(personId);
 			res.status(200).json(result);
@@ -230,15 +223,15 @@ const getUsernameById = async (req: Request, res: Response) => {
 		res.status(500).json({ error: err?.message });
 	}
 };
-	//Metodo para obtener password por ID 
+	// Metodo para obtener password por ID
 const getPasswordById = async (req: Request, res: Response) => {
 	try {
 		const personId = req.params.idUsuario;
-		
+
 
 		if (personId) {
 			const result = await database.getPasswordById(personId);
-			
+
 			res.status(200).json(result);
 		} else {
 			res.status(404);
@@ -248,7 +241,7 @@ const getPasswordById = async (req: Request, res: Response) => {
 	}
 };
 
-//credentials
+// credentials
 const getUserCredentials = async (req: Request, res: Response) => {
 	const userId = req.params.id;
 	const personId = req.params.idUsuario;
@@ -257,7 +250,7 @@ const getUserCredentials = async (req: Request, res: Response) => {
 	  const userIdNumber = parseInt(personId, 10);
 	  const credentials = await database.getUserCredentials(userIdNumber);
 	  if (credentials) {
-		
+
 		res.status(200).json(credentials);
 	  } else {
 		res.status(404).json({ error: 'User not found' });
@@ -266,9 +259,9 @@ const getUserCredentials = async (req: Request, res: Response) => {
 	  res.status(500).json({ error: err?.message });
 	}
   };
-  
 
-  
+
+
 
 
 export default { getUser, getUserPlaylists, createUser, addSongToAlbum, validateUser, updateUser,getPasswordById,getUsernameById,getUserCredentials };

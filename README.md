@@ -18,3 +18,10 @@ Si el S.O es MACOS:
 
     npm i   
     npm run start
+
+
+### Subir imagen a azure image registry ###
+
+az acr login --name myusicimages
+docker tag myusic-backend myusicimages.azurecr.io/myusic-backend 
+docker tag myusic-frontend myusicimages.azurecr.io/myusic-frontend 

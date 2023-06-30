@@ -3,36 +3,29 @@ import sql from "mssql";
 import { ISong } from "./interfaces/ISong";
 
 export default class Database {
-  poolconnection = new sql.ConnectionPool(config);
+  poolConnection = new sql.ConnectionPool(config);
   connected = false;
 
   async connect() {
     try {
-      console.log(`Database connecting...${this.connected}`);
       if (this.connected === false) {
-        this.poolconnection = await sql.connect(config);
+        this.poolConnection = await sql.connect(config);
         this.connected = true;
-        console.log("Database connection successful");
-      } else {
-        console.log("Database already connected");
       }
     } catch (error) {
-      console.error(`Error connecting to database: ${JSON.stringify(error)}`);
     }
   }
 
   async disconnect() {
     try {
-      this.poolconnection.close();
-      console.log("Database connection closed");
+      this.poolConnection.close();
     } catch (error) {
-      console.error(`Error closing database connection: ${error}`);
     }
   }
 
   async executeQuery(query: string) {
     await this.connect();
-    const request = this.poolconnection.request();
+    const request = this.poolConnection.request();
     const result = await request.query(query);
 
     return result.rowsAffected[0];
@@ -41,7 +34,7 @@ export default class Database {
   async getUserPlaylists(id: string | number) {
     await this.connect();
 
-    const request = this.poolconnection.request();
+    const request = this.poolConnection.request();
     const result = await request.input("id", sql.Int, +id).query(`
             Select Usuario.username, Album.titulo, Cancion.titulo, Cancion.autor, Cancion.genero from Cancion
             JOIN CancionAlbum on (CancionAlbum.idCancion = Cancion.idCancion)
@@ -56,9 +49,9 @@ export default class Database {
   async getAlbumsSongs(id: string | number) {
     await this.connect();
 
-    const request = this.poolconnection.request();
+    const request = this.poolConnection.request();
     const result = await request.input("id", sql.Int, +id).query(`
-    select Cancion.idCancion, Cancion.titulo, Cancion.genero, Cancion.fechaLanzamiento, Cancion.linkReferencia, Cancion.autor, Cancion.vecesReproducidas, Cancion.imagen,Cancion.idUsuario from Cancion 
+    select Cancion.idCancion, Cancion.titulo, Cancion.genero, Cancion.fechaLanzamiento, Cancion.linkReferencia, Cancion.autor, Cancion.vecesReproducidas, Cancion.imagen,Cancion.idUsuario from Cancion
     join CancionAlbum on (CancionAlbum.idCancion = Cancion.idCancion) join
     Album on (Album.idAlbum = CancionAlbum.idAlbum) where Album.idAlbum = @id
             `);
@@ -69,20 +62,18 @@ export default class Database {
   async searchSongByTitle(data: { searchValue: any }) {
     await this.connect();
 
-    console.log(data)
-    const request = this.poolconnection.request();
+    const request = this.poolConnection.request();
     request.input("searchValue", sql.NVarChar(255), `%${data.searchValue}%`);
 
     const result = await request.query(
       `select * from Cancion where titulo LIKE @searchValue`
     );
-    console.log(result)
     return result.recordset;
   }
 
   async createUser(data: { username: any; password: any }) {
     await this.connect();
-    const request = this.poolconnection.request();
+    const request = this.poolConnection.request();
     request.input("username", sql.NVarChar(255), data.username);
     request.input("password", sql.NVarChar(255), data.password);
 
@@ -99,7 +90,7 @@ export default class Database {
   ) {
     await this.connect();
 
-    const request = this.poolconnection.request();
+    const request = this.poolConnection.request();
     request.input("userId", sql.Int, userId);
     request.input("username", sql.NVarChar(255), data.username);
     request.input("password", sql.NVarChar(255), data.password);
@@ -113,13 +104,13 @@ export default class Database {
 
   async addSongToAlbum(data: { songID: any; albumID: any }) {
     await this.connect();
-    const request = this.poolconnection.request();
+    const request = this.poolConnection.request();
 
-    const date_ob = new Date();
-    const date = ("0" + date_ob.getDate()).slice(-2);
-    const month = ("0" + (date_ob.getMonth() + 1)).slice(-2);
-    const year = date_ob.getFullYear();
-    const hours = date_ob.getHours();
+    const dateOb = new Date();
+    const date = ("0" + dateOb.getDate()).slice(-2);
+    const month = ("0" + (dateOb.getMonth() + 1)).slice(-2);
+    const year = dateOb.getFullYear();
+    const hours = dateOb.getHours();
 
     request.input("idCancion", sql.Int, data.songID);
     request.input("idAlbum", sql.Int, data.albumID);
@@ -145,9 +136,9 @@ export default class Database {
   }
   async removeSongFromAlbum(data: { songID: any; albumID: any }) {
     await this.connect();
-    const request = this.poolconnection.request();
+    const request = this.poolConnection.request();
 
- 
+
 
     request.input("idCancion", sql.Int, data.songID);
     request.input("idAlbum", sql.Int, data.albumID);
@@ -162,7 +153,7 @@ export default class Database {
   async read(id: string | number) {
     await this.connect();
 
-    const request = this.poolconnection.request();
+    const request = this.poolConnection.request();
     const result = await request
       .input("id", sql.Int, +id)
       .query(`SELECT * FROM Usuario WHERE idUsuario = 24`);
@@ -173,7 +164,7 @@ export default class Database {
   async obtenerUsuariosPorUsername(data: { username: any; password: any }) {
     await this.connect();
 
-    const request = this.poolconnection.request();
+    const request = this.poolConnection.request();
 
     request.input("username", sql.NVarChar(255), data.username);
     request.input("password", sql.NVarChar(255), data.password);
@@ -188,7 +179,7 @@ export default class Database {
   async getAllSongs() {
     await this.connect();
 
-    const request = this.poolconnection.request();
+    const request = this.poolConnection.request();
 
     const result = await request.query(`SELECT * FROM Cancion`);
     return result.recordset;
@@ -196,7 +187,7 @@ export default class Database {
   async getSongsById(id: string | number) {
     await this.connect();
 
-    const request = this.poolconnection.request();
+    const request = this.poolConnection.request();
 
     const result = await request.input("id", sql.Int, +id)
       .query(`SELECT * FROM Cancion WHERE idCancion = @id`);
@@ -204,36 +195,32 @@ export default class Database {
   }
 
   async readAlbums(id: string | number) {
-    console.log('id: ' + id);
     await this.connect();
 
-    const request = this.poolconnection.request();
+    const request = this.poolConnection.request();
     const result = await request
       .input("id", sql.Int, +id)
       .query(`SELECT * FROM Album WHERE idUsuario = @id`);
 
-    
+
     return result.recordset;
   }
 
   async readAlbumsByIdAlbum(id: string | number) {
-    console.log('id: ' + id);
     await this.connect();
 
-    const request = this.poolconnection.request();
+    const request = this.poolConnection.request();
     const result = await request
       .input("id", sql.Int, +id)
       .query(`SELECT * FROM Album WHERE idAlbum = @id`);
 
-    // console.log('result: ' + result.recordset)
-    console.log(result.recordset);
     return result.recordset;
   }
 
-  //function to create a new album in de Data Base
+  // function to create a new album in de Data Base
   async createSong(data: ISong) {
     await this.connect();
-    const request = this.poolconnection.request();
+    const request = this.poolConnection.request();
     request.input("titulo", sql.NVarChar(255), data.titulo);
     request.input("genero", sql.NVarChar(255), data.genero);
     request.input("fechaLanzamiento", sql.Date, data.fechaLanzamiento);
@@ -271,7 +258,7 @@ export default class Database {
   async editSong(data: { songId: number, title: string, gender: string, date: Date, author: string, referenceLink: string }) {
     await this.connect();
 
-    const request = this.poolconnection.request();
+    const request = this.poolConnection.request();
 
     request.input('songId', sql.Int(), data.songId);
     request.input('title', sql.NVarChar(255), data.title);
@@ -289,7 +276,7 @@ export default class Database {
   async getSongReproductions() {
     await this.connect();
 
-    const request = this.poolconnection.request();
+    const request = this.poolConnection.request();
 
     const result = await request.query(
       `SELECT * FROM Cancion ORDER BY vecesReproducidas DESC`
@@ -300,7 +287,7 @@ export default class Database {
   async getSongReproductionsByID(songId: number) {
     await this.connect();
 
-    const request = this.poolconnection.request();
+    const request = this.poolConnection.request();
     request.input('songId', sql.Int(), songId);
 
     const result = await request.query(
@@ -313,7 +300,7 @@ export default class Database {
   async deleteSong(songId: number, userId: number) {
     await this.connect();
 
-    const request = this.poolconnection.request();
+    const request = this.poolConnection.request();
 
     request.input('songId', sql.Int(), songId);
     request.input('userId', sql.Int(), userId);
@@ -329,7 +316,7 @@ export default class Database {
   async increaseSongReproductions(timesReproduced: number, idCancion: number) {
     await this.connect();
 
-    const request = this.poolconnection.request();
+    const request = this.poolConnection.request();
     request.input("timesReproduced", sql.Int, timesReproduced);
     request.input("idCancion", sql.Int, idCancion);
 
@@ -345,7 +332,7 @@ export default class Database {
   async getSongsByDate() {
     await this.connect();
 
-    const request = this.poolconnection.request();
+    const request = this.poolConnection.request();
 
     const result = await request.query(
       `SELECT *
@@ -356,11 +343,11 @@ export default class Database {
     return result.recordset;
   }
 
-  //function to create a new album in de Data Base
+  // function to create a new album in de Data Base
   async createAlbum(data: { userId: number; albumTitle: string; albumDescription: string }) {
     await this.connect();
-    let dateAlbum = new Date("2023-06-24");
-    const request = this.poolconnection.request();
+    const dateAlbum = new Date("2023-06-24");
+    const request = this.poolConnection.request();
     request.input("idUsuario", sql.Int, data.userId);
     request.input("titulo", sql.NVarChar(255), data.albumTitle);
     request.input("descripcion", sql.NVarChar(255), data.albumDescription);
@@ -381,13 +368,13 @@ export default class Database {
                 )
             `
     );
-    
+
     return result.rowsAffected[0];
   }
   // Function to delete an entire album from the Data Base
   async deleteAlbum(id: any) {
     await this.connect();
-    const request = this.poolconnection.request();
+    const request = this.poolConnection.request();
     const albumId = Number(id);
     request.input("idAlbum", sql.Int, albumId);
     const result = await request.query(
@@ -401,7 +388,7 @@ export default class Database {
     data: { userId: any; albumTitle: any; description: any }
   ) {
     await this.connect();
-    const request = this.poolconnection.request();
+    const request = this.poolConnection.request();
     const albumIdAsNumber = Number(albumId);
     request.input("idAlbum", sql.Int, albumIdAsNumber);
     request.input("idUsuario", sql.Int, data.userId);
@@ -417,10 +404,10 @@ export default class Database {
     return result.rowsAffected[0];
   }
 
-  //function to get username by id
+  // function to get username by id
   async getUsernameById(id: string | number) {
     await this.connect();
-    const request = this.poolconnection.request();
+    const request = this.poolConnection.request();
     const result = await request.input("id", sql.Int, +id).query(`
             Select Usuario.username
             where Usuario.idUsuario = @id
@@ -428,10 +415,10 @@ export default class Database {
 
     return result.recordset;
   }
-  //function to get password by id
+  // function to get password by id
   async getPasswordById(id: string | number) {
     await this.connect();
-    const request = this.poolconnection.request();
+    const request = this.poolConnection.request();
     const result = await request.input("id", sql.Int, +id).query(`
             Select Usuario.password
             where Usuario.idUsuario = @id
@@ -439,12 +426,12 @@ export default class Database {
 
     return result.recordset;
   }
-  //get credential
+  // get credential
   async getUserCredentials(id: string | number) {
-    
+
     await this.connect();
-  
-    const request = this.poolconnection.request();
+
+    const request = this.poolConnection.request();
     const result = await request.input("id", sql.Int, id).query(`
       SELECT username, password
       FROM Usuario

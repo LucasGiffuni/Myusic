@@ -1,127 +1,130 @@
-import { NextFunction, Request, Response } from 'express';
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 import Database from '../database';
-import { IResponse } from '../interfaces/IResponse';
 import passEcrypt from '../config/passEncrypt';
-import { ISong } from '../interfaces/ISong';
-
 const database = new Database();
-const encrypt = new passEcrypt()
-
-
-const getAllSongs = async (req: Request, res: Response) => {
-
+const encrypt = new passEcrypt();
+const getAllSongs = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const result = await database.getAllSongs();
-        const response: IResponse<any[]> = {
+        const result = yield database.getAllSongs();
+        const response = {
             Result: {
                 statuscode: "",
                 statustext: ""
             },
             data: result
-        }
+        };
         if (result.length > 0) {
             response.Result.statuscode = "200";
             response.Result.statustext = "OK";
             res.status(200);
             res.json(response);
-        } else {
+        }
+        else {
             response.Result.statuscode = "404";
             response.Result.statustext = "Not found";
             res.status(404);
             res.json(response);
         }
-
-    } catch (err) {
-        res.status(500).json({ error: err?.message });
     }
-}
-const getSongById = async (req: Request, res: Response) => {
-    const songId = req.params.songId
-
+    catch (err) {
+        res.status(500).json({ error: err === null || err === void 0 ? void 0 : err.message });
+    }
+});
+const getSongById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const songId = req.params.songId;
     try {
-        const result = await database.getSongsById(songId);
-        const response: IResponse<any[]> = {
+        const result = yield database.getSongsById(songId);
+        const response = {
             Result: {
                 statuscode: "",
                 statustext: ""
             },
             data: result
-        }
+        };
         if (result.length > 0) {
             response.Result.statuscode = "200";
             response.Result.statustext = "OK";
             res.status(200);
             res.json(response);
-        } else {
+        }
+        else {
             response.Result.statuscode = "404";
             response.Result.statustext = "Not found";
             res.status(404);
             res.json(response);
         }
-
-    } catch (err) {
-        res.status(500).json({ error: err?.message });
     }
-}
-
-const getSongReproductions = async (req: Request, res: Response) => {
+    catch (err) {
+        res.status(500).json({ error: err === null || err === void 0 ? void 0 : err.message });
+    }
+});
+const getSongReproductions = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const result = await database.getSongReproductions();
-        const response: IResponse<any[]> = {
+        const result = yield database.getSongReproductions();
+        const response = {
             Result: {
                 statuscode: "",
                 statustext: ""
             },
             data: result
-        }
+        };
         if (result.length > 0) {
             response.Result.statuscode = "200";
             response.Result.statustext = "OK";
             res.json(response);
             res.status(200);
-        } else {
+        }
+        else {
             response.Result.statuscode = "404";
             response.Result.statustext = "Not found";
             res.json(response);
             res.status(404);
         }
-    } catch (err) {
-        res.status(500).json({ error: err?.message });
     }
-}
-
-const increaseSongReproductions = async (req: Request, res: Response) => {
+    catch (err) {
+        res.status(500).json({ error: err === null || err === void 0 ? void 0 : err.message });
+    }
+});
+const increaseSongReproductions = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const songId = req.body.songId
-        const timesReproduced = await database.getSongReproductionsByID(songId);
-        const i: number = 0;
-        const result = await database.increaseSongReproductions(parseInt(timesReproduced.vecesReproducidas) + 1, songId);
-        const response: IResponse<any[]> = {
+        const songId = req.body.songId;
+        const timesReproduced = yield database.getSongReproductionsByID(songId);
+        const i = 0;
+        const result = yield database.increaseSongReproductions(parseInt(timesReproduced.vecesReproducidas) + 1, songId);
+        const response = {
             Result: {
                 statuscode: "",
                 statustext: ""
             },
             data: []
-        }
+        };
         if (result > 0) {
             response.Result.statuscode = "200";
             response.Result.statustext = "OK";
             res.json(response);
             res.status(200);
-        } else {
+        }
+        else {
             response.Result.statuscode = "404";
             response.Result.statustext = "Not found";
             res.json(response);
             res.status(404);
         }
-    } catch (err) {
-        res.status(500).json({ error: err?.message });
     }
-
-}
-
-const editSong = async (req: Request, res: Response) => {
-    const songId = req.body.songId
+    catch (err) {
+        res.status(500).json({ error: err === null || err === void 0 ? void 0 : err.message });
+    }
+});
+const editSong = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const songId = req.body.songId;
     const title = req.body.title;
     const gender = req.body.gender;
     const referenceLink = req.body.referenceLink;
@@ -135,61 +138,62 @@ const editSong = async (req: Request, res: Response) => {
             date,
             author,
             referenceLink
-        }
-        const result = await database.editSong(data);
-        const response: IResponse<any[]> = {
+        };
+        const result = yield database.editSong(data);
+        const response = {
             Result: {
                 statuscode: "",
                 statustext: ""
             },
             data: result
-        }
+        };
         if (result.length > 0) {
             response.Result.statuscode = "200";
             response.Result.statustext = "OK";
             res.status(200);
             res.json(response);
-        } else {
+        }
+        else {
             response.Result.statuscode = "404";
             response.Result.statustext = "Not found";
             res.status(404);
             res.json(response);
         }
-
-    } catch (err) {
-        res.status(500).json({ error: err?.message });
     }
-}
-
-const deleteSong = async (req: Request, res: Response) => {
+    catch (err) {
+        res.status(500).json({ error: err === null || err === void 0 ? void 0 : err.message });
+    }
+});
+const deleteSong = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const songId: number = parseInt(req.body.songId)
-        const userId: number = parseInt(req.body.userId)
-        const result = await database.deleteSong(songId, userId);
-        const response: IResponse<number> = {
+        const songId = parseInt(req.body.songId);
+        const userId = parseInt(req.body.userId);
+        const result = yield database.deleteSong(songId, userId);
+        const response = {
             Result: {
                 statuscode: "",
                 statustext: ""
             },
             data: result
-        }
+        };
         if (result > 0) {
             response.Result.statuscode = "200";
             response.Result.statustext = "OK";
             res.json(response);
             res.status(200);
-        } else {
+        }
+        else {
             response.Result.statuscode = "404";
             response.Result.statustext = "Not found";
             res.json(response);
             res.status(404);
         }
-    } catch (err) {
-        res.status(500).json({ error: err?.message });
     }
-}
-
-const createSong = async (req: Request, res: Response) => {
+    catch (err) {
+        res.status(500).json({ error: err === null || err === void 0 ? void 0 : err.message });
+    }
+});
+const createSong = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const titulo = req.body.titulo;
     const genero = req.body.genero;
     const linkReferencia = req.body.linkReferencia;
@@ -200,7 +204,7 @@ const createSong = async (req: Request, res: Response) => {
     const idCancion = 0;
     const imagen = req.body.imagen;
     try {
-        const data: ISong = {
+        const data = {
             idCancion,
             titulo,
             genero,
@@ -210,89 +214,89 @@ const createSong = async (req: Request, res: Response) => {
             vecesReproducidas,
             imagen,
             idUsuario
-        }
-        const result = await database.createSong(data);
-        const response: IResponse<any[]> = {
+        };
+        const result = yield database.createSong(data);
+        const response = {
             Result: {
                 statuscode: "",
                 statustext: ""
             },
             data: []
-        }
+        };
         if (result > 0) {
             response.Result.statuscode = "200";
             response.Result.statustext = "OK";
             res.status(200);
             res.json(response);
-        } else {
+        }
+        else {
             response.Result.statuscode = "404";
             response.Result.statustext = "Not found";
             res.status(404);
             res.json(response);
         }
-    } catch (err) {
-        res.status(500).json({ error: err?.message });
     }
-}
-
-const getSongsByDate = async (req: Request, res: Response) => {
+    catch (err) {
+        res.status(500).json({ error: err === null || err === void 0 ? void 0 : err.message });
+    }
+});
+const getSongsByDate = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const result = await database.getSongsByDate();
-        const response: IResponse<any[]> = {
+        const result = yield database.getSongsByDate();
+        const response = {
             Result: {
                 statuscode: "",
                 statustext: ""
             },
             data: result
-        }
+        };
         if (result.length > 0) {
             response.Result.statuscode = "200";
             response.Result.statustext = "OK";
             res.json(response);
             res.status(200);
-        } else {
+        }
+        else {
             response.Result.statuscode = "404";
             response.Result.statustext = "Not found";
             res.json(response);
             res.status(404);
         }
-    } catch (err) {
-        res.status(500).json({ error: err?.message });
     }
-}
-
-const getSongBySearchValue = async (req: Request, res: Response) => {
+    catch (err) {
+        res.status(500).json({ error: err === null || err === void 0 ? void 0 : err.message });
+    }
+});
+const getSongBySearchValue = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const searchValue = req.params.searchValue
-       const dataI ={
-        searchValue
-        }
-
-        const result = await database.searchSongByTitle(dataI);
-        const response: IResponse<any[]> = {
+        const searchValue = req.params.searchValue;
+        const dataI = {
+            searchValue
+        };
+        const result = yield database.searchSongByTitle(dataI);
+        const response = {
             Result: {
                 statuscode: "",
                 statustext: ""
             },
             data: result
-        }
+        };
         if (result.length > 0) {
             response.Result.statuscode = "200";
             response.Result.statustext = "OK";
             res.json(response);
             res.status(200);
-        } else {
+        }
+        else {
             response.Result.statuscode = "404";
             response.Result.statustext = "Not found";
             res.json(response);
             res.status(404);
         }
-    } catch (err) {
-        res.status(500).json({ error: err?.message });
     }
-}
-
-
-
-
-export default { getAllSongs, getSongById, getSongReproductions, increaseSongReproductions, editSong, createSong, deleteSong, getSongsByDate ,getSongBySearchValue};
+    catch (err) {
+        res.status(500).json({ error: err === null || err === void 0 ? void 0 : err.message });
+    }
+});
+export default { getAllSongs, getSongById, getSongReproductions, increaseSongReproductions, editSong, createSong, deleteSong, getSongsByDate, getSongBySearchValue };
+//# sourceMappingURL=songController.js.map

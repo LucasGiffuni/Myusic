@@ -17,19 +17,18 @@ router.put('/addSongToAlbum', (req, res) => {
 router.put('/updateUser', (req, res) => {
     controller.updateUser(req, res)
 });
-//mio
+// mio
 router.get('/getUsernameById/:idUsuario',(req,res)=>{
-    
+
     controller.getUsernameById(req,res)
 });
 router.get('/getPasswordById/:idUsuario',(req,res)=>{
     controller.getPasswordById(req,res)
 })
-//mio nuevo
+// mio nuevo
 router.get('/getUserCredentials/:idUsuario',(req,res)=>{
-    console.log("got credentials")
     controller.getUserCredentials(req,res)
-    
+
 })
 
 export default router;
