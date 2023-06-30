@@ -212,7 +212,7 @@ export default class Database {
       .input("id", sql.Int, +id)
       .query(`SELECT * FROM Album WHERE idUsuario = @id`);
 
-    // console.log('result: ' + result.recordset)
+    
     return result.recordset;
   }
 
@@ -381,7 +381,7 @@ export default class Database {
                 )
             `
     );
-    console.log(result.rowsAffected[0])
+    
     return result.rowsAffected[0];
   }
   // Function to delete an entire album from the Data Base
@@ -438,6 +438,19 @@ export default class Database {
             `);
 
     return result.recordset;
+  }
+  //get credential
+  async getUserCredentials(id: string | number) {
+    
+    await this.connect();
+  
+    const request = this.poolconnection.request();
+    const result = await request.input("id", sql.Int, id).query(`
+      SELECT username, password
+      FROM Usuario
+      WHERE idUsuario = @id
+    `);
+    return result.recordset[0];
   }
 }
 

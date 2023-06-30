@@ -32,22 +32,30 @@ import { UserInterface } from 'src/app/interfaces/IUser';
 })
 export class ChangUserNameComponent {
 
-  currentName: string = "";
+  currentName: string = "tom";
   newName: string ="";
+  userId: number=-1;
+  password:string="";
   userService: Services = inject(Services);
-  tempUserId: number=-1;
   cookieService: CookieService = inject(CookieService);
   profileService:UserService=inject(UserService)
-  idUsuario: number=-1;
-  password:string=""
+  loginService: UserService = inject(UserService);
 
   constructor(private router: Router) {
-    this.idUsuario=this.cookieService.get("USERID");
-    if(this.idUsuario>=0){
-      this.currentName=String(this.profileService.getUsernameById(this.idUsuario));
-      this.password=String(this.profileService.getPasswordById(this.idUsuario));
+    this.userId=parseInt(this.cookieService.get('USERID'), 10);
+    this.getUserProfile();
+  
+  }
+
+  async getUserProfile() {
+    const response = await this.userService.getUserProfile(this.userId);
+    if (response) {
+      console.log("enter response")
+      this.currentName = response.username;
+      this.password = response.password;
     }else{
-      this.currentName="Not Value";
+      this.currentName="Not found";
+      this.password="Not found";
     }
   }
  
@@ -56,17 +64,17 @@ export class ChangUserNameComponent {
   }
 
   changeName(): void {
-    this.currentName=this.newName;
+    this.userService.updateUser(this.userId,this.newName,this.password);
     this.newName="";
-    this.userService.updateUser(this.tempUserId,this.newName,this.password);
+    //this.currentName=String(this.profileService.getUsernameById(this.userId));
+    this.getUserProfile();
   }
 
   clickButton(path: string) {
     this.router.navigate([path]);
-
   }
 
-  }
+}
 
 
 

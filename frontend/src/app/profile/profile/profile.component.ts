@@ -2,11 +2,9 @@ import { Component, inject } from '@angular/core';
 import { UserService } from 'src/app/services/profile.service';
 import { UserInterface } from 'src/app/interfaces/IUser';
 import { MatIconModule } from '@angular/material/icon';
-
 import { ActivatedRoute, Router } from '@angular/router';
 import { CookieService } from 'src/app/services/cookie.service';
 import { Services } from '../../services/services.service';
-
 
 
 @Component({
@@ -26,7 +24,7 @@ import { Services } from '../../services/services.service';
             placeholder="Username"
             disabled
           />
-          <button (click)="clickButton('/changeUsserName')">Change</button>
+          <button (click)="clickButton('/changeUserName')">Change</button>
         </div>
         <div class="form-group">
           <label for="password">Password:</label>
@@ -61,23 +59,26 @@ export class ProfileComponent {
   cookieService: CookieService = inject(CookieService);
   userService: Services = inject(Services);
   profileService:UserService=inject(UserService)
-  idUsuario: number=-1;
+  userId: number=-1;
   loginService: UserService = inject(UserService);
 
-
- 
-
   constructor(private router: Router) {
-    this.idUsuario=this.cookieService.get("USERID");
-    if(this.idUsuario>=0){
-      this.username=String(this.profileService.getUsernameById(this.idUsuario));
-      this.password=String(this.profileService.getPasswordById(this.idUsuario));
-    }else{
-      this.username="Not Value";
-      this.password="Not Value";
-    }
-    
+    this.userId = parseInt(this.cookieService.get('USERID'), 10);
+    this.getUserProfile();  
+  }
 
+  async getUserProfile() {
+    const response = await this.userService.getUserProfile(this.userId);
+    //const response = await this.profileService.getUserCredentials(this.userId);
+    if (response) {
+
+      this.username = response.username;
+      this.password = response.password;
+    }else{
+
+      this.username="Not found";
+      this.password="Not found";
+    }
   }
 
   clickButton(path: string) {

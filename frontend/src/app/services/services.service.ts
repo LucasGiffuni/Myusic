@@ -69,5 +69,18 @@ export class Services {
     })).json());
   }
 
+  async getUserProfile(userId: number) {
+ 
+    const response = await fetch(`${this.url}/user/getUserCredentials/${userId}`, {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        'Authorization': 'Bearer ' + this.cookieService.get("SESSIONID"),
+        'Content-Type': 'application/json',
+      }
+    });
+    return response.json();
+  }
+
 
 }
