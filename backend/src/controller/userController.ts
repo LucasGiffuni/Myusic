@@ -214,7 +214,42 @@ const updateUser = async (req: Request, res: Response) => {
 		res.status(500).send('Error updating user');
 	}
 };
+//Metodo para obtener username por ID 
+const getUsernameById = async (req: Request, res: Response) => {
+	try {
+		const personId = req.params.idUsuario;
+		console.log(`personId: ${personId}`);
+
+		if (personId) {
+			const result = await database.getUsernameById(personId);
+			console.log(`username: ${JSON.stringify(result)}`);
+			res.status(200).json(result);
+		} else {
+			res.status(404);
+		}
+	} catch (err) {
+		res.status(500).json({ error: err?.message });
+	}
+};
+	//Metodo para obtener password por ID 
+const getPasswordById = async (req: Request, res: Response) => {
+	try {
+		const personId = req.params.idUsuario;
+		console.log(`personId: ${personId}`);
+
+		if (personId) {
+			const result = await database.getPasswordById(personId);
+			console.log(`password: ${JSON.stringify(result)}`);
+			res.status(200).json(result);
+		} else {
+			res.status(404);
+		}
+	} catch (err) {
+		res.status(500).json({ error: err?.message });
+	}
+};
 
 
-export default { getUser, getUserPlaylists, createUser, addSongToAlbum, validateUser, updateUser };
+
+export default { getUser, getUserPlaylists, createUser, addSongToAlbum, validateUser, updateUser,getPasswordById,getUsernameById };
 

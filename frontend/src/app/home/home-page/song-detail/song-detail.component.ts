@@ -5,12 +5,15 @@ import { ISong } from 'src/app/interfaces/ISong';
 import { YouTubePlayerModule } from '@angular/youtube-player';
 import { MatButtonModule } from '@angular/material/button';
 import { SongService } from 'src/app/services/song.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { MatDialog, MatDialogRef, MatDialogModule } from '@angular/material/dialog';
 import { AddToAlbumComponent } from '../add-to-album/add-to-album.component';
 import { CookieService } from 'src/app/services/cookie.service';
 import { MatIconModule } from '@angular/material/icon';
+import { MatSliderModule } from '@angular/material/slider';
+import { FormsModule } from '@angular/forms';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-song-detail',
@@ -18,7 +21,17 @@ import { MatIconModule } from '@angular/material/icon';
     class: 'song-detail-component'
   },
   standalone: true,
-  imports: [CommonModule, YouTubePlayerModule, MatButtonModule, MatCardModule, MatDialogModule, MatIconModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    YouTubePlayerModule,
+    MatButtonModule,
+    MatCardModule,
+    MatDialogModule,
+    MatIconModule,
+    MatSliderModule,
+    MatSnackBarModule
+  ],
   template: `
 	<script src="https://www.youtube.com/iframe_api"></script>
   <div id="song-detail-body-component">
@@ -33,7 +46,7 @@ import { MatIconModule } from '@angular/material/icon';
     <mat-card-title id="songCardTitle">{{selectedSong.titulo}}</mat-card-title>
     <mat-card-subtitle>{{selectedSong.autor}}</mat-card-subtitle>
   </mat-card-header>
-  
+
   <img mat-card-image src={{selectedSong.imagen}} >
   <mat-card-content>
 
@@ -46,6 +59,10 @@ import { MatIconModule } from '@angular/material/icon';
 
   </mat-card-content>
   <mat-card-actions id="audio-controller">
+		<mat-slider discrete color="accent">
+			<input matSliderThumb [(ngModel)]="volume" (input)="updateVolume()">
+		</mat-slider>
+
       <button mat-fab matTooltip="Primary" aria-label="play button" (click)="playMusic()">
 				<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 256 256"><path fill="#303030" d="M240 128a15.74 15.74 0 0 1-7.6 13.51L88.32 229.65a16 16 0 0 1-16.2.3A15.86 15.86 0 0 1 64 216.13V39.87a15.86 15.86 0 0 1 8.12-13.82a16 16 0 0 1 16.2.3l144.08 88.14A15.74 15.74 0 0 1 240 128Z"/></svg>
 			</button>
@@ -83,16 +100,15 @@ export class SongDetailComponent implements OnInit, OnDestroy {
   apiLoaded = false;
   splitted: string = "";
   videoId: string = this.splitted;
+  volume: number = 50;
 
   @ViewChild('youtubePlayer') youtubePlayer: any;
   songService: SongService = inject(SongService);
   cookieService: CookieService = inject(CookieService);
 
-  constructor(private route: ActivatedRoute, public dialog: MatDialog) { }
+  constructor(private route: ActivatedRoute, public dialog: MatDialog, private router: Router, private _snackBar: MatSnackBar) { }
 
   ngOnInit() {
-
-
 
     if (!this.apiLoaded) {
       this.sub = this.route.params.subscribe(params => {
@@ -100,12 +116,18 @@ export class SongDetailComponent implements OnInit, OnDestroy {
         this.cookieService.remove("SELECTEDSONG")
         this.cookieService.set("SELECTEDSONG", String(this.id));
         this.songService.getSongByID(this.id).then((response) => {
-          this.selectedSong = response.data[0]
-          console.log(this.selectedSong)
+          if (response.Result.statuscode === "403") {
+            this.openSessionSnackBar("Session expired", "Cerrar")
 
-          this.splitted = this.selectedSong.linkReferencia.split("=")[1]
-          console.log(this.splitted);
-          this.videoId = this.splitted
+            this.router.navigate(['/login']);
+          } else {
+            this.selectedSong = response.data[0]
+            console.log(this.selectedSong)
+
+            this.splitted = this.selectedSong.linkReferencia.split("=")[1]
+            console.log(this.splitted);
+            this.videoId = this.splitted
+          }
         })
 
       });
@@ -131,6 +153,7 @@ export class SongDetailComponent implements OnInit, OnDestroy {
 
   onPlayerReady(event: any) {
     this.player = event.target;
+    this.updateVolume();
   }
 
   playMusic() {
@@ -152,6 +175,10 @@ export class SongDetailComponent implements OnInit, OnDestroy {
     }
   }
 
+  updateVolume() {
+    this.player.setVolume(this.volume);
+  }
+
   splitLink(link: string) {
     return link.split("=")[1];
   }
@@ -165,5 +192,8 @@ export class SongDetailComponent implements OnInit, OnDestroy {
       enterAnimationDuration,
       exitAnimationDuration,
     });
+  }
+  openSessionSnackBar(message: string, action: string) {
+    this._snackBar.open(message, action);
   }
 }

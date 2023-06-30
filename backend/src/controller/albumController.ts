@@ -228,3 +228,4 @@ const getAlbumsDetails = async (req: Request, res: Response) => {
 export default {
     addSongToAlbum, getAlbums, createAlbum, getUserAlbums, getAlbumsDetails, getAlbumsSongs, removeSongFromAlbum
 };
+

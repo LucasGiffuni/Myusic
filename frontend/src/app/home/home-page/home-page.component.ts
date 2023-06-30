@@ -55,6 +55,7 @@ import { SongLatestComponent } from "./song/song-latest/song-latest.component";
   `,
     styleUrls: ['./home-page.component.css'],
     imports: [CommonModule, AlbumComponent, SongComponent, MatDialogModule, MatSnackBarModule, SongLatestComponent]
+
 })
 export class HomePageComponent implements AfterViewChecked {
   @ViewChild('listAlbums', { static: false }) listAlbums!: ElementRef;
@@ -89,8 +90,6 @@ export class HomePageComponent implements AfterViewChecked {
           value.data.forEach(element => {
             this.albumList.push(element);
           });
-
-          console.log(value.Result)
 
         }
 

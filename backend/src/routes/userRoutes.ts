@@ -18,6 +18,12 @@ router.put('/updateUser', (req, res) => {
     controller.updateUser(req, res)
 });
 
+router.get('/getUsernameById/:idUsuario',(req,res)=>{
+    controller.getUsernameById(req,res)
+});
+router.get('/getPasswordById/:idUsuario',(req,res)=>{
+    controller.getPasswordById(req,res)
+})
 
 
 export default router;

@@ -5,7 +5,8 @@ import { ISong } from 'src/app/interfaces/ISong';
 import { SongService } from 'src/app/services/song.service';
 import { CookieService } from 'src/app/services/cookie.service';
 import { SongLatestComponent } from '../song/song-latest/song-latest.component';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-search-song',
@@ -26,7 +27,7 @@ import { ActivatedRoute } from '@angular/router';
       </div>
   `,
   styleUrls: ['./search-song.component.css'],
-  imports: [CommonModule, SongLatestComponent],
+  imports: [CommonModule, SongLatestComponent,MatSnackBarModule],
 })
 export class SearchSongComponent {
   songService: SongService = inject(SongService);
@@ -37,7 +38,7 @@ export class SearchSongComponent {
   id!: string;
   private sub: any;
 
-  constructor(private route: ActivatedRoute) {}
+  constructor(private route: ActivatedRoute, private router: Router, private _snackBar: MatSnackBar) { }
 
   ngOnInit() {
     this.getSongBySearchValue();
@@ -53,15 +54,25 @@ export class SearchSongComponent {
       this.songService
         .getSongBySearchValue(data)
         .then((value: IResponse<ISong>) => {
-          value.data.forEach((element) => {
-            this.songListOutStanding.push(element);
-            console.log('titulo: ' + element.titulo);
-          });
-          console.log(this.songListOutStanding);
+          if (value.Result.statuscode === "403") {
+            this.openSessionSnackBar("Session expired", "Cerrar")
+
+            this.router.navigate(['/login']);
+          } else {
+            value.data.forEach((element) => {
+              this.songListOutStanding.push(element);
+              console.log('titulo: ' + element.titulo);
+            });
+            console.log(this.songListOutStanding);
+          }
         })
         .catch((err) => {
           console.error(err);
         });
     });
+  }
+
+  openSessionSnackBar(message: string, action: string) {
+    this._snackBar.open(message, action);
   }
 }
