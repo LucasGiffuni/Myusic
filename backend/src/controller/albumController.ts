@@ -41,6 +41,40 @@ const addSongToAlbum = async (req: Request, res: Response) => {
         res.status(404).json(response);
     }
 };
+const removeSongFromAlbum = async (req: Request, res: Response) => {
+    const songID = req.body.songID;
+    const albumID = req.body.albumID;
+
+    const data = {
+        songID: songID,
+        albumID: albumID
+    }
+    const response: IResponse<any[]> = {
+        Result: {
+            statuscode: "",
+            statustext: ""
+        },
+        data: []
+    }
+    if (songID && albumID) {
+        try {
+            const result = database.removeSongFromAlbum(data);
+
+            response.Result.statuscode = "200";
+            response.Result.statustext = "OK";
+
+            res.status(200).json(response);
+        } catch (err) {
+            response.Result.statuscode = "505";
+            response.Result.statustext = "INTERNAL SERVER ERROR";
+        }
+    } else {
+        response.Result.statuscode = "404";
+        response.Result.statustext = "SongID / AlbumID not found";
+
+        res.status(404).json(response);
+    }
+};
 const getAlbums = async (req: Request, res: Response) => {
     try {
         const personid = req.params.idUsuario;
@@ -95,6 +129,34 @@ const getUserAlbums = async (req: Request, res: Response) => {
         res.status(500).json({ error: err?.message });
     }
 };
+const getAlbumsSongs = async (req: Request, res: Response) => {
+    try {
+        const personid = req.params.idAlbum;
+        const result = await database.getAlbumsSongs(personid);
+        const response: IResponse<any[]> = {
+            Result: {
+                statuscode: "",
+                statustext: ""
+            },
+            data: result
+        }
+
+        console.log(result)
+        if (result.length > 0) {
+            response.Result.statuscode = "200";
+            response.Result.statustext = "OK";
+            res.status(200);
+            res.json(response);
+        } else {
+            response.Result.statuscode = "404";
+            response.Result.statustext = "Not found";
+            res.status(200);
+            res.json(response);
+        }
+    } catch (err) {
+        res.status(500).json({ error: err?.message });
+    }
+};
 
 const createAlbum = async (req: Request, res: Response) => {
     try {
@@ -136,7 +198,7 @@ const getAlbumsDetails = async (req: Request, res: Response) => {
     try {
         const idAlbum = req.params.idAlbum;
         const result = await database.readAlbumsByIdAlbum(idAlbum);
-        const response: IResponse<IAlbum> = {
+        const response: IResponse<any> = {
             Result: {
                 statuscode: "",
                 statustext: ""
@@ -144,7 +206,7 @@ const getAlbumsDetails = async (req: Request, res: Response) => {
             data: result
         }
         console.log(`Albums: ${result}`);
-        if (result ) {
+        if (result) {
             response.Result.statuscode = "200";
             response.Result.statustext = "OK";
             res.status(200);
@@ -163,4 +225,6 @@ const getAlbumsDetails = async (req: Request, res: Response) => {
 
 
 
-export default { addSongToAlbum, getAlbums, createAlbum,getUserAlbums,getAlbumsDetails };
+export default {
+    addSongToAlbum, getAlbums, createAlbum, getUserAlbums, getAlbumsDetails, getAlbumsSongs, removeSongFromAlbum
+};

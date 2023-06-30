@@ -53,8 +53,20 @@ export default class Database {
 
     return result.recordset;
   }
+  async getAlbumsSongs(id: string | number) {
+    await this.connect();
 
-  async searchSongByTitle(data: { searchValue: any}) {
+    const request = this.poolconnection.request();
+    const result = await request.input("id", sql.Int, +id).query(`
+    select Cancion.idCancion, Cancion.titulo, Cancion.genero, Cancion.fechaLanzamiento, Cancion.linkReferencia, Cancion.autor, Cancion.vecesReproducidas, Cancion.imagen,Cancion.idUsuario from Cancion 
+    join CancionAlbum on (CancionAlbum.idCancion = Cancion.idCancion) join
+    Album on (Album.idAlbum = CancionAlbum.idAlbum) where Album.idAlbum = @id
+            `);
+    return result.recordset;
+  }
+
+
+  async searchSongByTitle(data: { searchValue: any }) {
     await this.connect();
 
     console.log(data)
@@ -64,7 +76,7 @@ export default class Database {
     const result = await request.query(
       `select * from Cancion where titulo LIKE @searchValue`
     );
-      console.log(result)
+    console.log(result)
     return result.recordset;
   }
 
@@ -127,6 +139,21 @@ export default class Database {
                 @fechaAgregado,
                 @vecesReproducido
             )`
+    );
+
+    return result.rowsAffected[0];
+  }
+  async removeSongFromAlbum(data: { songID: any; albumID: any }) {
+    await this.connect();
+    const request = this.poolconnection.request();
+
+ 
+
+    request.input("idCancion", sql.Int, data.songID);
+    request.input("idAlbum", sql.Int, data.albumID);
+
+    const result = await request.query(
+      `delete from CancionAlbum where idCancion = @idCancion and idAlbum = @idAlbum`
     );
 
     return result.rowsAffected[0];
@@ -199,8 +226,8 @@ export default class Database {
       .query(`SELECT * FROM Album WHERE idAlbum = @id`);
 
     // console.log('result: ' + result.recordset)
-    console.log(result);
-    return result.recordset[0];
+    console.log(result.recordset);
+    return result.recordset;
   }
 
   //function to create a new album in de Data Base

@@ -11,7 +11,7 @@ import { ActivatedRoute } from '@angular/router';
   selector: 'app-search-song',
   standalone: true,
   template: `
-    
+
       <div class="library-component-outstanding">
         <div
           #listSongOutStanding
