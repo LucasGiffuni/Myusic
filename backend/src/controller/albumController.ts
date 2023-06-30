@@ -135,4 +135,4 @@ const createAlbum = async (req: Request, res: Response) => {
 
 
 
-export default { addSongToAlbum, getAlbums, createAlbum };
+export default { addSongToAlbum, getAlbums, createAlbum,getUserAlbums };

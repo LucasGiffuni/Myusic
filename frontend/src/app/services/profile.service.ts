@@ -11,7 +11,7 @@ import { IResponse } from '../interfaces/IResponse';
 export class UserService {
   url = 'http://localhost:3000';
   cookieService: CookieService = inject(CookieService);
-
+  loginFlag = false;
   constructor() { }
 
   async getUsernameById(userId:number){
@@ -27,7 +27,7 @@ export class UserService {
         'Content-Type': 'application/json',
       }
     })).json)
-  
+
   }
 
   async getPasswordById(userId:number){
@@ -43,7 +43,7 @@ export class UserService {
         'Content-Type': 'application/json',
       }
     })).json)
-  
+
   }
 
 
