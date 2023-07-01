@@ -21,7 +21,7 @@
 
 	<a [routerLink]="['/musicPlayer']">musicPlayer</a>
 
-	<ion-list>
+	<ion-list *ngIf="songList">
 	  <app-song *ngFor="let song of songList" [song]="song"></app-song>
 	</ion-list>
   </ion-content>

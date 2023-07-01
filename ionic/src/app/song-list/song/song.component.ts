@@ -14,9 +14,11 @@ import { ISong } from 'src/app/interfaces/Isong';
 export class SongComponent  implements OnInit {
 
 	@Input() song! : ISong;
+	
   constructor() { }
 
-  ngOnInit() {}
+  ngOnInit() {console.log(this.song)}
+
   private platform = inject(Platform);
   isIos() {
     return this.platform.is('ios')

@@ -17,7 +17,7 @@ import { RouterModule } from '@angular/router';
 })
 export class SongListComponent implements OnInit {
 
-	songList!: ISong[];
+	songList: ISong[] = [];
 	private data = inject(SongService);
 	songService: SongService = inject(SongService);
 	cookieService: CookieService = inject(CookieService);
@@ -25,8 +25,8 @@ export class SongListComponent implements OnInit {
 
 	constructor() {}
 
-	ngOnInit() {
-		this.getSongs();
+	async ngOnInit() {
+		await this.getSongs();
 	}
 
 	refresh(ev: any) {

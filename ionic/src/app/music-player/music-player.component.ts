@@ -20,15 +20,15 @@ export class MusicPlayerComponent  implements OnInit {
 	cookieService!: CookieService;
 
   selectedSong: ISong = {
-    songId: 0,
-    title: "",
-    genre: "",
-    releaseDate: new Date("now"),
-    referenceLink: "",
-    author: "",
-    timesReproduced: 0,
-    picture: "",
-    userId: 0
+    idCancion: 0,
+    titulo: "",
+    genero: "",
+    fechaLanzamiento: new Date("now"),
+    linkReferencia: "",
+    autor: "",
+    vecesReproducidas: 0,
+    imagen: "",
+    idUsuario: 0
   };
 
   player: any;
@@ -47,12 +47,12 @@ export class MusicPlayerComponent  implements OnInit {
    }
 
   ngOnInit() {
-
     if (!this.apiLoaded) {
       this.sub = this.route.params.subscribe(params => {
         this.id = +params['id']; // (+) converts string 'id' to a number
         this.cookieService.remove("SELECTEDSONG")
         this.cookieService.set("SELECTEDSONG", String(this.id));
+		console.log("estaid"+this.id)
         this.songService.getSongByID(this.id).then((response) => {
           if (response.Result.statuscode === "403") {
             this.openSnackBar("Session expired", "Cerrar")
@@ -62,7 +62,7 @@ export class MusicPlayerComponent  implements OnInit {
             this.selectedSong = response.data[0]
             console.log(this.selectedSong)
 
-            this.splitted = this.selectedSong.referenceLink.split("=")[1]
+            this.splitted = this.selectedSong.linkReferencia.split("=")[1]
             console.log(this.splitted);
             this.videoId = this.splitted
           }
@@ -75,6 +75,10 @@ export class MusicPlayerComponent  implements OnInit {
       this.apiLoaded = true;
 
     }
+  }
+
+  ngOnDestroy() {
+    this.sub.unsubscribe();
   }
 
   pinFormatter(value: number) {
