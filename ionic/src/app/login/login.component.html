@@ -1,0 +1,39 @@
+<div id="login-body-component">
+	<h1 id="login-component-title">Login</h1>
+	<form id="login-component-form">
+	  <div class="login-component-formInputBody">
+		<input
+		  type="text"
+		  class="login-component-formInput"
+		  placeholder="Username"
+		  (input)="onInputUsername($event)"
+		/>
+	  </div>
+	  <div class="login-component-formInputBody">
+		<input
+		  type="password"
+		  class="login-component-formInput"
+		  placeholder="Password"
+		  (input)="onInputPassword($event)"
+		/>
+	  </div>
+
+	  <div id="login-component-formButtonBody">
+		<input
+		  type="Button"
+		  id="login-component-formButton"
+		  value="Sign In"
+		  (click)="login()"
+		/>
+	  </div>
+
+	  <div id="login-component-signUpBody">
+		<p>
+		  Not a User?
+		  <button class="link" (click)="clickButton('/register')">
+			Sign In
+		  </button>
+		</p>
+	  </div>
+	</form>
+  </div>

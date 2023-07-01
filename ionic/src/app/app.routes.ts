@@ -1,14 +1,26 @@
 import { Routes } from '@angular/router';
 
 export const routes: Routes = [
-  {
+  /*{
     path: '',
-    redirectTo: 'folder/inbox',
+	redirectTo: 'songList',
+    //redirectTo: 'folder/inbox',
+	//redirectTo: 'musicPlayer',
     pathMatch: 'full',
+  },*/
+  {
+    path: 'musicPlayer',
+	loadComponent: () =>
+	  import('./music-player/music-player.component').then((m) => m.MusicPlayerComponent)
   },
   {
-    path: 'folder/:id',
+    path: 'songList',
+	loadComponent: () =>
+	  import('./song-list/song-list.component').then((m) => m.SongListComponent)
+  },
+  {
+    path: 'song/:id',
     loadComponent: () =>
-      import('./folder/folder.page').then((m) => m.FolderPage),
+      import('./song-list/song/song.component').then((m) => m.SongComponent),
   },
 ];
