@@ -414,6 +414,18 @@ export default class Database {
 
     return result.recordset;
   }
+  async getUsernameByName(username: string ) {
+    await this.connect();
+    const request = this.poolConnection.request();
+    request.input("username", sql.NVarChar(255), username);
+    const result = await request.query(
+      `
+      select * from Usuario where username = @username
+      `);
+    console.log(result)
+
+    return result.recordset;
+  }
   // function to get password by id
   async getPasswordById(id: string | number) {
     await this.connect();

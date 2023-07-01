@@ -20,6 +20,7 @@ import { MAT_SNACK_BAR_DATA, MatSnackBar, MatSnackBarModule } from '@angular/mat
       </div>
       <div class="register-component-formInputBody">
         <input type="password" class="register-component-formInput" placeholder="Password" (input)="onInputPassword($event)">
+
       </div>
 
       <div id="register-component-formButtonBody">
@@ -66,16 +67,16 @@ export class RegisterComponent {
   login() {
 
     if (this.username && this.password) {
-      this.userService.register(this.username, this.password).then((response) => {
+      this.userService.register(this.username, this.password).then((result) => {
+        console.log(result)
+        if (result.Result.statuscode == "404") {
+          this.openSnackBar(result.Result.statustext, "undo")
 
-        if (response.resultado.statusCode == "404") {
-          this.openSnackBar(response.resultado.statusText, "undo")
-
-        } else if (response.resultado.statusCode == "200") {
+        } else if (result.Result.statuscode == "200") {
 
 
 
-          this.openSnackBar("Usuario " + response.user.username + " creado correctamente", "Close")
+          this.openSnackBar("Usuario " + result.data + " creado correctamente", "Close")
 
           this.clickButton('/login')
 
