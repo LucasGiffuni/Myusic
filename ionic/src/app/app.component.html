@@ -1,5 +1,6 @@
 <ion-app>
-  <ion-split-pane contentId="main-content">
+	<app-login *ngIf="!this.userService.loginFlag"></app-login>
+  <ion-split-pane contentId="main-content" *ngIf="this.userService.loginFlag">
     <ion-menu contentId="main-content" type="overlay">
       <ion-content>
         <ion-list id="inbox-list">

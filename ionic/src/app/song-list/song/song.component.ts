@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { IonicModule, Platform } from '@ionic/angular';
-import { Song } from 'src/app/interfaces/song';
+import { ISong } from 'src/app/interfaces/Isong';
 
 @Component({
   selector: 'app-song',
@@ -17,7 +17,7 @@ export class SongComponent  implements OnInit {
 
   ngOnInit() {}
   private platform = inject(Platform);
-  @Input() song?: Song;
+  @Input() song?: ISong;
   isIos() {
     return this.platform.is('ios')
   }

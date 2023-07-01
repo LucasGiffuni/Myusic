@@ -1,14 +1,14 @@
 <ion-item
   *ngIf="song"
-  [routerLink]="'/song/' + song.id"
+  [routerLink]="'/song/' + song.songId"
   [detail]="false"
 >
-  <div slot="start" [class]="!song.read ? 'dot dot-unread' : 'dot'"></div>
+  <div slot="start" [class]="!song.title ? 'dot dot-unread' : 'dot'"></div>
   <ion-label class="ion-text-wrap">
     <h2>
-      {{ song.fromName }}
+      {{ song.title }}
       <span class="date">
-        <ion-note>{{ song.date }}</ion-note>
+        <ion-note>{{ song.releaseDate }}</ion-note>
         <ion-icon
           aria-hidden="true"
           name="chevron-forward"
@@ -17,7 +17,7 @@
         ></ion-icon>
       </span>
     </h2>
-    <h3>{{ song.subject }}</h3>
+    <h3>{{ song.referenceLink }}</h3>
     <p>
       Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
       tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
