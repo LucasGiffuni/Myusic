@@ -6,6 +6,7 @@ const encrypt = new passEcrypt()
 import cookieParser from 'cookie-parser';
 import jwt from 'jsonwebtoken';
 import fs from "fs";
+import { IResponse } from '../interfaces/IResponse';
 
 
 const RSA_PRIVATE_KEY = fs.readFileSync('private.key');
@@ -68,7 +69,7 @@ const createUser = async (req: Request, res: Response) => {
 		response.resultado.statusText = "User Not Found";
 
 
-		res.status(404).json(response);
+		res.status(200).json(response);
 	}
 
 };
@@ -128,7 +129,7 @@ const validateUser = async (req: Request, res: Response) => {
 		response.resultado.statusText = "User Not Found";
 
 
-		res.status(404).json(response);
+		res.status(200).json(response);
 	}
 };
 
@@ -175,7 +176,7 @@ const addSongToAlbum = async (req: Request, res: Response) => {
 			const result = await database.addSongToAlbum(data);
 			res.status(200).json("La cancion " + data.songID + " fue agregada correctamente al album " + data.albumID);
 		} else {
-			res.status(404).json({ error: "idCancion or idAlbum could not be null" });
+			res.status(200).json({ error: "idCancion or idAlbum could not be null" });
 		}
 	} catch (err) {
 		res.status(500).json({ error: err?.message });
@@ -189,6 +190,14 @@ const updateUser = async (req: Request, res: Response) => {
 		const userId = req.body.userId;
 		const password = req.body.password;
 		const username = req.body.username;
+
+		const response: IResponse<any[]> = {
+            Result: {
+                statuscode: "",
+                statustext: ""
+            },
+            data: []
+        }
 		if (userId) {
 			const data: { username: string, password: string } = { username, password };
 			if (password) {
@@ -198,10 +207,16 @@ const updateUser = async (req: Request, res: Response) => {
 				data.username = username;
 			}
 			const result = await database.updateUser(userId, data);
-			res.send('User updated successfully');
+			response.Result.statuscode = "200";
+            response.Result.statustext = "OK";
+            res.json(response);
+            res.status(200);
 		}
 		else {
-			res.status(400).send('Invalid user ID');
+			response.Result.statuscode = "404";
+            response.Result.statustext = "OK";
+            res.json(response);
+            res.status(200);
 		}
 	}
 	catch (error) {

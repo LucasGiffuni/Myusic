@@ -75,7 +75,6 @@ export class AddToAlbumComponent {
 
         this.router.navigate(['/login']);
       } else {
-        console.log(response)
         this.albumList = response.data
       }
     })
@@ -87,7 +86,6 @@ export class AddToAlbumComponent {
         this.router.navigate(['/login']);
       } else {
         this.selectedSong = response.data[0]
-        console.log(this.selectedSong)
       }
 
     })
@@ -103,7 +101,6 @@ export class AddToAlbumComponent {
     }
 
     this.albumService.addSongToAlbum(data).then((response) => {
-      console.log(response)
       if (response.Result.statuscode === '200') {
         this.openSnackBar("La cancion " + this.selectedSong.titulo + " fue agregada correctamente al album " + this.selectedAlbum.titulo, "Cerrar")
 

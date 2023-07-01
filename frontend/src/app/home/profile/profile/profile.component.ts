@@ -4,7 +4,7 @@ import { UserInterface } from 'src/app/interfaces/IUser';
 import { MatIconModule } from '@angular/material/icon';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CookieService } from 'src/app/services/cookie.service';
-import { Services } from '../../services/services.service';
+import { Services } from 'src/app/services/services.service';
 
 
 @Component({
@@ -64,7 +64,7 @@ export class ProfileComponent {
 
   constructor(private router: Router) {
     this.userId = parseInt(this.cookieService.get('USERID'), 10);
-    this.getUserProfile();  
+    this.getUserProfile();
   }
 
   async getUserProfile() {
@@ -83,7 +83,7 @@ export class ProfileComponent {
 
   clickButton(path: string) {
     this.router.navigate([path]);
-  } 
+  }
 
 
   logout() {

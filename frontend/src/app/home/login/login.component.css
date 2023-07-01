@@ -63,6 +63,7 @@
 
 #login-component-signUpBody {
   margin: 0 0 0 auto;
+  right: 0;
 }
 #login-component-formButton:hover {
   opacity: 0.9;
@@ -71,6 +72,10 @@
 
 a:link {
   text-decoration: none;
+}
+.link{
+  width: 25%;
+  right: 0;
 }
 
 

@@ -74,7 +74,6 @@ export class HomeComponent {
   }
 
   searchSong() {
-    console.log(this.searchValue);
     this.clickButton(`searchSong/${this.searchValue}`);
     this.cookieService.remove('SEARCHVALUE');
     this.cookieService.set("SEARCHVALUE", String(this.searchValue));

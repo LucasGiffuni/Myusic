@@ -51,7 +51,7 @@ export default class Database {
 
     const request = this.poolConnection.request();
     const result = await request.input("id", sql.Int, +id).query(`
-    select Cancion.idCancion, Cancion.titulo, Cancion.genero, Cancion.fechaLanzamiento, Cancion.linkReferencia, Cancion.autor, Cancion.vecesReproducidas, Cancion.imagen,Cancion.idUsuario from Cancion
+    select CancionAlbum.idCancionAlbum, Cancion.idCancion, Cancion.titulo, Cancion.genero, Cancion.fechaLanzamiento, Cancion.linkReferencia, Cancion.autor, Cancion.vecesReproducidas, Cancion.imagen,Cancion.idUsuario from Cancion
     join CancionAlbum on (CancionAlbum.idCancion = Cancion.idCancion) join
     Album on (Album.idAlbum = CancionAlbum.idAlbum) where Album.idAlbum = @id
             `);
@@ -134,17 +134,16 @@ export default class Database {
 
     return result.rowsAffected[0];
   }
-  async removeSongFromAlbum(data: { songID: any; albumID: any }) {
+  async removeSongFromAlbum(data: { idCancionAlbum: any; }) {
     await this.connect();
     const request = this.poolConnection.request();
 
 
 
-    request.input("idCancion", sql.Int, data.songID);
-    request.input("idAlbum", sql.Int, data.albumID);
+    request.input("idCancionAlbum", sql.Int, data.idCancionAlbum);
 
     const result = await request.query(
-      `delete from CancionAlbum where idCancion = @idCancion and idAlbum = @idAlbum`
+      `delete from CancionAlbum where idCancionAlbum = @idCancionAlbum`
     );
 
     return result.rowsAffected[0];

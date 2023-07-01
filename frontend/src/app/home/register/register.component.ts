@@ -13,7 +13,7 @@ import { MAT_SNACK_BAR_DATA, MatSnackBar, MatSnackBarModule } from '@angular/mat
   template: `
     <div id="register-body-component">
     <h1 id="register-component-title"> Register </h1>
-    <form id="register-component-form">
+    <form id="register-component-form" (keydown.enter)="login()">
 
       <div class="register-component-formInputBody">
         <input type="text" class="register-component-formInput" placeholder="Username" (focusout)="onFocusOutUsername($event)">
@@ -29,7 +29,7 @@ import { MAT_SNACK_BAR_DATA, MatSnackBar, MatSnackBarModule } from '@angular/mat
 
         <div id="register-component-signUpBody">
           <p> Have an user?
-          <button class="link" (click)="clickButton('/login')">Log In</button>
+            <input class="link" (click)="clickButton('/login')" value=" Log In" >
 
           </p>
         </div>
@@ -67,7 +67,6 @@ export class RegisterComponent {
 
     if (this.username && this.password) {
       this.userService.register(this.username, this.password).then((response) => {
-        console.log(response)
 
         if (response.resultado.statusCode == "404") {
           this.openSnackBar(response.resultado.statusText, "undo")

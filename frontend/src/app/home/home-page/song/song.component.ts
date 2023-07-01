@@ -22,6 +22,5 @@ export class SongComponent  {
   @Input() song! : ISong;
 
   constructor(){
-    // console.log(`Song ${this.song}`);
   }
 }

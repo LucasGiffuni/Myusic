@@ -6,6 +6,7 @@ import jwt from 'jsonwebtoken';
 import fs from "fs";
 import { IResponse } from '../interfaces/IResponse';
 import { IAlbum } from '../interfaces/IAlbum';
+import { IAlbumCancion } from '../interfaces/IAlbumCancion';
 
 const addSongToAlbum = async (req: Request, res: Response) => {
     const songID = req.body.songID;
@@ -38,16 +39,15 @@ const addSongToAlbum = async (req: Request, res: Response) => {
         response.Result.statuscode = "404";
         response.Result.statustext = "SongID / AlbumID not found";
 
-        res.status(404).json(response);
+        res.status(200).json(response);
     }
 };
 const removeSongFromAlbum = async (req: Request, res: Response) => {
-    const songID = req.body.songID;
-    const albumID = req.body.albumID;
+    const idCancionAlbum = req.body.idCancionAlbum;
 
     const data = {
-        songID,
-        albumID
+        idCancionAlbum
+        
     }
     const response: IResponse<any[]> = {
         Result: {
@@ -56,7 +56,7 @@ const removeSongFromAlbum = async (req: Request, res: Response) => {
         },
         data: []
     }
-    if (songID && albumID) {
+    if (idCancionAlbum ) {
         try {
             const result = database.removeSongFromAlbum(data);
 
@@ -72,7 +72,7 @@ const removeSongFromAlbum = async (req: Request, res: Response) => {
         response.Result.statuscode = "404";
         response.Result.statustext = "SongID / AlbumID not found";
 
-        res.status(404).json(response);
+        res.status(200).json(response);
     }
 };
 const getAlbums = async (req: Request, res: Response) => {
@@ -94,7 +94,7 @@ const getAlbums = async (req: Request, res: Response) => {
         } else {
             response.Result.statuscode = "404";
             response.Result.statustext = "Not found";
-            res.status(404);
+            res.status(200);
             res.json(response);
         }
     } catch (err) {
@@ -120,7 +120,7 @@ const getUserAlbums = async (req: Request, res: Response) => {
         } else {
             response.Result.statuscode = "404";
             response.Result.statustext = "Not found";
-            res.status(404);
+            res.status(200);
             res.json(response);
         }
     } catch (err) {
@@ -131,7 +131,7 @@ const getAlbumsSongs = async (req: Request, res: Response) => {
     try {
         const personid = req.params.idAlbum;
         const result = await database.getAlbumsSongs(personid);
-        const response: IResponse<any[]> = {
+        const response: IResponse<any> = {
             Result: {
                 statuscode: "",
                 statustext: ""
@@ -183,7 +183,7 @@ const createAlbum = async (req: Request, res: Response) => {
         } else {
             response.Result.statuscode = "404";
             response.Result.statustext = "Not found";
-            res.status(404);
+            res.status(200);
             res.json(response);
         }
     } catch (err) {
@@ -209,7 +209,7 @@ const getAlbumsDetails = async (req: Request, res: Response) => {
         } else {
             response.Result.statuscode = "404";
             response.Result.statustext = "Not found";
-            res.status(404);
+            res.status(200);
             res.json(response);
         }
     } catch (err) {

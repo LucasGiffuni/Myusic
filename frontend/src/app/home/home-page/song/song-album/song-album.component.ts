@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ISong } from 'src/app/interfaces/ISong';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { AlbumService } from 'src/app/services/album.service';
+import { IAlbumCancion } from 'src/app/interfaces/IAlbumCancion';
 
 @Component({
   selector: 'app-song-album',
@@ -34,42 +35,44 @@ import { AlbumService } from 'src/app/services/album.service';
   styleUrls: ['./song-album.component.css']
 })
 export class SongAlbumComponent {
-  @Input() song!: ISong;
+  @Input() song!: IAlbumCancion;
   AlbumService: AlbumService = inject(AlbumService);
   id!: number;
   private sub: any;
 
+
+  @Input() obtainAlbumSongs!: Function;
+
   constructor(private router: Router, private route2: ActivatedRoute) {
   }
+
   removeFromAlbum() {
-    console.log(this.song.idCancion)
     const songID = this.song.idCancion;
     const albumID = this.id;
+    const idCancionAlbum = this.song.idCancionAlbum
 
     const data = {
-      songID,
-      albumID
+      idCancionAlbum
     }
     this.AlbumService.removeSongFromAlbum(data);
-    this.refresh();
+    this.obtainAlbumSongs();
   }
 
   ngOnInit() {
+
+    console.log(this.song)
     this.sub = this.route2.params.subscribe(params => {
       this.id = +params['idAlbum']; // (+) converts string 'id' to a number\
     });
   }
 
   routing() {
-    console.log("routing")
     this.route('/songDetail/' + this.song.idCancion)
   }
   route(path: string) {
     this.router.navigate([path]);
   }
 
-  refresh(): void {
-    window.location.reload();
-  }
+
 
 }

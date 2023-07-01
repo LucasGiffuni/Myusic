@@ -25,3 +25,5 @@ Si el S.O es MACOS:
 az acr login --name myusicimages
 docker tag myusic-backend myusicimages.azurecr.io/myusic-backend 
 docker tag myusic-frontend myusicimages.azurecr.io/myusic-frontend 
+
+docker push myusicimages.azurecr.io/myusic-backend

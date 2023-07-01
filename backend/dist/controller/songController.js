@@ -30,7 +30,7 @@ const getAllSongs = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         else {
             response.Result.statuscode = "404";
             response.Result.statustext = "Not found";
-            res.status(404);
+            res.status(200);
             res.json(response);
         }
     }
@@ -58,7 +58,7 @@ const getSongById = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         else {
             response.Result.statuscode = "404";
             response.Result.statustext = "Not found";
-            res.status(404);
+            res.status(200);
             res.json(response);
         }
     }
@@ -86,7 +86,7 @@ const getSongReproductions = (req, res) => __awaiter(void 0, void 0, void 0, fun
             response.Result.statuscode = "404";
             response.Result.statustext = "Not found";
             res.json(response);
-            res.status(404);
+            res.status(200);
         }
     }
     catch (err) {
@@ -116,7 +116,7 @@ const increaseSongReproductions = (req, res) => __awaiter(void 0, void 0, void 0
             response.Result.statuscode = "404";
             response.Result.statustext = "Not found";
             res.json(response);
-            res.status(404);
+            res.status(200);
         }
     }
     catch (err) {
@@ -156,7 +156,7 @@ const editSong = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         else {
             response.Result.statuscode = "404";
             response.Result.statustext = "Not found";
-            res.status(404);
+            res.status(200);
             res.json(response);
         }
     }
@@ -186,7 +186,7 @@ const deleteSong = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
             response.Result.statuscode = "404";
             response.Result.statustext = "Not found";
             res.json(response);
-            res.status(404);
+            res.status(200);
         }
     }
     catch (err) {
@@ -232,7 +232,7 @@ const createSong = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         else {
             response.Result.statuscode = "404";
             response.Result.statustext = "Not found";
-            res.status(404);
+            res.status(200);
             res.json(response);
         }
     }
@@ -260,7 +260,7 @@ const getSongsByDate = (req, res) => __awaiter(void 0, void 0, void 0, function*
             response.Result.statuscode = "404";
             response.Result.statustext = "Not found";
             res.json(response);
-            res.status(404);
+            res.status(200);
         }
     }
     catch (err) {
@@ -291,7 +291,7 @@ const getSongBySearchValue = (req, res) => __awaiter(void 0, void 0, void 0, fun
             response.Result.statuscode = "404";
             response.Result.statustext = "Not found";
             res.json(response);
-            res.status(404);
+            res.status(200);
         }
     }
     catch (err) {

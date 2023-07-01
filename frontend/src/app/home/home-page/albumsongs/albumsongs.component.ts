@@ -6,6 +6,7 @@ import { IAlbum } from 'src/app/interfaces/IAlbum';
 import { ISong } from 'src/app/interfaces/ISong';
 import { SongComponent } from '../song/song.component';
 import { SongAlbumComponent } from "../song/song-album/song-album.component";
+import { IAlbumCancion } from 'src/app/interfaces/IAlbumCancion';
 
 
 @Component({
@@ -32,7 +33,7 @@ import { SongAlbumComponent } from "../song/song-album/song-album.component";
    <div id="albumSongs" >
 
       <div id="albumSongsList">
-        <app-song-album class = "songLatest-component" *ngFor="let song of this.Songs" [song]="song"></app-song-album>
+        <app-song-album class = "songLatest-component" *ngFor="let song of this.Songs" [song]="song" [obtainAlbumSongs]="obtainAlbumSongs.bind(this)"></app-song-album>
       </div>
    </div>
 
@@ -49,8 +50,9 @@ export class AlbumsongsComponent {
     fechaCreacion: new Date("now"),
     idUsuario: 0,
   };
-  Songs: ISong[] = [
+  Songs: IAlbumCancion[] = [
     {
+      idCancionAlbum:999999,
       idCancion: 999999,
       titulo: "",
       genero: "",
@@ -73,25 +75,30 @@ export class AlbumsongsComponent {
   constructor(private route: ActivatedRoute) { }
 
   ngOnInit() {
+
+
     this.sub = this.route.params.subscribe(params => {
       this.id = +params['idAlbum']; // (+) converts string 'id' to a number\
 
       this.AlbumService.getAlbumsDetails(this.id).then((result) => {
         this.Album = result.data[0]
-
       });
+      this.obtainAlbumSongs();
 
-      this.AlbumService.getAlbumsSongs(this.id).then((result) => {
-        this.Songs = result.data
-        if (result.data.length >= 4) {
-          this.imageCollageFlag = true
-        }
-        this.renderFlag = true
-      })
 
-      console.log(this.Songs)
     });
   }
 
+  public obtainAlbumSongs() {
+    this.renderFlag = false
+    this.Songs = []
+    this.AlbumService.getAlbumsSongs(this.id).then((result) => {
+      this.Songs = result.data
+      if (result.data.length >= 4) {
+        this.imageCollageFlag = true
+      }
+      this.renderFlag = true
+    })
+  }
 
 }

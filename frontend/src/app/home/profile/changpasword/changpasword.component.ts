@@ -5,16 +5,17 @@ import { Router } from '@angular/router';
 import { UserService } from 'src/app/services/profile.service';
 import { UserInterface } from 'src/app/interfaces/IUser';
 import { CookieService } from 'src/app/services/cookie.service';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 
 @Component({
   selector: 'app-changpasword',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule,MatSnackBarModule],
   template: `
-  
+
   <div class="container">
-  
+
 
   <div class="Change Password">
     <div class="form-group">
@@ -27,25 +28,25 @@ import { CookieService } from 'src/app/services/cookie.service';
       <button (click)="clickButton('/profile')">Back</button>
     </div>
 </div>
-  
+
  `,
   styleUrls: ['./changpasword.component.css']
 })
 export class ChangpaswordComponent {
   currentPassword: string = "";
   currentPasswordUser: string = "";
-  newPassword: string ="";
-  userId: number=-1;
+  newPassword: string = "";
+  userId: number = -1;
   username: string = '';
 
   userService: Services = inject(Services);
   cookieService: CookieService = inject(CookieService);
-  profileService:UserService=inject(UserService);
+  profileService: UserService = inject(UserService);
   loginService: UserService = inject(UserService)
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private _snackBar: MatSnackBar) {
     this.userId = parseInt(this.cookieService.get('USERID'), 10);
-    this.getUserProfile(); 
+    this.getUserProfile();
   }
 
   async getUserProfile() {
@@ -53,10 +54,10 @@ export class ChangpaswordComponent {
     if (response) {
       this.username = response.username;
       this.currentPassword = response.password;
-    }else{
+    } else {
 
-      this.username="";
-      this.currentPassword="";
+      this.username = "";
+      this.currentPassword = "";
     }
   }
 
@@ -69,23 +70,44 @@ export class ChangpaswordComponent {
   }
 
   changePassword(): void {
-    if(this.currentPasswordUser!=this.currentPassword){
+    if (this.currentPasswordUser != this.currentPassword) {
       const element = document.getElementById("passwordOld");
       if (element) {
         element.style.color = "red";
       }
-    }else{
-      this.userService.updateUser(this.userId,this.username,this.newPassword);
-      const element = document.getElementById("passwordOld");
-      if (element) {
-        element.style.color = "black";  
-      }
-      this.newPassword="";
-      this.currentPasswordUser="";     
+    } else {
+      this.userService.updateUser(this.userId, this.username, this.newPassword).then((result) => {
+
+        if (result.Result.statusCode === "403") {
+          this.openSessionSnackBar("Session expired", "Cerrar")
+
+          this.router.navigate(['/login']);
+        } else {
+          this.openSessionSnackBar("Password successfully changed", "Cerrar")
+
+          const element = document.getElementById("passwordOld");
+          if (element) {
+            element.style.color = "black";
+          }
+          this.newPassword = "";
+          this.currentPasswordUser = "";
+        }
+
+      });
+
     }
   }
   clickButton(path: string) {
     this.router.navigate([path]);
   }
+
+
+  openSessionSnackBar(message: string, action: string) {
+    this._snackBar.open(message, action,{
+      duration: 3000
+    });
+  }
+
+
 
 }

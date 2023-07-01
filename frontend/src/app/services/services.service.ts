@@ -10,7 +10,7 @@ import { IAlbum } from '../interfaces/IAlbum';
 })
 export class Services {
 
-  url = 'https://backend.wonderfulsky-826aeb73.brazilsouth.azurecontainerapps.io';
+  url = 'http://localhost:3000';
 
 
   cookieService: CookieService = inject(CookieService);
@@ -70,7 +70,7 @@ export class Services {
   }
 
   async getUserProfile(userId: number) {
- 
+
     const response = await fetch(`${this.url}/user/getUserCredentials/${userId}`, {
       method: 'GET',
       headers: {

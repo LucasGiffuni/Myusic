@@ -61,9 +61,7 @@ export class SearchSongComponent {
           } else {
             value.data.forEach((element) => {
               this.songListOutStanding.push(element);
-              console.log('titulo: ' + element.titulo);
             });
-            console.log(this.songListOutStanding);
           }
         })
         .catch((err) => {

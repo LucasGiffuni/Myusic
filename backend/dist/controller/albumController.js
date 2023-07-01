@@ -38,7 +38,7 @@ const addSongToAlbum = (req, res) => __awaiter(void 0, void 0, void 0, function*
     else {
         response.Result.statuscode = "404";
         response.Result.statustext = "SongID / AlbumID not found";
-        res.status(404).json(response);
+        res.status(200).json(response);
     }
 });
 const removeSongFromAlbum = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -70,7 +70,7 @@ const removeSongFromAlbum = (req, res) => __awaiter(void 0, void 0, void 0, func
     else {
         response.Result.statuscode = "404";
         response.Result.statustext = "SongID / AlbumID not found";
-        res.status(404).json(response);
+        res.status(200).json(response);
     }
 });
 const getAlbums = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -93,7 +93,7 @@ const getAlbums = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         else {
             response.Result.statuscode = "404";
             response.Result.statustext = "Not found";
-            res.status(404);
+            res.status(200);
             res.json(response);
         }
     }
@@ -121,7 +121,7 @@ const getUserAlbums = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         else {
             response.Result.statuscode = "404";
             response.Result.statustext = "Not found";
-            res.status(404);
+            res.status(200);
             res.json(response);
         }
     }
@@ -184,7 +184,7 @@ const createAlbum = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         else {
             response.Result.statuscode = "404";
             response.Result.statustext = "Not found";
-            res.status(404);
+            res.status(200);
             res.json(response);
         }
     }
@@ -212,7 +212,7 @@ const getAlbumsDetails = (req, res) => __awaiter(void 0, void 0, void 0, functio
         else {
             response.Result.statuscode = "404";
             response.Result.statustext = "Not found";
-            res.status(404);
+            res.status(200);
             res.json(response);
         }
     }
