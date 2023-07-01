@@ -93,7 +93,7 @@ export class SongDetailComponent implements OnInit, OnDestroy {
     idUsuario: 0
   };
 
-
+  isFirstTime: boolean = true
   player: any;
   id!: number;
   private sub: any;
@@ -109,7 +109,7 @@ export class SongDetailComponent implements OnInit, OnDestroy {
   constructor(private route: ActivatedRoute, public dialog: MatDialog, private router: Router, private _snackBar: MatSnackBar) { }
 
   ngOnInit() {
-
+	this.isFirstTime = true;
     if (!this.apiLoaded) {
       this.sub = this.route.params.subscribe(params => {
         this.id = +params['id']; // (+) converts string 'id' to a number
@@ -159,7 +159,10 @@ export class SongDetailComponent implements OnInit, OnDestroy {
   playMusic() {
     if (this.player) {
       this.player.playVideo();
-      this.increaseSongReproductions();
+	  if (this.isFirstTime) {
+      	this.increaseSongReproductions();
+		this.isFirstTime = false;
+	  }
     }
   }
 

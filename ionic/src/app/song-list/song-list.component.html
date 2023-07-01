@@ -19,6 +19,8 @@
 	  </ion-toolbar>
 	</ion-header>
 
+	<a [routerLink]="['/musicPlayer']">musicPlayer</a>
+
 	<ion-list>
 	  <app-song *ngFor="let song of songList" [song]="song"></app-song>
 	</ion-list>
