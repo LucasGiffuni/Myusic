@@ -22,7 +22,7 @@ import { UserService } from 'src/app/services/profile.service';
   template: `
     <div id="login-body-component">
       <h1 id="login-component-title">Login</h1>
-      <form id="login-component-form">
+      <form id="login-component-form" (keydown.enter)="login()" >
         <div class="login-component-formInputBody">
           <input
             type="text"
@@ -42,9 +42,10 @@ import { UserService } from 'src/app/services/profile.service';
 
         <div id="login-component-formButtonBody">
           <input
+
             type="Button"
             id="login-component-formButton"
-            value="Sign In"
+            value="Sign in"
             (click)="login()"
           />
         </div>
@@ -52,9 +53,9 @@ import { UserService } from 'src/app/services/profile.service';
         <div id="login-component-signUpBody">
           <p>
             Not a User?
-            <button class="link" (click)="clickButton('/register')">
-              Sign In
-            </button>
+            <input class="link" (click)="clickButton('/register')" value=" Sign On" >
+
+
           </p>
         </div>
       </form>
@@ -77,7 +78,7 @@ export class LoginComponent {
     private viewContainerRef: ViewContainerRef,
     private router: Router,
     private _snackBar: MatSnackBar
-  ) {}
+  ) { }
   clickButton(path: string) {
     this.router.navigate([path]);
   }
@@ -89,6 +90,12 @@ export class LoginComponent {
     this.password = event.target.value;
   }
 
+  keyDownFunction(event: any) {
+    if (event.keyCode === 13) {
+      alert('you just pressed the enter key');
+      // rest of your code
+    }
+  }
   login() {
     if (this.username && this.password) {
       this.userService.login(this.username, this.password).then((response) => {

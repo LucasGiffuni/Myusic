@@ -34,6 +34,7 @@
   outline: none;
   background: none;
   z-index: 1;
+  margin-top: 10pt;
 }
 
 .register-component-formInputBody {
@@ -62,7 +63,7 @@
 }
 
 #register-component-signUpBody {
-  margin: 0 auto 0 0;
+  margin: 2pt auto 2pt 2pt;
 }
 #register-component-formButton:hover {
   opacity: 0.9;
@@ -72,3 +73,9 @@
 a:link {
   text-decoration: none;
 }
+
+.link{
+  width: 25%;
+  right: 0;
+}
+

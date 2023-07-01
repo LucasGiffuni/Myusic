@@ -6,6 +6,7 @@ const encrypt = new passEcrypt()
 import cookieParser from 'cookie-parser';
 import jwt from 'jsonwebtoken';
 import fs from "fs";
+import { IResponse } from '../interfaces/IResponse';
 
 
 const RSA_PRIVATE_KEY = fs.readFileSync('private.key');
@@ -15,6 +16,7 @@ const RSA_PRIVATE_KEY = fs.readFileSync('private.key');
 const getUser = async (req: Request, res: Response) => {
 
 	try {
+
 		// Get the person with the specified ID
 		const personId = req.body.userId;
 		if (personId) {
@@ -38,37 +40,46 @@ const createUser = async (req: Request, res: Response) => {
 		username,
 		password
 	}
-	const response = {
-		resultado: {
-			statusCode: "",
-			statusText: ""
+
+	const response2: IResponse<any[]> = {
+		Result: {
+			statuscode: "",
+			statustext: ""
 		},
-		user: {
-			idUsuario: "",
-			username: ""
-		}
+		data: []
 	}
 	if (username && password) {
 		try {
-			const result = database.createUser(data);
 
-			response.resultado.statusCode = "200";
-			response.resultado.statusText = "OK";
 
-			response.user.username = data.username
-			res.status(200).json(response);
+
+			const credentials = database.getUsernameByName(username).then((result) => {
+				if (result.length > 0) {
+					response2.Result.statuscode = "404";
+					response2.Result.statustext = "User already exist";
+					res.json(response2);
+					res.status(200);
+				} else {
+					const result = database.createUser(data);
+					response2.data = data.username
+					response2.Result.statuscode = "200";
+					response2.Result.statustext = "User " + data.username + " created!";
+					res.json(response2);
+					res.status(200);
+				}
+
+			});
+
 		} catch (err) {
-			response.resultado.statusCode = "500";
-			response.resultado.statusText = "Internal Server Error";
+
 
 
 		}
 	} else {
-		response.resultado.statusCode = "404";
-		response.resultado.statusText = "User Not Found";
-
-
-		res.status(404).json(response);
+		response2.Result.statuscode = "404";
+		response2.Result.statustext = "User already exist";
+		res.json(response2);
+		res.status(200);
 	}
 
 };
@@ -128,7 +139,7 @@ const validateUser = async (req: Request, res: Response) => {
 		response.resultado.statusText = "User Not Found";
 
 
-		res.status(404).json(response);
+		res.status(200).json(response);
 	}
 };
 
@@ -175,7 +186,7 @@ const addSongToAlbum = async (req: Request, res: Response) => {
 			const result = await database.addSongToAlbum(data);
 			res.status(200).json("La cancion " + data.songID + " fue agregada correctamente al album " + data.albumID);
 		} else {
-			res.status(404).json({ error: "idCancion or idAlbum could not be null" });
+			res.status(200).json({ error: "idCancion or idAlbum could not be null" });
 		}
 	} catch (err) {
 		res.status(500).json({ error: err?.message });
@@ -189,6 +200,14 @@ const updateUser = async (req: Request, res: Response) => {
 		const userId = req.body.userId;
 		const password = req.body.password;
 		const username = req.body.username;
+
+		const response: IResponse<any[]> = {
+			Result: {
+				statuscode: "",
+				statustext: ""
+			},
+			data: []
+		}
 		if (userId) {
 			const data: { username: string, password: string } = { username, password };
 			if (password) {
@@ -198,10 +217,16 @@ const updateUser = async (req: Request, res: Response) => {
 				data.username = username;
 			}
 			const result = await database.updateUser(userId, data);
-			res.send('User updated successfully');
+			response.Result.statuscode = "200";
+			response.Result.statustext = "OK";
+			res.json(response);
+			res.status(200);
 		}
 		else {
-			res.status(400).send('Invalid user ID');
+			response.Result.statuscode = "404";
+			response.Result.statustext = "OK";
+			res.json(response);
+			res.status(200);
 		}
 	}
 	catch (error) {
@@ -223,7 +248,7 @@ const getUsernameById = async (req: Request, res: Response) => {
 		res.status(500).json({ error: err?.message });
 	}
 };
-	// Metodo para obtener password por ID
+// Metodo para obtener password por ID
 const getPasswordById = async (req: Request, res: Response) => {
 	try {
 		const personId = req.params.idUsuario;
@@ -247,22 +272,39 @@ const getUserCredentials = async (req: Request, res: Response) => {
 	const personId = req.params.idUsuario;
 
 	try {
-	  const userIdNumber = parseInt(personId, 10);
-	  const credentials = await database.getUserCredentials(userIdNumber);
-	  if (credentials) {
+		const userIdNumber = parseInt(personId, 10);
+		const credentials = await database.getUserCredentials(userIdNumber);
+		if (credentials) {
 
-		res.status(200).json(credentials);
-	  } else {
-		res.status(404).json({ error: 'User not found' });
-	  }
+			res.status(200).json(credentials);
+		} else {
+			res.status(404).json({ error: 'User not found' });
+		}
 	} catch (err) {
-	  res.status(500).json({ error: err?.message });
+		res.status(500).json({ error: err?.message });
 	}
-  };
+};
+
+const getUserDuplicated = async (req: Request, res: Response) => {
+	const username = req.params.username;
+
+	try {
+		const credentials = await database.getUsernameByName(username);
+		if (credentials) {
+
+			res.status(200).json(credentials);
+		} else {
+			res.status(404).json({ error: 'User not found' });
+		}
+	} catch (err) {
+		res.status(500).json({ error: err?.message });
+	}
+};
 
 
 
 
 
-export default { getUser, getUserPlaylists, createUser, addSongToAlbum, validateUser, updateUser,getPasswordById,getUsernameById,getUserCredentials };
+
+export default { getUser, getUserPlaylists, createUser, addSongToAlbum, validateUser, updateUser, getPasswordById, getUsernameById, getUserCredentials };
 

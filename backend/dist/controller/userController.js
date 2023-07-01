@@ -24,7 +24,7 @@ const getUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             res.status(200).json(result);
         }
         else {
-            res.status(404);
+            res.status(200);
         }
     }
     catch (err) {
@@ -64,7 +64,7 @@ const createUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     else {
         response.resultado.statusCode = "404";
         response.resultado.statusText = "User Not Found";
-        res.status(404).json(response);
+        res.status(200).json(response);
     }
 });
 const validateUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -112,7 +112,7 @@ const validateUser = (req, res) => __awaiter(void 0, void 0, void 0, function* (
     else {
         response.resultado.statusCode = "404";
         response.resultado.statusText = "User Not Found";
-        res.status(404).json(response);
+        res.status(200).json(response);
     }
 });
 const generateJWT = (userId) => {

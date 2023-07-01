@@ -13,13 +13,14 @@ import { MAT_SNACK_BAR_DATA, MatSnackBar, MatSnackBarModule } from '@angular/mat
   template: `
     <div id="register-body-component">
     <h1 id="register-component-title"> Register </h1>
-    <form id="register-component-form">
+    <form id="register-component-form" (keydown.enter)="login()">
 
       <div class="register-component-formInputBody">
-        <input type="text" class="register-component-formInput" placeholder="Username" (focusout)="onFocusOutUsername($event)">
+        <input type="text" class="register-component-formInput" placeholder="Username" (input)="onInputUsername($event)">
       </div>
       <div class="register-component-formInputBody">
-        <input type="password" class="register-component-formInput" placeholder="Password" (focusout)="onFocusOutPassword($event)">
+        <input type="password" class="register-component-formInput" placeholder="Password" (input)="onInputPassword($event)">
+
       </div>
 
       <div id="register-component-formButtonBody">
@@ -29,7 +30,7 @@ import { MAT_SNACK_BAR_DATA, MatSnackBar, MatSnackBarModule } from '@angular/mat
 
         <div id="register-component-signUpBody">
           <p> Have an user?
-          <button class="link" (click)="clickButton('/login')">Log In</button>
+            <input class="link" (click)="clickButton('/login')" value=" Log In" >
 
           </p>
         </div>
@@ -56,27 +57,26 @@ export class RegisterComponent {
     this.router.navigate([path]);
   }
 
-  onFocusOutUsername(event: any) {
+  onInputUsername(event: any) {
     this.username = event.target.value
   }
-  onFocusOutPassword(event: any) {
+  onInputPassword(event: any) {
     this.password = event.target.value
   }
 
   login() {
 
     if (this.username && this.password) {
-      this.userService.register(this.username, this.password).then((response) => {
-        console.log(response)
+      this.userService.register(this.username, this.password).then((result) => {
+        console.log(result)
+        if (result.Result.statuscode == "404") {
+          this.openSnackBar(result.Result.statustext, "undo")
 
-        if (response.resultado.statusCode == "404") {
-          this.openSnackBar(response.resultado.statusText, "undo")
-
-        } else if (response.resultado.statusCode == "200") {
-
+        } else if (result.Result.statuscode == "200") {
 
 
-          this.openSnackBar("Usuario " + response.user.username + " creado correctamente", "Close")
+
+          this.openSnackBar("Usuario " + result.data + " creado correctamente", "Close")
 
           this.clickButton('/login')
 

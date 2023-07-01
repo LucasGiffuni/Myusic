@@ -3,13 +3,14 @@ import { CookieService } from './cookie.service';
 import { IResponse } from '../interfaces/IResponse';
 import { IAlbum } from '../interfaces/IAlbum';
 import { ISong } from '../interfaces/ISong';
+import { IAlbumCancion } from '../interfaces/IAlbumCancion';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AlbumService {
-
-  url = 'https://backend.wonderfulsky-826aeb73.brazilsouth.azurecontainerapps.io';
+  // https://backend.wonderfulsky-826aeb73.brazilsouth.azurecontainerapps.io
+  url = 'http://localhost:3000';
   cookieService: CookieService = inject(CookieService);
 
   constructor() { }
@@ -44,7 +45,7 @@ export class AlbumService {
       }
     })).json()) ?? [];
   }
-  async getAlbumsSongs(idUser: number): Promise<IResponse<ISong>> {
+  async getAlbumsSongs(idUser: number): Promise<IResponse<IAlbumCancion>> {
     return (await (await fetch(`${this.url}/albums/getAlbumsSongs/${idUser}`, {
       method: 'GET',
       headers: {
@@ -78,7 +79,7 @@ export class AlbumService {
       }
     })).json()) ?? [];
   }
-  async removeSongFromAlbum(body: { songID: number, albumID: number }): Promise<IResponse<IAlbum>> {
+  async removeSongFromAlbum(body: { idCancionAlbum: number }): Promise<IResponse<IAlbum>> {
     return (await (await fetch(`${this.url}/albums/removeSongFromAlbum`, {
       method: 'POST',
       body: JSON.stringify(body),

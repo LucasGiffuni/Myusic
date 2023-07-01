@@ -1,7 +1,7 @@
-import { Component, inject } from '@angular/core';
+import { Component, EventEmitter, Inject, Output, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
-import { MatDialog, MatDialogRef, MatDialogModule } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef, MatDialogModule, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { AlbumService } from 'src/app/services/album.service';
 import { SongService } from 'src/app/services/song.service';
 import { CookieService } from 'src/app/services/cookie.service';
@@ -29,7 +29,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./create-album-dialog.component.css']
 })
 export class CreateAlbumDialogComponent {
-  constructor(public dialogRef: MatDialogRef<CreateAlbumDialogComponent>, private _snackBar: MatSnackBar, private router: Router) { }
+  constructor(public dialogRef: MatDialogRef<CreateAlbumDialogComponent>, private _snackBar: MatSnackBar, private router: Router, @Inject(MAT_DIALOG_DATA) public data: any) { }
   albumService: AlbumService = inject(AlbumService);
   songService: SongService = inject(SongService);
   cookieService: CookieService = inject(CookieService);
@@ -65,9 +65,8 @@ export class CreateAlbumDialogComponent {
           } else {
             if (response.Result.statuscode === "200") {
               this.openSnackBar("Album " + this.albumTitle + " creado correctamente!", "Cerrar");
-              setTimeout(() => {
-                location.reload();
-              }, 3000);
+              this.data.updateAlbums()
+
             } else {
               this.openSnackBar("ERROR: " + response.Result.statustext, "Cerrar");
             }

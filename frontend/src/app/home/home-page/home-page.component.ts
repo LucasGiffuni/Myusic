@@ -1,4 +1,4 @@
-import { Component, ViewChild, ElementRef, inject, AfterViewChecked, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, ViewChild, ElementRef, inject, AfterViewChecked, OnInit, ChangeDetectorRef, EventEmitter, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AlbumComponent } from './album/album.component';
 import { SongComponent } from './song/song.component';
@@ -18,9 +18,9 @@ import { SongLatestComponent } from "./song/song-latest/song-latest.component";
 
 
 @Component({
-    selector: 'app-home-page',
-    standalone: true,
-    template: `
+  selector: 'app-home-page',
+  standalone: true,
+  template: `
     <div class="library-component">
       <div class="button-text">
         <h1 class="library-component-title">Add album</h1>
@@ -53,8 +53,8 @@ import { SongLatestComponent } from "./song/song-latest/song-latest.component";
       </div>
     </div>
   `,
-    styleUrls: ['./home-page.component.css'],
-    imports: [CommonModule, AlbumComponent, SongComponent, MatDialogModule, MatSnackBarModule, SongLatestComponent]
+  styleUrls: ['./home-page.component.css'],
+  imports: [CommonModule, AlbumComponent, SongComponent, MatDialogModule, MatSnackBarModule, SongLatestComponent]
 
 })
 export class HomePageComponent implements AfterViewChecked {
@@ -71,6 +71,7 @@ export class HomePageComponent implements AfterViewChecked {
   songListLastes: ISong[] = [];
   songListOutStanding: ISong[] = [];
 
+  @Output() save = new EventEmitter<boolean>();
 
   constructor(private router: Router, public dialog: MatDialog, private _snackBar: MatSnackBar) {
     this.getAlbums();
@@ -80,6 +81,7 @@ export class HomePageComponent implements AfterViewChecked {
   }
 
   async getAlbums() {
+    this.albumList = [];
     await this.albumService.getAlbums(this.cookieService.get("USERID"))
       .then((value: IResponse<IAlbum>) => {
         if (value.Result.statuscode === "403") {
@@ -101,6 +103,7 @@ export class HomePageComponent implements AfterViewChecked {
   }
 
   async getSongs() {
+    this.songList = []
     await this.songService.getSongs()
       .then((value: IResponse<ISong>) => {
         if (value.Result.statuscode === "403") {
@@ -119,6 +122,8 @@ export class HomePageComponent implements AfterViewChecked {
   }
 
   async getSongsByDate() {
+    this.songListLastes = []
+
     await this.songService.getSongsByDate()
       .then((value: IResponse<ISong>) => {
         if (value.Result.statuscode === "403") {
@@ -128,9 +133,7 @@ export class HomePageComponent implements AfterViewChecked {
         } else {
           value.data.forEach(element => {
             this.songListLastes.push(element);
-            console.log('titulo: ' + element.titulo)
           });
-          console.log(this.songList);
         }
       })
       .catch(err => {
@@ -139,6 +142,8 @@ export class HomePageComponent implements AfterViewChecked {
   }
 
   async getSongsByReproductions() {
+    this.songListOutStanding = []
+
     await this.songService.getSongsByReproductions()
       .then((value: IResponse<ISong>) => {
         if (value.Result.statuscode === "403") {
@@ -148,9 +153,7 @@ export class HomePageComponent implements AfterViewChecked {
         } else {
           value.data.forEach(element => {
             this.songListOutStanding.push(element);
-            console.log('titulo: ' + element.titulo)
           });
-          console.log(this.songListOutStanding);
         }
       })
       .catch(err => {
@@ -205,21 +208,37 @@ export class HomePageComponent implements AfterViewChecked {
       width: '300px',
       enterAnimationDuration,
       exitAnimationDuration,
+      data: {
+        updateSongs: () => {
+          this.getSongs()
+          this.getSongsByDate()
+          this.getSongsByReproductions()
+        }
+     }
     });
 
   }
 
   openAlbumDialog(enterAnimationDuration: string, exitAnimationDuration: string): void {
+
     this.dialog.open(CreateAlbumDialogComponent, {
       width: '300px',
       enterAnimationDuration,
       exitAnimationDuration,
+      data: {
+        updateAlbums: () => {
+          this.getAlbums()
+        }
+     }
     });
   }
 
   openSessionSnackBar(message: string, action: string) {
     this._snackBar.open(message, action);
   }
+
+
+
 }
 
 

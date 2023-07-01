@@ -122,10 +122,8 @@ export class SongDetailComponent implements OnInit, OnDestroy {
             this.router.navigate(['/login']);
           } else {
             this.selectedSong = response.data[0]
-            console.log(this.selectedSong)
 
             this.splitted = this.selectedSong.linkReferencia.split("=")[1]
-            console.log(this.splitted);
             this.videoId = this.splitted
           }
         })

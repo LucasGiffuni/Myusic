@@ -27,7 +27,7 @@ const getAllSongs = async (req: Request, res: Response) => {
         } else {
             response.Result.statuscode = "404";
             response.Result.statustext = "Not found";
-            res.status(404);
+            res.status(200);
             res.json(response);
         }
 
@@ -55,7 +55,7 @@ const getSongById = async (req: Request, res: Response) => {
         } else {
             response.Result.statuscode = "404";
             response.Result.statustext = "Not found";
-            res.status(404);
+            res.status(200);
             res.json(response);
         }
 
@@ -83,7 +83,7 @@ const getSongReproductions = async (req: Request, res: Response) => {
             response.Result.statuscode = "404";
             response.Result.statustext = "Not found";
             res.json(response);
-            res.status(404);
+            res.status(200);
         }
     } catch (err) {
         res.status(500).json({ error: err?.message });
@@ -112,7 +112,7 @@ const increaseSongReproductions = async (req: Request, res: Response) => {
             response.Result.statuscode = "404";
             response.Result.statustext = "Not found";
             res.json(response);
-            res.status(404);
+            res.status(200);
         }
     } catch (err) {
         res.status(500).json({ error: err?.message });
@@ -152,7 +152,7 @@ const editSong = async (req: Request, res: Response) => {
         } else {
             response.Result.statuscode = "404";
             response.Result.statustext = "Not found";
-            res.status(404);
+            res.status(200);
             res.json(response);
         }
 
@@ -182,7 +182,7 @@ const deleteSong = async (req: Request, res: Response) => {
             response.Result.statuscode = "404";
             response.Result.statustext = "Not found";
             res.json(response);
-            res.status(404);
+            res.status(200);
         }
     } catch (err) {
         res.status(500).json({ error: err?.message });
@@ -227,7 +227,7 @@ const createSong = async (req: Request, res: Response) => {
         } else {
             response.Result.statuscode = "404";
             response.Result.statustext = "Not found";
-            res.status(404);
+            res.status(200);
             res.json(response);
         }
     } catch (err) {
@@ -254,7 +254,7 @@ const getSongsByDate = async (req: Request, res: Response) => {
             response.Result.statuscode = "404";
             response.Result.statustext = "Not found";
             res.json(response);
-            res.status(404);
+            res.status(200);
         }
     } catch (err) {
         res.status(500).json({ error: err?.message });
@@ -285,7 +285,7 @@ const getSongBySearchValue = async (req: Request, res: Response) => {
             response.Result.statuscode = "404";
             response.Result.statustext = "Not found";
             res.json(response);
-            res.status(404);
+            res.status(200);
         }
     } catch (err) {
         res.status(500).json({ error: err?.message });

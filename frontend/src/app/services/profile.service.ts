@@ -9,7 +9,7 @@ import { IResponse } from '../interfaces/IResponse';
   providedIn: 'root'
 })
 export class UserService {
-  url = 'https://backend.wonderfulsky-826aeb73.brazilsouth.azurecontainerapps.io';
+  url = 'http://localhost:3000';
   cookieService: CookieService = inject(CookieService);
   loginFlag: boolean = false;
 
@@ -20,7 +20,6 @@ export class UserService {
     const body={
       userId:userId
     }
-    console.log(userId)
     return(await(await fetch(`${this.url}/getUsernameById/:idUsuario`, {
       method: 'GET',
       body: JSON.stringify(body),
@@ -50,7 +49,6 @@ export class UserService {
   }
 
   async getUserCredentials(userId:number){
-    console.log("enterProfileServis"); 
     const response = await fetch(`${this.url}/getUserCredentials/${userId}`, {
       method: 'GET',
       headers: {
@@ -60,7 +58,7 @@ export class UserService {
       }
     });
     return response.json();
-  
+
   }
 
 
