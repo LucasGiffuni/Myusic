@@ -16,10 +16,10 @@ import { MAT_SNACK_BAR_DATA, MatSnackBar, MatSnackBarModule } from '@angular/mat
     <form id="register-component-form" (keydown.enter)="login()">
 
       <div class="register-component-formInputBody">
-        <input type="text" class="register-component-formInput" placeholder="Username" (focusout)="onFocusOutUsername($event)">
+        <input type="text" class="register-component-formInput" placeholder="Username" (input)="onInputUsername($event)">
       </div>
       <div class="register-component-formInputBody">
-        <input type="password" class="register-component-formInput" placeholder="Password" (focusout)="onFocusOutPassword($event)">
+        <input type="password" class="register-component-formInput" placeholder="Password" (input)="onInputPassword($event)">
       </div>
 
       <div id="register-component-formButtonBody">
@@ -56,10 +56,10 @@ export class RegisterComponent {
     this.router.navigate([path]);
   }
 
-  onFocusOutUsername(event: any) {
+  onInputUsername(event: any) {
     this.username = event.target.value
   }
-  onFocusOutPassword(event: any) {
+  onInputPassword(event: any) {
     this.password = event.target.value
   }
 

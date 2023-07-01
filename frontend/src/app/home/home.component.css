@@ -4,9 +4,10 @@
   position: fixed; /* Set the navbar to fixed position */
   top: 0; /* Position the navbar at the top of the page */
   width: 100%; /* Full width */
-  height: 5%;
+  height: 30pt;
   display: flex;
   justify-content: space-around;
+  align-items: center;
 }
 
 #home-button {
@@ -53,7 +54,7 @@
   opacity: 0.6;
   cursor: pointer;
 }
-#searchSongForm{
+.searchSongForm{
   display: flex;
   align-items: center;
 }
