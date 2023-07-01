@@ -3,12 +3,13 @@ import { IonicModule, RefresherCustomEvent } from '@ionic/angular';
 import { SongService } from '../services/song.service';
 import { Song } from '../interfaces/song';
 import { SongComponent } from './song/song.component';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-song-list',
   templateUrl: './song-list.component.html',
   standalone: true,
-  imports: [IonicModule, SongComponent],
+  imports: [IonicModule, SongComponent, CommonModule],
   styleUrls: ['./song-list.component.scss'],
 })
 export class SongListComponent  implements OnInit {
