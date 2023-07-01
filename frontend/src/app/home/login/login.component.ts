@@ -45,7 +45,7 @@ import { UserService } from 'src/app/services/profile.service';
 
             type="Button"
             id="login-component-formButton"
-            value="Sign On"
+            value="Sign in"
             (click)="login()"
           />
         </div>
@@ -53,7 +53,7 @@ import { UserService } from 'src/app/services/profile.service';
         <div id="login-component-signUpBody">
           <p>
             Not a User?
-            <input class="link" (click)="clickButton('/register')" value=" Sign In" >
+            <input class="link" (click)="clickButton('/register')" value=" Sign On" >
 
 
           </p>

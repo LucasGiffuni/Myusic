@@ -46,10 +46,18 @@
   cursor: pointer;
 }
 #searchButton{
-  margin-top: 4%;
+
 }
 
 #searchButton:hover{
   opacity: 0.6;
   cursor: pointer;
+}
+#searchSongForm{
+  display: flex;
+  align-items: center;
+}
+
+.form{
+  display: flex;
 }

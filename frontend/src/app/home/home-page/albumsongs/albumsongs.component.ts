@@ -21,7 +21,6 @@ import { IAlbumCancion } from 'src/app/interfaces/IAlbumCancion';
         <div class="inner-grid">
           <img src="{{Songs[0].imagen}}"/>
           <img src="{{Songs[1].imagen}}"/>
-
         </div>
         <div class="inner-grid">
           <img src="{{Songs[2].imagen}}"/>

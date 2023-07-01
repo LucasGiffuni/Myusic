@@ -20,7 +20,7 @@ import { UserService } from '../services/profile.service';
         (click)="homeButton()"
         >home</i
       >
-      <div>
+
         <form class="searchSongForm" (keydown.enter)="$event.preventDefault()">
           <input
             id="searchSongInput"
@@ -35,7 +35,7 @@ import { UserService } from '../services/profile.service';
             >search</i
           >
         </form>
-      </div>
+     
       <i
         id="user-button"
         class="material-icons w3-xxlarge"
