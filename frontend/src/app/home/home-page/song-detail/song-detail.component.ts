@@ -14,6 +14,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSliderModule } from '@angular/material/slider';
 import { FormsModule } from '@angular/forms';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { EditSongComponent } from '../song/edit-song/edit-song.component';
 
 @Component({
   selector: 'app-song-detail',
@@ -41,10 +42,13 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
     <div mat-card-avatar class="example-header-image">
     <button mat-mini-fab color="primary" aria-label="Example icon button with a menu icon" (click)="addSongToAlbum()">
           <mat-icon>add</mat-icon>
-        </button>
+    </button>
     </div>
     <mat-card-title id="songCardTitle">{{selectedSong.titulo}}</mat-card-title>
     <mat-card-subtitle>{{selectedSong.autor}}</mat-card-subtitle>
+    <button mat-mini-fab color="primary" aria-label="Example icon button with a menu icon" (click)="editSong()">
+          <mat-icon>edit</mat-icon>
+    </button>
   </mat-card-header>
 
   <img mat-card-image src={{selectedSong.imagen}} >
@@ -186,6 +190,9 @@ export class SongDetailComponent implements OnInit, OnDestroy {
   addSongToAlbum() {
     this.openAlbumDialog('0ms', '0ms')
   }
+  editSong(){
+    this.openEditSong('0ms', '0ms');
+  }
 
   openAlbumDialog(enterAnimationDuration: string, exitAnimationDuration: string): void {
     this.dialog.open(AddToAlbumComponent, {
@@ -196,5 +203,16 @@ export class SongDetailComponent implements OnInit, OnDestroy {
   }
   openSessionSnackBar(message: string, action: string) {
     this._snackBar.open(message, action);
+  }
+
+  openEditSong(enterAnimationDuration: string, exitAnimationDuration: string): void {
+    this.dialog.open(EditSongComponent, {
+      width: '250px',
+      enterAnimationDuration,
+      exitAnimationDuration,
+      data:{
+        song: this.selectedSong
+      }
+    });
   }
 }

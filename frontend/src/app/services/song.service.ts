@@ -11,7 +11,7 @@ export class SongService {
 
   constructor(private cookieService: CookieService) { }
 
-  async updateUser(body: ISong) {
+  async updateSong(body: ISong) {
     return (await (await fetch(`${this.url}/song/editSong`, {
       method: 'PUT',
       body: JSON.stringify(body),

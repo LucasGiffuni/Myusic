@@ -24,7 +24,7 @@ import { SongLatestComponent } from "./song/song-latest/song-latest.component";
     <div class="library-component">
       <div class="button-text">
         <h1 class="library-component-title">Add album</h1>
-        <i id="album-button" class="material-icons w3-xxlarge" (click)="addSong()">add</i>
+        <i id="album-button" class="material-icons w3-xxlarge" (click)="addAlbum()">add</i>
       </div>
         <div #listAlbums class="library-component-album-list">
         <app-album class="album-component" *ngFor="let album of this.albumList" [album]="album"  [getAlbums]="getAlbums.bind(this)"></app-album>
@@ -33,7 +33,7 @@ import { SongLatestComponent } from "./song/song-latest/song-latest.component";
     <div class = "library-component">
     <div class="button-text">
       <h1 class = "library-component-title">Add song</h1>
-      <i id="song-button" class="material-icons w3-xxlarge" (click)="addAlbum()">add</i>
+      <i id="song-button" class="material-icons w3-xxlarge" (click)="addSong()">add</i>
       </div>
 
       <div class = "library-component-song-list">
@@ -194,11 +194,11 @@ export class HomePageComponent implements AfterViewChecked {
   }
 
 
-  addAlbum() {
+  addSong() {
     this.openSongDialog('0ms', '0ms')
 
   }
-  addSong() {
+  addAlbum() {
     this.openAlbumDialog('0ms', '0ms')
 
   }
