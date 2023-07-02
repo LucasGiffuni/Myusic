@@ -1,0 +1,45 @@
+#login-body-component {
+	height: 98vh;
+	width: 98vw;
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+	flex-direction: column;
+}
+
+#login-component-title {
+	margin-top: 20vh;
+	margin-bottom: 30pt;
+	font-size: 3.5em;
+}
+
+#login-component-form {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+}
+
+.login-component-formInputBody {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin-bottom: 10pt;
+}
+
+input:-webkit-autofill {
+	box-shadow: 0 0 0 1000px #333 inset !important; /* For non-WebKit browsers */
+	-webkit-box-shadow: 0 0 0 1000px #333 inset !important; /* Change 'white' to your desired background color */
+	-webkit-text-fill-color: #428cff; /* Change '#333' to your desired text color */
+	background-color: transparent !important;
+}
+
+#login-component-signUpBody {
+	display: flex;
+	align-items: center;
+	margin-top: 15pt;
+}
+
+.text {
+	color:orangered;
+}

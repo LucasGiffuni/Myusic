@@ -11,9 +11,9 @@ import { MAT_SNACK_BAR_DATA, MatSnackBar, MatSnackBarModule } from '@angular/mat
   standalone: true,
   imports: [CommonModule, MatSnackBarModule],
   template: `
-    <div id="register-body-component">
-    <h1 id="register-component-title"> Register </h1>
-    <form id="register-component-form" (keydown.enter)="login()">
+    <div class="register-body-component">
+    <h1 class="register-component-title"> Register </h1>
+    <form iclassd="register-component-form" (keydown.enter)="login()">
 
       <div class="register-component-formInputBody">
         <input type="text" class="register-component-formInput" placeholder="Username" (input)="onInputUsername($event)">
@@ -23,12 +23,12 @@ import { MAT_SNACK_BAR_DATA, MatSnackBar, MatSnackBarModule } from '@angular/mat
 
       </div>
 
-      <div id="register-component-formButtonBody">
+      <div class="register-component-formButtonBody">
         <input type="Button" id="register-component-formButton" value="Sign Up" (click)="login()" >
       </div>
 
 
-        <div id="register-component-signUpBody">
+        <div class="register-component-signUpBody">
           <p> Have an user?
             <input class="link" (click)="clickButton('/login')" value=" Log In" >
 

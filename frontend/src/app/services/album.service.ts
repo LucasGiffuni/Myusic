@@ -10,7 +10,7 @@ import { IAlbumCancion } from '../interfaces/IAlbumCancion';
 })
 export class AlbumService {
   // https://backend.wonderfulsky-826aeb73.brazilsouth.azurecontainerapps.io
-  url = 'http://localhost:3000';
+  url = 'https://backend.wonderfulsky-826aeb73.brazilsouth.azurecontainerapps.io';
   cookieService: CookieService = inject(CookieService);
 
   constructor() { }
@@ -83,6 +83,16 @@ export class AlbumService {
     return (await (await fetch(`${this.url}/albums/removeSongFromAlbum`, {
       method: 'POST',
       body: JSON.stringify(body),
+      headers: {
+        Accept: 'application/json',
+        'Authorization': 'Bearer ' + this.cookieService.get("SESSIONID"),
+        'Content-Type': 'application/json',
+      }
+    })).json()) ?? [];
+  }
+  async removelbum(idAlbum: number): Promise<IResponse<IAlbum>> {
+    return (await (await fetch(`${this.url}/albums/removeAlbum/${idAlbum}`, {
+      method: 'POST',
       headers: {
         Accept: 'application/json',
         'Authorization': 'Bearer ' + this.cookieService.get("SESSIONID"),

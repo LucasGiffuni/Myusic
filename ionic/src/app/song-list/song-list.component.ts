@@ -6,15 +6,16 @@ import { SongComponent } from './song/song.component';
 import { CommonModule } from '@angular/common';
 import { IResponse } from '../interfaces/IResponse';
 import { CookieService } from '../services/cookie.service';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-song-list',
   templateUrl: './song-list.component.html',
   standalone: true,
-  imports: [IonicModule, SongComponent, CommonModule],
+  imports: [IonicModule, SongComponent, CommonModule, RouterModule],
   styleUrls: ['./song-list.component.scss'],
 })
-export class SongListComponent  implements OnInit {
+export class SongListComponent implements OnInit {
 
 	songList: ISong[] = [];
 	private data = inject(SongService);
@@ -24,8 +25,8 @@ export class SongListComponent  implements OnInit {
 
 	constructor() {}
 
-	ngOnInit() {
-		this.getSongs();
+	async ngOnInit() {
+		await this.getSongs();
 	}
 
 	refresh(ev: any) {
@@ -44,7 +45,7 @@ export class SongListComponent  implements OnInit {
 				const routeRedirect = document.createElement('ion-route-redirect');
 				routeRedirect.setAttribute('from', '*');
 				routeRedirect.setAttribute('to', '/login');
-				
+
 			} else {
 			  value.data.forEach(element => {
 				this.songList.push(element);
@@ -55,6 +56,10 @@ export class SongListComponent  implements OnInit {
 			console.error(err);
 		  });
 	  }
+	  /*async getSongs() {
+		const songs = await this.songService.getSongs();
+		songs.data.forEach(song => this.songList.push(song))
+	  }*/
 
 	  async openSnackBar(message: string, action: string) {
 		const alert = await this.alertController.create({

@@ -1,10 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
-import { IonicModule } from '@ionic/angular';
+import { IonMenuToggle, IonicModule } from '@ionic/angular';
 import { LoginComponent } from "./login/login.component";
 import { CookieService } from './services/cookie.service';
 import { UserService } from './services/profile.service';
+
 @Component({
     selector: 'app-root',
     templateUrl: 'app.component.html',
@@ -23,8 +24,8 @@ export class AppComponent {
     { title: 'Archived', url: '/folder/archived', icon: 'archive' },
     { title: 'Trash', url: '/folder/trash', icon: 'trash' },
     { title: 'Spam', url: '/folder/spam', icon: 'warning' },*/
-	{ title: 'songs', url: '/songList', icon: 'songs' },
-	{ title: 'Music Player', url: '/musicPlayer', icon: 'play-circle-outline' },
+	{ title: 'songs', url: '/songList', icon: '' },
+	//{ title: 'Music Player', url: '/musicPlayer/', icon: '' },
   ];
   public labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
 
@@ -40,13 +41,6 @@ export class AppComponent {
 
   clickButton(path: string) {
     this.router.navigate([path]);
-  }
-
-  userButton() {
-    this.clickButton('/profile');
-  }
-  homeButton() {
-    this.clickButton('/homePage');
   }
 
   onFocusOutPassword(event: any) {

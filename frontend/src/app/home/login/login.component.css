@@ -1,4 +1,4 @@
-#login-body-component {
+.login-body-component {
   font-family: "Montserrat", sans-serif;
   width: 55%;
   height: 50%;
@@ -13,11 +13,11 @@
   transform: translate(-50%, -50%);
 }
 
-#login-component-title {
+.login-component-title {
   text-align: center;
 }
 
-#login-component-form {
+.login-component-form {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -43,12 +43,12 @@
   width: 80%;
   height: 15%;
 }
-#login-component-formButtonBody {
+.login-component-formButtonBody {
   width: 80%;
   margin-top: 10%;
 }
 
-#login-component-formButton {
+.login-component-formButton {
   display: block;
   padding: 15px 30px;
   border: none;
@@ -62,11 +62,11 @@
   border-radius: 15px;
 }
 
-#login-component-signUpBody {
+.login-component-signUpBody {
   margin: 0 0 0 auto;
   right: 0;
 }
-#login-component-formButton:hover {
+.login-component-formButton:hover {
   opacity: 0.9;
   transform: translateY(-2px);
 }

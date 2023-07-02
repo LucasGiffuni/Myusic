@@ -148,6 +148,20 @@ export default class Database {
 
     return result.rowsAffected[0];
   }
+  async removeAlbumById(idAlbum: any) {
+    await this.connect();
+    const request = this.poolConnection.request();
+
+
+
+    request.input("idAlbum", sql.Int, idAlbum);
+
+    const result = await request.query(
+      `delete from album where idAlbum = @idAlbum`
+    );
+
+    return result.rowsAffected[0];
+  }
 
   async read(id: string | number) {
     await this.connect();
@@ -416,7 +430,7 @@ export default class Database {
 
     return result.recordset;
   }
-  async getUsernameByName(username: string ) {
+  async getUsernameByName(username: string) {
     await this.connect();
     const request = this.poolConnection.request();
     request.input("username", sql.NVarChar(255), username);

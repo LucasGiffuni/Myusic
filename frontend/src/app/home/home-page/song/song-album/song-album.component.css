@@ -72,3 +72,7 @@
   align-items: center;
   justify-content: center;
 }
+
+.song-remove:hover{
+  color: red;
+}

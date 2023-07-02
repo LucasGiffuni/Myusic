@@ -13,8 +13,8 @@ import { IAlbumCancion } from 'src/app/interfaces/IAlbumCancion';
   selector: 'app-albumsongs',
   standalone: true,
   template: `
-   <div id="albumSongsComponent" *ngIf="renderFlag">
-    <div id="albumImage" >
+   <div class="albumSongsComponent" *ngIf="renderFlag">
+    <div class="albumImage" >
     <h1>{{Album.titulo}}</h1>
 
       <div class="outer-grid" *ngIf="imageCollageFlag">
@@ -29,9 +29,9 @@ import { IAlbumCancion } from 'src/app/interfaces/IAlbumCancion';
     </div>
 
    <hr>
-   <div id="albumSongs" >
+   <div class="albumSongs" >
 
-      <div id="albumSongsList">
+      <div class="albumSongsList">
         <app-song-album class = "songLatest-component" *ngFor="let song of this.Songs" [song]="song" [obtainAlbumSongs]="obtainAlbumSongs.bind(this)"></app-song-album>
       </div>
    </div>
