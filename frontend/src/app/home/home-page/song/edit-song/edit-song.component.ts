@@ -1,7 +1,11 @@
-import { Component, Input, inject } from '@angular/core';
+import { Component, Inject, Input, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ISong } from 'src/app/interfaces/ISong';
 import { SongService } from 'src/app/services/song.service';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { CookieService } from 'src/app/services/cookie.service';
+import { IResponse } from 'src/app/interfaces/IResponse';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-edit-song',
@@ -26,7 +30,6 @@ import { SongService } from 'src/app/services/song.service';
       <label for="a Link">Image Link:</label>
       <input type="text" id="password" value="image" class="{{song.imagen}}" (focusout)="onFocusOutImageLink($event)">
       <button (click)="editSong()">Edit</button>
-
     </div>
   </div>
     </div>
@@ -36,30 +39,52 @@ import { SongService } from 'src/app/services/song.service';
 export class EditSongComponent {
 
   @Input() song!: ISong;
-  changedSong: ISong = this.song;
+  // changedSong: ISong = this.song;
 
   songService: SongService = inject(SongService);
+  cookieService: CookieService = inject(CookieService);
+
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any, private _snackBar: MatSnackBar) {
+    this.song = data.song;
+    this.song.idUsuario = parseInt(this.cookieService.get("USERID"));
+  }
 
   onFocusOutTitle(event: any) {
-    this.changedSong.titulo = event.target.value
+    this.song.titulo = event.target.value;
   }
   onFocusOutGenre(event: any) {
-    this.changedSong.genero = event.target.value
+    this.song.genero = event.target.value;
   }
   onFocusOutAutor(event: any) {
-    this.changedSong.autor = event.target.value
+    this.song.autor = event.target.value;
   }
   onFocusOutReleaseDate(event: any) {
-    this.changedSong.fechaLanzamiento = event.target.value
+    this.song.fechaLanzamiento = event.target.value;
   }
   onFocusOutSourceLink(event: any) {
-    this.changedSong.linkReferencia = event.target.value
+    this.song.linkReferencia = event.target.value;
   }
   onFocusOutImageLink(event: any) {
-    this.changedSong.imagen = event.target.value
+    this.song.imagen = event.target.value;
   }
 
   editSong(){
-    this.songService.updateUser(this.changedSong);
+    this.songService.updateSong(this.song).then((response : IResponse<any>)=>{
+      if(response.Result.statuscode === "404"){
+        this.openSnackBar("Song not found for this user", "Cerrar");
+      }else{
+        if(response.Result.statuscode === "200"){
+          this.openSnackBar("Song update!", "Cerrar");
+        }else{
+          this.openSnackBar("Error in the server", "Cerrar");
+        }
+      }
+    });
+  }
+
+  openSnackBar(message: string, action: string) {
+    this._snackBar.open(message, action, {
+      duration: 2500
+    });
   }
 }

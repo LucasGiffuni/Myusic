@@ -254,22 +254,24 @@ export default class Database {
     return result.rowsAffected[0];
   }
 
-  async editSong(data: { songId: number, title: string, gender: string, date: Date, author: string, referenceLink: string }) {
+  async editSong(data: ISong) {
     await this.connect();
 
     const request = this.poolConnection.request();
 
-    request.input('songId', sql.Int(), data.songId);
-    request.input('title', sql.NVarChar(255), data.title);
-    request.input('gender', sql.NVarChar(255), data.gender);
-    request.input('date', sql.Date(), data.date);
-    request.input('author', sql.NVarChar(255), data.author);
-    request.input('referenceLink', sql.NVarChar(255), data.referenceLink);
+    request.input('songId', sql.Int(), data.idCancion);
+    request.input('title', sql.NVarChar(255), data.titulo);
+    request.input('gender', sql.NVarChar(255), data.genero);
+    request.input('date', sql.Date(), data.fechaLanzamiento);
+    request.input('author', sql.NVarChar(255), data.autor);
+    request.input('referenceLink', sql.NVarChar(255), data.linkReferencia);
+    request.input('image', sql.NVarChar(255), data.imagen);
+    request.input('userId', sql.Int(), data.idUsuario);
 
     const result = await request.query(`UPDATE Cancion SET Titulo = @title, Genero = @gender,
-    FechaLanzamiento = @Date, LinkReferencia = @referenceLink WHERE idCancion = @songId`);
+    fechaLanzamiento = @Date, linkReferencia = @referenceLink, autor = @author, imagen = @image WHERE idCancion = @songId and idUsuario = @userId`);
 
-    return result.recordset;
+    return result.rowsAffected[0];
   }
 
   async getSongReproductions() {

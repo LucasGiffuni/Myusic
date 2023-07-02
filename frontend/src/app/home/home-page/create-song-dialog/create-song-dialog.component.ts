@@ -52,7 +52,8 @@ import { Router } from '@angular/router';
   styleUrls: ['./create-song-dialog.component.css']
 })
 export class CreateSongDialogComponent {
-  constructor(public dialogRef: MatDialogRef<CreateSongDialogComponent>, private _snackBar: MatSnackBar, private router: Router,@Inject(MAT_DIALOG_DATA) public data: any) { }
+  constructor(public dialogRef: MatDialogRef<CreateSongDialogComponent>, private _snackBar: MatSnackBar, private router: Router,@Inject(MAT_DIALOG_DATA) public data: any) {
+}
   albumService: AlbumService = inject(AlbumService);
   songService: SongService = inject(SongService);
   cookieService: CookieService = inject(CookieService);
@@ -63,8 +64,7 @@ export class CreateSongDialogComponent {
   linkReferencia: string = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
   autor: string = "";
   imagen: string = "https://img.youtube.com/vi/dQw4w9WgXcQ/sddefault.jpg";
-
-
+  idUsuario: number = parseInt(this.cookieService.get("USERID"));
 
 
   SongTitleInput(event: any) {
@@ -107,7 +107,7 @@ export class CreateSongDialogComponent {
       autor: this.autor,
       vecesReproducidas: 0,
       imagen: this.imagen,
-      idUsuario: 24
+      idUsuario: this.idUsuario
     }
 
     if (this.songTitle || this.genero || this.fechaLanzamiento || this.autor) {

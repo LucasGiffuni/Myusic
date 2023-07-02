@@ -121,30 +121,35 @@ const increaseSongReproductions = async (req: Request, res: Response) => {
 }
 
 const editSong = async (req: Request, res: Response) => {
-    const songId = req.body.songId
-    const title = req.body.title;
-    const gender = req.body.gender;
-    const referenceLink = req.body.referenceLink;
-    const author = req.body.auth;
-    const date = req.body.date;
+    const idCancion = req.body.idCancion
+    const titulo = req.body.titulo;
+    const genero = req.body.genero;
+    const linkReferencia = req.body.linkReferencia;
+    const autor = req.body.autor;
+    const fechaLanzamiento = req.body.fechaLanzamiento;
+    const imagen = req.body.imagen;
+    const idUsuario = req.body.idUsuario;
     try {
-        const data = {
-            songId,
-            title,
-            gender,
-            date,
-            author,
-            referenceLink
+        const data : ISong = {
+            idCancion,
+            titulo,
+            genero,
+            fechaLanzamiento,
+            linkReferencia,
+            autor,
+            imagen,
+            idUsuario
         }
+        console.log(data);
         const result = await database.editSong(data);
         const response: IResponse<any[]> = {
             Result: {
                 statuscode: "",
                 statustext: ""
             },
-            data: result
+            data: []
         }
-        if (result.length > 0) {
+        if (result > 0) {
             response.Result.statuscode = "200";
             response.Result.statustext = "OK";
             res.status(200);
@@ -155,6 +160,7 @@ const editSong = async (req: Request, res: Response) => {
             res.status(200);
             res.json(response);
         }
+        console.log(response);
 
     } catch (err) {
         res.status(500).json({ error: err?.message });
