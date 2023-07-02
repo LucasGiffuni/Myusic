@@ -180,10 +180,8 @@ export class HomePageComponent implements AfterViewChecked {
     const containerSongOutStanding = document.querySelector('.library-component-songOutStanding-list')
 
     this.countColumns(containerAlbum, entireAlbums, 50, 2);
-    this.countColumns(containerSongLatest, entireSongLatests, 100, 4);
-    this.countColumns(containerSongOutStanding, entireSongOutStanding, 100, 4);
-    this.countColumns(containerAlbum, entireAlbums, 50, 2);
-    this.countColumns(containerSongLatest, entireSongLatests, 100, 4);
+    this.countColumns(containerSongOutStanding, entireSongOutStanding, 92, 4);
+    this.countColumns(containerSongLatest, entireSongLatests, 92, 4);
   }
 
   countColumns(container: any, entire: number, capacity: number, columns: number) {
