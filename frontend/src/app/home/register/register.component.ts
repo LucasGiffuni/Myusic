@@ -13,7 +13,7 @@ import { MAT_SNACK_BAR_DATA, MatSnackBar, MatSnackBarModule } from '@angular/mat
   template: `
     <div class="register-body-component">
     <h1 class="register-component-title"> Register </h1>
-    <form iclassd="register-component-form" (keydown.enter)="login()">
+    <form class="register-component-form" (keydown.enter)="login()">
 
       <div class="register-component-formInputBody">
         <input type="text" class="register-component-formInput" placeholder="Username" (input)="onInputUsername($event)">
@@ -24,7 +24,7 @@ import { MAT_SNACK_BAR_DATA, MatSnackBar, MatSnackBarModule } from '@angular/mat
       </div>
 
       <div class="register-component-formButtonBody">
-        <input type="Button" id="register-component-formButton" value="Sign Up" (click)="login()" >
+        <input type="Button" class="register-component-formButton" value="Sign Up" (click)="login()" >
       </div>
 
 
