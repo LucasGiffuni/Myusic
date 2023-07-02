@@ -8,7 +8,7 @@ import { CookieService } from './cookie.service';
 })
 export class SongService {
 
-  url = 'http://localhost:3000'//'https://backend.wonderfulsky-826aeb73.brazilsouth.azurecontainerapps.io';
+  url = 'https://backend.wonderfulsky-826aeb73.brazilsouth.azurecontainerapps.io'//'https://backend.wonderfulsky-826aeb73.brazilsouth.azurecontainerapps.io';
 
   cookieService: CookieService = inject(CookieService);
 
@@ -67,5 +67,5 @@ export class SongService {
     })).json()) ?? [];
   }
 
-  
+
 }
