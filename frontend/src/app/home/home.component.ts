@@ -35,7 +35,7 @@ import { UserService } from '../services/profile.service';
             >search</i
           >
         </form>
-     
+
       <i
         id="user-button"
         class="material-icons w3-xxlarge"

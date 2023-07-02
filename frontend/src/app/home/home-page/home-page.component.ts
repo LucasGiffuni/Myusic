@@ -27,7 +27,7 @@ import { SongLatestComponent } from "./song/song-latest/song-latest.component";
         <i id="album-button" class="material-icons w3-xxlarge" (click)="addSong()">add</i>
       </div>
         <div #listAlbums class="library-component-album-list">
-        <app-album class="album-component" *ngFor="let album of this.albumList" [album]="album"></app-album>
+        <app-album class="album-component" *ngFor="let album of this.albumList" [album]="album"  [getAlbums]="getAlbums.bind(this)"></app-album>
       </div>
     </div>
     <div class = "library-component">

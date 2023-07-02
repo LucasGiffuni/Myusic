@@ -17,8 +17,8 @@ import { Router } from '@angular/router';
   template: `
   <h1 mat-dialog-title>CreateAlbumDialog</h1>
   <div mat-dialog-content>
-  <input type="text" id="albumTitle" placeholder="Album Title"  (input)="albumTitleInput($event)">
-  <input type="text" id="albumDescription" placeholder="Album Description" (input)="albumDescriptionInput($event)">
+  <input type="text" class="albumTitle" placeholder="Album Title"  (input)="albumTitleInput($event)">
+  <input type="text" class="albumDescription" placeholder="Album Description" (input)="albumDescriptionInput($event)">
 
   </div>
   <div mat-dialog-actions>

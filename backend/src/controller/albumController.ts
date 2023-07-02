@@ -47,7 +47,7 @@ const removeSongFromAlbum = async (req: Request, res: Response) => {
 
     const data = {
         idCancionAlbum
-        
+
     }
     const response: IResponse<any[]> = {
         Result: {
@@ -56,7 +56,7 @@ const removeSongFromAlbum = async (req: Request, res: Response) => {
         },
         data: []
     }
-    if (idCancionAlbum ) {
+    if (idCancionAlbum) {
         try {
             const result = database.removeSongFromAlbum(data);
 
@@ -217,10 +217,37 @@ const getAlbumsDetails = async (req: Request, res: Response) => {
     }
 };
 
+const removeAlbum = async (req: Request, res: Response) => {
+    try {
+        const idAlbum = req.params.idAlbum;
+        const result = await database.removeAlbumById(idAlbum);
+        const response: IResponse<any> = {
+            Result: {
+                statuscode: "",
+                statustext: ""
+            },
+            data: result
+        }
+        if (result) {
+            response.Result.statuscode = "200";
+            response.Result.statustext = "OK";
+            res.status(200);
+            res.json(response);
+        } else {
+            response.Result.statuscode = "404";
+            response.Result.statustext = "Not found";
+            res.status(200);
+            res.json(response);
+        }
+    } catch (err) {
+        res.status(500).json({ error: err?.message });
+    }
+};
+
 
 
 
 export default {
-    addSongToAlbum, getAlbums, createAlbum, getUserAlbums, getAlbumsDetails, getAlbumsSongs, removeSongFromAlbum
+    addSongToAlbum, getAlbums, createAlbum, getUserAlbums, getAlbumsDetails, getAlbumsSongs, removeSongFromAlbum, removeAlbum
 };
 
