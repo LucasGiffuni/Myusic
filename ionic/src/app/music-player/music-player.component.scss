@@ -1,6 +1,41 @@
 #music-player-body {
+	display: flex;
+	align-items: center;
+	justify-content: center;
 	width: 98vw;
 	height: 98vh;
+}
+
+#music-player {
+	width: 90%;
+	height: 90%;
+	overflow: auto;
+}
+
+@media (min-width: 992px) {
+	#music-player-body {
+		display: flex;
+		justify-content: flex-start;
+		align-items: center;
+	}
+	#music-player {
+		width: 70%;
+		height: 90%;
+		overflow: auto;
+	}
+}
+
+#back-button {
+	display: flex;
+	justify-content: flex-end;
+	margin-top: 3pt;
+	margin-right: 3pt;
+}
+
+#title-header {
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
 #picture-container {
