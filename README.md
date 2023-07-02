@@ -37,7 +37,8 @@ docker push myusicimages.azurecr.io/myusic-frontend
 
 ### MER ###
 
-![Alt text](resources\MER Myusic.jpg" MER")
+![MER](/resources/MER%20Myusic.jpg "MER")
+
 
 
 ### FIGMA ###
