@@ -7,7 +7,7 @@ import { IResponse } from '../interfaces/IResponse';
   providedIn: 'root'
 })
 export class SongService {
-  url = 'http://localhost:3000';
+  url = 'https://backend.wonderfulsky-826aeb73.brazilsouth.azurecontainerapps.io';
 
   constructor(private cookieService: CookieService) { }
 
