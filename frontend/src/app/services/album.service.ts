@@ -90,5 +90,15 @@ export class AlbumService {
       }
     })).json()) ?? [];
   }
+  async removelbum(idAlbum: number): Promise<IResponse<IAlbum>> {
+    return (await (await fetch(`${this.url}/albums/removeAlbum/${idAlbum}`, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Authorization': 'Bearer ' + this.cookieService.get("SESSIONID"),
+        'Content-Type': 'application/json',
+      }
+    })).json()) ?? [];
+  }
 
 }

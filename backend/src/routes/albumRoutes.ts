@@ -28,6 +28,10 @@ router.get('/getAlbumsSongs/:idAlbum', (req, res) => {
     controller.getAlbumsSongs(req, res)
 });
 
+router.post('/removeAlbum/:idAlbum', (req, res) => {
+    controller.removeAlbum(req, res)
+});
+
 
 
 

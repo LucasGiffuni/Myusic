@@ -1,4 +1,4 @@
-#register-body-component {
+.register-body-component {
   font-family: "Montserrat", sans-serif;
   width: 55%;
   height: 50%;
@@ -13,11 +13,11 @@
   transform: translate(-50%, -50%);
 }
 
-#register-component-title {
+.register-component-title {
   text-align: center;
 }
 
-#register-component-form {
+.register-component-form {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -43,12 +43,12 @@
   width: 80%;
   height: 15%;
 }
-#register-component-formButtonBody {
+.register-component-formButtonBody {
   width: 80%;
   margin-top: 10%;
 }
 
-#register-component-formButton {
+.register-component-formButton {
   display: block;
   padding: 15px 30px;
   border: none;
@@ -62,10 +62,10 @@
   border-radius: 15px;
 }
 
-#register-component-signUpBody {
+.register-component-signUpBody {
   margin: 2pt auto 2pt 2pt;
 }
-#register-component-formButton:hover {
+.register-component-formButton:hover {
   opacity: 0.9;
   transform: translateY(-2px);
 }

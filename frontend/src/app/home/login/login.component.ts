@@ -20,9 +20,9 @@ import { UserService } from 'src/app/services/profile.service';
   standalone: true,
   imports: [CommonModule, HttpClientModule, MatSnackBarModule],
   template: `
-    <div id="login-body-component">
-      <h1 id="login-component-title">Login</h1>
-      <form id="login-component-form" (keydown.enter)="login()" >
+    <div class="login-body-component">
+      <h1 class="login-component-title">Login</h1>
+      <form class="login-component-form" (keydown.enter)="login()" >
         <div class="login-component-formInputBody">
           <input
             type="text"
@@ -40,17 +40,17 @@ import { UserService } from 'src/app/services/profile.service';
           />
         </div>
 
-        <div id="login-component-formButtonBody">
+        <div class="login-component-formButtonBody">
           <input
 
             type="Button"
-            id="login-component-formButton"
+            class="login-component-formButton"
             value="Sign in"
             (click)="login()"
           />
         </div>
 
-        <div id="login-component-signUpBody">
+        <div class="login-component-signUpBody">
           <p>
             Not a User?
             <input class="link" (click)="clickButton('/register')" value=" Sign On" >
