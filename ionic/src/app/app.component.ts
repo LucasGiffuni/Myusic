@@ -25,7 +25,7 @@ export class AppComponent {
     { title: 'Trash', url: '/folder/trash', icon: 'trash' },
     { title: 'Spam', url: '/folder/spam', icon: 'warning' },*/
 	{ title: 'songs', url: '/songList', icon: '' },
-	{ title: 'Music Player', url: '/musicPlayer', icon: '' },
+	{ title: 'Music Player', url: '/musicPlayer/', icon: '' },
   ];
   public labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
 

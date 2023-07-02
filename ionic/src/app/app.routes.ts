@@ -23,9 +23,4 @@ export const routes: Routes = [
 	loadComponent: () =>
 	  import('./song-list/song-list.component').then((m) => m.SongListComponent)
   },
-  {
-    path: 'song/:id',
-    loadComponent: () =>
-      import('./song-list/song/song.component').then((m) => m.SongComponent),
-  },
 ];
