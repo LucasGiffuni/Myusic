@@ -4,12 +4,12 @@ import { CookieService } from '../services/cookie.service';
 import { Router } from '@angular/router';
 import { Services } from '../services/services.service';
 import { UserService } from '../services/profile.service';
-import { AlertController } from '@ionic/angular';
+import { AlertController, IonicModule } from '@ionic/angular';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [],
+  imports: [IonicModule],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
 })
@@ -55,7 +55,6 @@ export class LoginComponent  implements OnInit {
 		  } else if (response.resultado.statusCode == '200') {
 			this.cookieService.set('SESSIONID', response.user.token);
 			this.openSnackBar('Welcome ' + response.user.username, 'Close');
-			this.clickButton('/homePage');
 			this.loginService.loginFlag = true;
 		  }
 		});
