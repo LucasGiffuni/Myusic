@@ -22,6 +22,11 @@ Si el S.O es MACOS:
     npm i   
     npm run start
 
+#### Ejecutar Mobile ####
+
+    cd ionic
+    npm i   
+    ionic serve
 
 ### Subir imagen a azure image registry ###
 
