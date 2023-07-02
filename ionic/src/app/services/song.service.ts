@@ -43,4 +43,29 @@ export class SongService {
       ).json()) ?? []
     );
   }
+
+  async getSongsByReproductions() : Promise<IResponse<ISong>>{
+    return (await (await fetch(`${this.url}/song/getSongReproductions`, {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        'Authorization': 'Bearer ' + this.cookieService.get("SESSIONID"),
+        'Content-Type': 'application/json',
+      }
+    })).json()) ?? [];
+  }
+
+  async increaseReproductions(body: { songId: number }): Promise<IResponse<ISong>> {
+    return (await (await fetch(`${this.url}/song/increaseSongReproductions`, {
+      method: 'POST',
+      body: JSON.stringify(body),
+      headers: {
+        Accept: 'application/json',
+        'Authorization': 'Bearer ' + this.cookieService.get("SESSIONID"),
+        'Content-Type': 'application/json',
+      }
+    })).json()) ?? [];
+  }
+
+  
 }

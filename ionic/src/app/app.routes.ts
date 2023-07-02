@@ -1,13 +1,13 @@
 import { Routes } from '@angular/router';
 
 export const routes: Routes = [
-  /*{
+  {
     path: '',
 	redirectTo: 'songList',
     //redirectTo: 'folder/inbox',
 	//redirectTo: 'musicPlayer',
     pathMatch: 'full',
-  },*/
+  },
   {
     path: 'musicPlayer',
 	loadComponent: () =>

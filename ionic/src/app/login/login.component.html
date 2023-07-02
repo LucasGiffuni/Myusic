@@ -1,5 +1,8 @@
 <div id="login-body-component">
-	<h1 id="login-component-title">Login</h1>
+	<ion-text color="primary">
+		<h1 id="login-component-title">Login</h1>
+	</ion-text>
+
 	<form id="login-component-form">
 	  <div class="login-component-formInputBody">
 		<input
@@ -19,21 +22,18 @@
 	  </div>
 
 	  <div id="login-component-formButtonBody">
-		<input
-		  type="Button"
-		  id="login-component-formButton"
-		  value="Sign In"
-		  (click)="login()"
-		/>
+		<ion-button fill="outline" id="login-component-formButton" (click)="login()">
+			<ion-icon slot="start" name="star"></ion-icon>
+			Log in
+		</ion-button>
+
 	  </div>
 
 	  <div id="login-component-signUpBody">
-		<p>
 		  Not a User?
-		  <button class="link" (click)="clickButton('/register')">
-			Sign In
-		  </button>
-		</p>
+			<ion-button class="link" color="light" fill="solid" (click)="clickButton('/register')">
+				<ion-text class="text">Sign up</ion-text>
+			</ion-button>
 	  </div>
 	</form>
   </div>

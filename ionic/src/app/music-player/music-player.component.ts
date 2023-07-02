@@ -1,13 +1,13 @@
-import { Component, ElementRef, OnInit, ViewChild, inject } from '@angular/core';
+import { Component, OnInit, ViewChild, inject } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { AlertController, IonicModule } from '@ionic/angular';
+import { AlertController, IonicModule, RangeCustomEvent } from '@ionic/angular';
 import { ISong } from '../interfaces/Isong';
 import { CookieService } from '../services/cookie.service';
 import { SongService } from '../services/song.service';
 import { YouTubePlayerModule } from '@angular/youtube-player';
 import { FormsModule } from '@angular/forms';
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
+import { RangeValue } from '@ionic/core';
 
 @Component({
   selector: 'app-music-player',
@@ -39,28 +39,17 @@ export class MusicPlayerComponent  implements OnInit {
   apiLoaded = false;
   splitted: string = "";
   videoId: string = this.splitted;
-  volume: number = 50;
-  videoURL: SafeResourceUrl = 'https://youtu.be/' + this.videoId;
+  volume: RangeValue = 50;
   open: boolean = true;
+  isFirstTime: boolean = true;
+  @ViewChild('youtubePlayer') youtubePlayer: any;
 
-  @ViewChild('youtubePlayer') youtubePlayer!: ElementRef;
 
-  constructor(private route: ActivatedRoute, private router: Router, private alertController: AlertController, private sanitizer: DomSanitizer) {
+  constructor(private route: ActivatedRoute, private router: Router, private alertController: AlertController) {
 		this.songService = inject(SongService);
 		this.cookieService = inject(CookieService);
    }
 
-   ngAfterViewInit() {
-    // Initialize the YouTube player once the view is initialized
-    (window as any).onYouTubeIframeAPIReady = () => {
-      this.player = new (window as any).YT.Player(this.youtubePlayer.nativeElement, {
-        videoId: this.videoId,
-        events: {
-          onReady: this.onPlayerReady.bind(this),
-        },
-      });
-    };
-  }
 
   ngOnInit() {
 	this.open = true;
@@ -77,9 +66,6 @@ export class MusicPlayerComponent  implements OnInit {
             this.selectedSong = response.data[0]
             this.splitted = this.selectedSong.linkReferencia.split("=")[1]
             this.videoId = this.splitted
-			console.log("URL: "+'https://www.youtube.com/embed/'+this.videoId);
-			this.videoURL = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/'+this.videoId);
-			console.log("URL"+this.videoURL);
 		}
         })
 
@@ -95,31 +81,36 @@ export class MusicPlayerComponent  implements OnInit {
     this.sub.unsubscribe();
   }
 
-  onYouTubeIframeAPIReady() {
-    return this.player = new YT.Player('iframe-id', {
-      videoId: 'this.videoId',
-      events: {
-        'onReady': this.onPlayerReady,
-      }
-    });
-}
-
-
-
 
   pinFormatter(value: number) {
     return `${value}%`;
   }
+  onIonInput(ev: Event) {
+    this.volume = (ev as RangeCustomEvent).detail.value;
+	this.updateVolume();
+  }
 
   onPlayerReady(event: any) {
-    this.player = this.onYouTubeIframeAPIReady();//= event.target;
+    this.player = event.target;
     this.updateVolume();
   }
 
   playMusic() {
     if (this.player) {
       this.player.playVideo();
+	  if (this.isFirstTime) {
+      	this.increaseSongReproductions();
+		this.isFirstTime = false;
+	  }
     }
+  }
+
+  increaseSongReproductions() {
+    const songId = this.selectedSong.idCancion;
+    const data = {
+      songId
+    }
+    this.songService.increaseReproductions(data);
   }
 
   pauseMusic() {
@@ -135,7 +126,7 @@ export class MusicPlayerComponent  implements OnInit {
   }
 
   updateVolume() {
-    this.player.setVolume(this.volume);
+    this.player.setVolume(parseInt(this.volume.toString()));
   }
 
   splitLink(link: string) {

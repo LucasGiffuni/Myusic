@@ -1,4 +1,33 @@
+#music-player-body {
+	width: 98vw;
+	height: 98vh;
+}
+
 #picture-container {
-	width: 50pt;
-	height: 50pt;
+	width: 50%;
+	height: 40%;
+}
+
+#music-player-content {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+#music-controls {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+}
+
+#volume-slider {
+	display: flex;
+	justify-content: center;
+	width: 20%;
+}
+
+#music-buttons {
+	display: flex;
+	align-items: center;
 }
