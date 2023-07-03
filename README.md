@@ -44,7 +44,15 @@ docker push myusicimages.azurecr.io/myusic-frontend
 
 ![MER](/resources/MER%20Myusic.jpg "MER")
 
-
-
 ### FIGMA ###
 https://www.figma.com/file/XCuXlozEHFmrN48AsN8Kjz/Myusic?type=design&node-id=24%3A298&mode=design&t=RxmWuq1iwJZuwCPc-1
+
+## APP HOSTEADA EN AZURE ##
+
+### FRONTEND ###
+[Myusic Frotnend](https://myusic-frontend.wonderfulsky-826aeb73.brazilsouth.azurecontainerapps.io/)
+
+
+### BACKEND ###
+[Myusic Backend](https://backend.wonderfulsky-826aeb73.brazilsouth.azurecontainerapps.io)
+
