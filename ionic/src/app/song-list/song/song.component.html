@@ -1,0 +1,24 @@
+
+	<ion-item
+  *ngIf="song"
+  [routerLink]="'/musicPlayer/' + song.idCancion"
+  [detail]="false"
+>
+
+  <div slot="start" [class]="!song.titulo ? 'dot dot-unread' : 'dot'"></div>
+  <ion-label class="ion-text-wrap">
+    <h2>
+      {{ song.titulo }}
+      <span class="date">
+        <ion-note>Reproducciones: {{ song.vecesReproducidas }}</ion-note>
+        <ion-icon
+          aria-hidden="true"
+          name="chevron-forward"
+          size="small"
+          *ngIf="isIos()"
+        ></ion-icon>
+      </span>
+    </h2>
+    <h3>{{ song.autor }}</h3>
+  </ion-label>
+</ion-item>

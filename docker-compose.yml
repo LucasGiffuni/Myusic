@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: myusic-frontend
+    ports:
+      - 4200:4200
+    depends_on:
+      - backend
+    networks:
+      - my-network
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: myusic-backend
+    ports:
+      - 3000:3000
+    networks:
+      - my-network
+
+networks:
+  my-network:
+    driver: bridge

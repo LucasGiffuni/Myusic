@@ -1,0 +1,39 @@
+<div id="login-body-component">
+	<ion-text color="primary">
+		<h1 id="login-component-title">Login</h1>
+	</ion-text>
+
+	<form id="login-component-form">
+	  <div class="login-component-formInputBody">
+		<input
+		  type="text"
+		  class="login-component-formInput"
+		  placeholder="Username"
+		  (input)="onInputUsername($event)"
+		/>
+	  </div>
+	  <div class="login-component-formInputBody">
+		<input
+		  type="password"
+		  class="login-component-formInput"
+		  placeholder="Password"
+		  (input)="onInputPassword($event)"
+		/>
+	  </div>
+
+	  <div id="login-component-formButtonBody">
+		<ion-button fill="outline" id="login-component-formButton" (click)="login()">
+			<ion-icon slot="start" name="star"></ion-icon>
+			Log in
+		</ion-button>
+
+	  </div>
+
+	  <div id="login-component-signUpBody">
+		  Not a User?
+			<ion-button class="link" color="light" fill="solid" (click)="clickButton('/register')">
+				<ion-text class="text">Sign up</ion-text>
+			</ion-button>
+	  </div>
+	</form>
+  </div>
