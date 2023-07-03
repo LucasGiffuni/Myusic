@@ -89,6 +89,7 @@ export class ChangpaswordComponent {
           if (element) {
             element.style.color = "black";
           }
+          this.getUserProfile();
           this.newPassword = "";
           this.currentPasswordUser = "";
         }
