@@ -14,7 +14,7 @@ import { RouterModule } from '@angular/router';
         <div class ="song-info">
           <h2 class = "song-title">{{this.song.titulo}}</h2>
           <h2 class = "author-band">{{this.song.autor}}</h2>
-        <div>
+        </div>
     </div>
   `,
   styleUrls: ['./song-latest.component.css']
